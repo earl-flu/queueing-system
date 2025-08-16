@@ -14,7 +14,9 @@ class QueueController extends Controller
 {
     public function index(Request $request)
     {
-        $departmentId = $request->get('department');
+        $user = auth()->user();
+
+        $departmentId = $request->get('department', $user->isAdmin() ? '' : $user->departments->first()->id);
         $status = $request->get('status', 'all');
 
         $query = QueueItem::with(['patient', 'originalDepartment', 'currentDepartment.users', 'servedByUser'])
