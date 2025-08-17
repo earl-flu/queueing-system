@@ -51,6 +51,7 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Billing Staff', 'email' => 'billing@opd.com', 'role' => 'staff'],
             ['name' => 'Lab Staff', 'email' => 'lab@opd.com', 'role' => 'staff'],
             ['name' => 'Reception Staff', 'email' => 'reception@opd.com', 'role' => 'reception'],
+            ['name' => 'Registration Staff', 'email' => 'registration@opd.com', 'role' => 'staff'],
         ];
 
         foreach ($staffUsers as $userData) {
@@ -63,23 +64,31 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
+        // Call the DepartmentFlowSeeder
+        $this->call([
+            DepartmentFlowSeeder::class,
+        ]);
+
         // Assign staff to departments
         $dentalDept = Department::where('code', 'DEN')->first();
         $obDept = Department::where('code', 'OB')->first();
         $billingDept = Department::where('code', 'BILL')->first();
         $labDept = Department::where('code', 'LAB')->first();
+        $registrationDept = Department::where('code', 'REG')->first();
 
         $dentalStaff = User::where('email', 'dental@opd.com')->first();
         $obStaff = User::where('email', 'ob@opd.com')->first();
         $billingStaff = User::where('email', 'billing@opd.com')->first();
         $labStaff = User::where('email', 'lab@opd.com')->first();
         $reception = User::where('email', 'reception@opd.com')->first();
+        $registrationStaff = User::where('email', 'registration@opd.com')->first();
 
         // Assign staff to their respective departments
         $dentalDept->users()->attach($dentalStaff->id);
         $obDept->users()->attach($obStaff->id);
         $billingDept->users()->attach($billingStaff->id);
         $labDept->users()->attach($labStaff->id);
+        $registrationDept->users()->attach($registrationStaff);
 
         // Reception can access all departments
         $reception->departments()->attach([

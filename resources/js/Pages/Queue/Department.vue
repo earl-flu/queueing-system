@@ -52,72 +52,242 @@
             </div>
 
             <div v-else class="row">
-              <div
-                v-for="item in queueItems"
-                :key="item.id"
-                class="col-md-6 col-lg-4 mb-3"
-              >
+              <div class="col-md-4">
+                <h6 class="text-center mb-3 font-extrabold">NOW SERVING</h6>
                 <div
-                  class="card h-100"
-                  :class="{
-                    'border-success bg-light': item.status === 'serving',
-                    'border-warning bg-light': item.status === 'waiting',
-                  }"
+                  v-for="item in queueItems.filter(
+                    (i) => i.status === 'serving'
+                  )"
+                  :key="item.id"
+                  class="mb-3"
                 >
-                  <div class="card-body">
-                    <div
-                      class="d-flex justify-content-between align-items-start mb-3"
-                    >
-                      <h3 class="card-title text-primary mb-0">
-                        {{ item.queue_number }}
-                      </h3>
-                      <span
-                        :class="getStatusBadgeClass(item.status)"
-                        class="badge"
+                  <div class="card">
+                    <div class="card-body">
+                      <div
+                        class="d-flex justify-content-between align-items-start mb-3"
                       >
-                        {{ item.status.toUpperCase() }}
-                      </span>
-                    </div>
+                        <h3 class="card-title text-primary mb-0 font-bold">
+                          {{ item.queue_number }}
+                        </h3>
+                        <span
+                          :class="getStatusBadgeClass(item.status)"
+                          class="badge"
+                        >
+                          {{ item.status.toUpperCase() }}
+                        </span>
+                      </div>
 
-                    <div class="mb-3">
-                      <h6 class="card-subtitle mb-1">
-                        {{ item.patient.first_name }}
-                      </h6>
-                      <p
-                        v-if="item.patient.phone"
-                        class="card-text text-muted small mb-1"
-                      >
-                        {{ item.patient.phone }}
-                      </p>
-                      <small class="text-muted"
-                        >Position: {{ item.queue_position }}</small
-                      >
+                      <div class="mb-3">
+                        <h6 class="card-subtitle mb-1">
+                          {{ item.patient.first_name }}
+                        </h6>
+                        <p
+                          v-if="item.patient.phone"
+                          class="card-text text-muted small mb-1"
+                        >
+                          {{ item.patient.phone }}
+                        </p>
+                        <small class="text-muted"
+                          >Position: {{ item.queue_position }}</small
+                        >
+                      </div>
+                      <div class="gap-2 flex">
+                        <button
+                          v-if="item.status === 'waiting'"
+                          @click="callPatient(item.id)"
+                          class="btn btn-success btn-sm flex-1"
+                        >
+                          Call
+                        </button>
+                        <button
+                          v-if="
+                            item.status === 'serving' && isFinalDepartment(item)
+                          "
+                          @click="completeService(item.id)"
+                          class="btn btn-primary btn-sm flex-1"
+                        >
+                          Complete
+                        </button>
+                        <button
+                          v-if="
+                            item.status === 'serving' && hasNextDepartment(item)
+                          "
+                          @click="completeAndTransfer(item.id)"
+                          class="btn btn-info btn-sm flex-1"
+                        >
+                          Next
+                        </button>
+                        <button
+                          v-if="
+                            item.status === 'waiting' ||
+                            item.status === 'serving'
+                          "
+                          @click="openTransferModal(item)"
+                          class="btn btn-warning btn-sm flex-1"
+                        >
+                          Transfer
+                        </button>
+                      </div>
                     </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 border-x-4">
+                <h6 class="text-center mb-3 font-extrabold">PRIORITY</h6>
+                <div
+                  v-for="item in queueItems.filter(
+                    (i) => i.patient.is_priority && i.status !== 'serving'
+                  )"
+                  :key="item.id"
+                  class="mb-3"
+                >
+                  <div class="card">
+                    <div class="card-body">
+                      <div
+                        class="d-flex justify-content-between align-items-start mb-3"
+                      >
+                        <h3 class="card-title text-primary mb-0 font-bold">
+                          {{ item.queue_number }}
+                        </h3>
+                        <span
+                          :class="getStatusBadgeClass(item.status)"
+                          class="badge"
+                        >
+                          {{ item.status.toUpperCase() }}
+                        </span>
+                      </div>
 
-                    <div class="d-grid gap-2">
-                      <button
-                        v-if="item.status === 'waiting'"
-                        @click="callPatient(item.id)"
-                        class="btn btn-success btn-sm"
+                      <div class="mb-3">
+                        <h6 class="card-subtitle mb-1">
+                          {{ item.patient.first_name }}
+                        </h6>
+                        <p
+                          v-if="item.patient.phone"
+                          class="card-text text-muted small mb-1"
+                        >
+                          {{ item.patient.phone }}
+                        </p>
+                        <small class="text-muted"
+                          >Position: {{ item.queue_position }}</small
+                        >
+                      </div>
+                      <div class="gap-2 flex">
+                        <button
+                          v-if="item.status === 'waiting'"
+                          @click="callPatient(item.id)"
+                          class="btn btn-success btn-sm flex-1"
+                        >
+                          Call
+                        </button>
+                        <button
+                          v-if="
+                            item.status === 'serving' && isFinalDepartment(item)
+                          "
+                          @click="completeService(item.id)"
+                          class="btn btn-primary btn-sm flex-1"
+                        >
+                          Complete
+                        </button>
+                        <button
+                          v-if="
+                            item.status === 'serving' && hasNextDepartment(item)
+                          "
+                          @click="completeAndTransfer(item.id)"
+                          class="btn btn-info btn-sm flex-1"
+                        >
+                          Next
+                        </button>
+                        <button
+                          v-if="
+                            item.status === 'waiting' ||
+                            item.status === 'serving'
+                          "
+                          @click="openTransferModal(item)"
+                          class="btn btn-warning btn-sm flex-1"
+                        >
+                          Transfer
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <h6 class="text-center mb-3 font-extrabold">REGULAR</h6>
+                <div
+                  v-for="item in queueItems.filter(
+                    (i) => !i.patient.is_priority && i.status !== 'serving'
+                  )"
+                  :key="item.id"
+                  class="mb-3"
+                >
+                  <div class="card">
+                    <div class="card-body">
+                      <div
+                        class="d-flex justify-content-between align-items-start mb-3"
                       >
-                        Call
-                      </button>
-                      <button
-                        v-if="item.status === 'serving'"
-                        @click="completeService(item.id)"
-                        class="btn btn-primary btn-sm"
-                      >
-                        Complete
-                      </button>
-                      <button
-                        v-if="
-                          item.status === 'waiting' || item.status === 'serving'
-                        "
-                        @click="openTransferModal(item)"
-                        class="btn btn-warning btn-sm"
-                      >
-                        Transfer
-                      </button>
+                        <h3 class="card-title text-primary mb-0 font-bold">
+                          {{ item.queue_number }}
+                        </h3>
+                        <span
+                          :class="getStatusBadgeClass(item.status)"
+                          class="badge"
+                        >
+                          {{ item.status.toUpperCase() }}
+                        </span>
+                      </div>
+
+                      <div class="mb-3">
+                        <h6 class="card-subtitle mb-1">
+                          {{ item.patient.first_name }}
+                        </h6>
+                        <p
+                          v-if="item.patient.phone"
+                          class="card-text text-muted small mb-1"
+                        >
+                          {{ item.patient.phone }}
+                        </p>
+                        <small class="text-muted"
+                          >Position: {{ item.queue_position }}</small
+                        >
+                      </div>
+                      <div class="gap-2 flex">
+                        <button
+                          v-if="item.status === 'waiting'"
+                          @click="callPatient(item.id)"
+                          class="btn btn-success btn-sm flex-1"
+                        >
+                          Call
+                        </button>
+                        <button
+                          v-if="
+                            item.status === 'serving' && isFinalDepartment(item)
+                          "
+                          @click="completeService(item.id)"
+                          class="btn btn-primary btn-sm flex-1"
+                        >
+                          Complete
+                        </button>
+                        <button
+                          v-if="
+                            item.status === 'serving' && hasNextDepartment(item)
+                          "
+                          @click="completeAndTransfer(item.id)"
+                          class="btn btn-info btn-sm flex-1"
+                        >
+                          Next
+                        </button>
+                        <button
+                          v-if="
+                            item.status === 'waiting' ||
+                            item.status === 'serving'
+                          "
+                          @click="openTransferModal(item)"
+                          class="btn btn-warning btn-sm flex-1"
+                        >
+                          Transfer
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -238,7 +408,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import Modal from "@/Components/Modal.vue";
 import { Head, Link, router, useForm } from "@inertiajs/vue3";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 const props = defineProps({
   department: Object,
@@ -260,6 +430,16 @@ const resetForm = useForm({
   date: new Date().toISOString().split("T")[0],
 });
 
+// Helper function to check if an item is in the final department
+const isFinalDepartment = (item) => {
+  return item.is_final_department;
+};
+
+// Helper function to check if there's a next department in the flow
+const hasNextDepartment = (item) => {
+  return item.has_next_department;
+};
+
 const callPatient = (id) => {
   router.post(
     route("queue.call", id),
@@ -274,8 +454,32 @@ const callPatient = (id) => {
 };
 
 const completeService = (id) => {
+  if (!confirm("Are you sure you want to complete this service?")) {
+    return;
+  }
   router.post(
     route("queue.complete", id),
+    {},
+    {
+      preserveScroll: true,
+      onSuccess: () => {
+        router.reload({ only: ["queueItems"] });
+      },
+    }
+  );
+};
+
+const completeAndTransfer = (id) => {
+  if (
+    !confirm(
+      "Are you sure you want to complete this service and transfer to next department?"
+    )
+  ) {
+    return;
+  }
+
+  router.post(
+    route("queue.complete-and-transfer", id),
     {},
     {
       preserveScroll: true,

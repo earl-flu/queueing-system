@@ -89,29 +89,28 @@ onBeforeUnmount(() => {
         <li>
           <a href="javascript:;" class="has-arrow">
             <div class="parent-icon">
-              <i class="material-icons-outlined">widgets</i>
+              <i class="material-icons-outlined">list_alt</i>
             </div>
-            <div class="menu-title">Papers</div>
+            <div class="menu-title">Queues</div>
           </a>
 
           <ul>
-            <!-- <li
-              :class="
-                isActive(
-                  route().current('papers.index') ||
-                    route().current('papers.edit')
-                )
-              "
-            >
-              <Link :href="route('papers.index')"
+            <li :class="isActive(route().current('queue.index'))">
+              <Link :href="route('queue.index')"
                 ><i class="material-icons-outlined">arrow_right</i>All</Link
-              > 
+              >
             </li>
-            <li :class="isActive(route().current('papers.create'))">
-              <Link :href="route('papers.create')"
+            <li
+              v-if="
+                $page.props.auth.user.is_admin ||
+                $page.props.auth.user.is_reception
+              "
+              :class="isActive(route().current('queue.create'))"
+            >
+              <Link :href="route('queue.create')"
                 ><i class="material-icons-outlined">arrow_right</i>Create</Link
               >
-            </li>-->
+            </li>
           </ul>
         </li>
 

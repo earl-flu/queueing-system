@@ -15,8 +15,10 @@ class Patient extends Model
         'last_name',
         'middle_name',
         'phone',
-        'birth_date',
-        'gender'
+        'age',
+        'gender',
+        'is_priority',
+        'priority_category'
     ];
 
     protected $casts = [

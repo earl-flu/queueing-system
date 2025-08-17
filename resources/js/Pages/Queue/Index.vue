@@ -33,7 +33,25 @@
         <div class="card mb-4">
           <div class="card-body">
             <div class="row">
-              <div class="col-md-4">
+              <div class="col-md-3">
+                <label class="form-label">Patient Full Name</label>
+                <input
+                  v-model="filterForm.patientFullname"
+                  @keyup="applyFilters"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Queue Number</label>
+                <input
+                  v-model="filterForm.queueNumber"
+                  @keyup="applyFilters"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="col-md-3">
                 <label class="form-label">Department</label>
                 <select
                   v-model="filterForm.department"
@@ -50,7 +68,7 @@
                   </option>
                 </select>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <label class="form-label">Status</label>
                 <select
                   v-model="filterForm.status"
@@ -64,7 +82,7 @@
                   <option value="transferred">Transferred</option>
                 </select>
               </div>
-              <div class="col-md-4 d-flex align-items-end">
+              <div class="col-md-4 d-flex align-items-end mt-2">
                 <button @click="clearFilters" class="btn btn-secondary">
                   Clear Filters
                 </button>
@@ -197,7 +215,7 @@
                       !link.url ? 'disabled' : '',
                     ]"
                   >
-                    <Link :href="link.url" class="page-link">
+                    <Link :href="link.url ?? ''" class="page-link">
                       <span v-html="link.label"></span>
                     </Link>
                   </li>
@@ -224,8 +242,10 @@ const props = defineProps({
 });
 
 const isAdmin = computed(() => props.user?.role === "admin");
+const isReception = computed(() => props.user?.role === "reception");
 
 const hasAccessToDepartment = (department) => {
+  if (isReception.value) return false;
   if (isAdmin.value) return true;
   return (
     department.users && department.users.some((u) => u.id === props.user.id)
@@ -235,9 +255,12 @@ const hasAccessToDepartment = (department) => {
 const filterForm = ref({
   department: props.filters.department || "",
   status: props.filters.status || "all",
+  patientFullName: props.filters.patientFullName || "",
+  queueNumber: props.filters.queueNumber || "",
 });
 
 const applyFilters = () => {
+  console.log("triggered");
   router.get(route("queue.index"), filterForm.value, {
     preserveState: true,
     replace: true,
@@ -248,6 +271,8 @@ const clearFilters = () => {
   filterForm.value = {
     department: "",
     status: "all",
+    patientFullName: "",
+    queueNumber: "",
   };
   applyFilters();
 };

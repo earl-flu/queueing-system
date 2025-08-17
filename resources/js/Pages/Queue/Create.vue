@@ -17,10 +17,12 @@ const form = useForm({
     last_name: "",
     suffix: "",
     phone: "",
-    birth_date: "",
+    age: "",
     gender: "",
+    priority_category: "",
+    is_priority: false,
   },
-  department_id: "",
+  final_department_id: "",
 });
 
 const submit = () => {
@@ -81,7 +83,6 @@ const submit = () => {
                   class="form-control"
                   v-model="form.patient.middle_name"
                   id="middle_name"
-                  autofocus
                 />
                 <div class="invalid-feedback d-block">
                   {{ form.errors["patient.middle_name"] }}
@@ -134,19 +135,6 @@ const submit = () => {
               </div>
 
               <div class="col-md-3">
-                <label for="birth_date" class="form-label">Birth Date</label>
-                <input
-                  type="date"
-                  class="form-control"
-                  v-model="form.patient.birth_date"
-                  id="birth_date"
-                />
-                <div class="invalid-feedback d-block">
-                  {{ form.errors["patient.birth_date"] }}
-                </div>
-              </div>
-
-              <div class="col-md-3">
                 <label for="gender" class="form-label">Gender</label>
                 <select
                   id="gender"
@@ -162,14 +150,65 @@ const submit = () => {
                 </div>
               </div>
 
+              <div class="col-md-3">
+                <label for="age" class="form-label">Age</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="form.patient.age"
+                  id="age"
+                />
+                <div class="invalid-feedback d-block">
+                  {{ form.errors["patient.age"] }}
+                </div>
+              </div>
+
               <div class="col-md-12">
-                <label for="department_id" class="form-label">Department</label>
-                <select
-                  id="department_id"
-                  class="form-select"
-                  v-model="form.department_id"
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    v-model="form.patient.is_priority"
+                    id="is_priority"
+                  />
+                  <label class="form-check-label" for="is_priority"
+                    >Is Priority</label
+                  >
+                </div>
+                <div class="invalid-feedback d-block">
+                  {{ form.errors["patient.is_priority"] }}
+                </div>
+              </div>
+
+              <div class="col-md-12" v-if="form.patient.is_priority">
+                <label for="priority_category" class="form-label"
+                  >Priority Category</label
                 >
-                  <option value="">Select a department</option>
+                <select
+                  id="priority_category"
+                  class="form-select"
+                  v-model="form.patient.priority_category"
+                >
+                  <option value="">Select</option>
+                  <option value="PWD">PWD</option>
+                  <option value="Senior Citizen">Senior Citizen</option>
+                  <option value="Pregnant Women">Pregnant Women</option>
+                </select>
+                <div class="invalid-feedback d-block">
+                  {{ form.errors["patient.priority_category"] }}
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <label for="final_department_id" class="form-label"
+                  >Final Destination Department</label
+                >
+                <select
+                  id="final_department_id"
+                  class="form-select"
+                  v-model="form.final_department_id"
+                >
+                  <option value="">Select final destination department</option>
                   <option
                     v-for="dept in props.departments"
                     :key="dept.id"
@@ -179,7 +218,7 @@ const submit = () => {
                   </option>
                 </select>
                 <div class="invalid-feedback d-block">
-                  {{ form.errors.department_id }}
+                  {{ form.errors.final_department_id }}
                 </div>
               </div>
 

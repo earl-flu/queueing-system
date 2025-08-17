@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
+use App\Models\DepartmentFlow;
 use App\Models\Patient;
 use App\Models\QueueItem;
 use App\Models\QueueTransfer;
@@ -18,10 +19,12 @@ class QueueController extends Controller
 
         $departmentId = $request->get('department', $user->isAdmin() ? '' : $user->departments->first()->id);
         $status = $request->get('status', 'all');
+        $queueNumber = $request->get('queueNumber');
+        $patientFullName = $request->get('patientFullname');
 
         $query = QueueItem::with(['patient', 'originalDepartment', 'currentDepartment.users', 'servedByUser'])
             ->today()
-            ->orderBy('created_at', 'desc');
+            ->orderBy('created_at', 'asc');
 
         if ($departmentId) {
             $query->where('current_department_id', $departmentId);
@@ -29,6 +32,18 @@ class QueueController extends Controller
 
         if ($status !== 'all') {
             $query->where('status', $status);
+        }
+
+        if ($queueNumber) {
+            $query->where('queue_number', 'like', '%' .  $queueNumber . '%');
+        }
+
+        if ($patientFullName) {
+            $query->whereHas('patient', function ($subQuery) use ($patientFullName) {
+                $subQuery->where('first_name', 'like', '%' . $patientFullName . '%')
+                    ->orWhere('last_name', 'like', '%' . $patientFullName . '%')
+                    ->orWhere('middle_name', 'like', '%' . $patientFullName . '%');
+            });
         }
 
         $queueItems = $query->paginate(20);
@@ -39,7 +54,9 @@ class QueueController extends Controller
             'departments' => $departments,
             'filters' => [
                 'department' => $departmentId,
-                'status' => $status
+                'status' => $status,
+                'patientFullname' => $patientFullName,
+                'queueNumber' => $queueNumber
             ],
             'user' => auth()->user()->load('departments')
         ]);
@@ -47,6 +64,10 @@ class QueueController extends Controller
 
     public function create()
     {
+        $user = auth()->user();
+        if (!$user->isAdmin() && !$user->isReception()) {
+            abort(403);
+        }
         $departments = Department::where('is_active', true)->get();
         return Inertia::render('Queue/Create', [
             'departments' => $departments
@@ -55,33 +76,53 @@ class QueueController extends Controller
 
     public function store(Request $request)
     {
+        $user = auth()->user();
+
+        // Check if user has access to reception or is admin
+        if (!$user->isAdmin() && !$user->isReception()) {
+            abort(403);
+        }
+
         $validated = $request->validate([
             'patient.first_name' => 'required|string|max:255',
             'patient.last_name' => 'required|string|max:255',
             'patient.middle_name' => 'nullable|string|max:255',
             'patient.phone' => 'nullable|string|max:20',
-            'patient.birth_date' => 'nullable|date',
+            'patient.age' => 'nullable|string|max:3',
+            'patient.is_priority' => 'boolean',
+            'patient.priority_category' => 'nullable|required_if:patient.is_priority,true|in:PWD,Senior Citizen,Pregnant Women',
             'patient.suffix' => 'nullable|in:Jr.,Sr.,II,III,IV,V',
             'patient.gender' => 'nullable|in:male,female',
-            'department_id' => 'required|exists:departments,id'
+            'final_department_id' => 'required|exists:departments,id'
         ]);
 
         DB::transaction(function () use ($validated) {
             $patient = Patient::create($validated['patient']);
-            $department = Department::findOrFail($validated['department_id']);
+            $finalDepartment = Department::findOrFail($validated['final_department_id']);
 
-            // Get next queue position for this department
-            $nextPosition = QueueItem::where('current_department_id', $department->id)
+            // Get the first department in the flow
+            $firstFlow = DepartmentFlow::getFirstDepartment($finalDepartment->id);
+
+            if (!$firstFlow) {
+                // No flow defined, use final department as first department
+                $firstDepartment = $finalDepartment;
+            } else {
+                $firstDepartment = $firstFlow->stepDepartment;
+            }
+
+            // Get next queue position for the first department
+            $nextPosition = QueueItem::where('current_department_id', $firstDepartment->id)
                 ->today()
                 ->max('queue_position') + 1;
 
             QueueItem::create([
-                'queue_number' => $department->getNextQueueNumber(),
+                'queue_number' => $finalDepartment->getNextQueueNumber(),
                 'patient_id' => $patient->id,
-                'original_department_id' => $department->id, // Store original department
-                'current_department_id' => $department->id,   // Currently in this department
+                'original_department_id' => $finalDepartment->id, // Store final destination
+                'current_department_id' => $firstDepartment->id,   // Currently in first department
                 'queue_position' => $nextPosition,
-                'status' => 'waiting'
+                'status' => 'waiting',
+                'waiting_started_at' => now()
             ]);
         });
 
@@ -94,16 +135,11 @@ class QueueController extends Controller
         $user = auth()->user();
 
         // Check if user has access to this department
-        if (!$user->isAdmin() && !$user->departments->contains($queueItem->current_department_id)) {
+        if ($user->isReception() && !$user->isAdmin() && !$user->departments->contains($queueItem->current_department_id)) {
             abort(403);
         }
 
-        $queueItem->update([
-            'status' => 'serving',
-            'served_by' => $user->id,
-            'called_at' => now(),
-            'served_at' => now()
-        ]);
+        $queueItem->startServing($user->id);
 
         return redirect()->back()
             ->with('success', 'Patient called for service.');
@@ -113,17 +149,43 @@ class QueueController extends Controller
     {
         $user = auth()->user();
 
-        if (!$user->isAdmin() && !$user->departments->contains($queueItem->current_department_id)) {
+        if ($user->isReception() && !$user->isAdmin() && !$user->departments->contains($queueItem->current_department_id)) {
             abort(403);
         }
 
-        $queueItem->update([
-            'status' => 'done',
-            'completed_at' => now()
-        ]);
+        $queueItem->completeService();
 
         return redirect()->back()
             ->with('success', 'Service completed.');
+    }
+
+    public function completeAndTransfer(QueueItem $queueItem)
+    {
+        $user = auth()->user();
+
+        if ($user->isReception() && !$user->isAdmin() && !$user->departments->contains($queueItem->current_department_id)) {
+            abort(403);
+        }
+
+        // Complete the current service
+        $queueItem->completeService();
+
+        // Check if there's a next department in the flow
+        if ($queueItem->isFinalDepartment()) {
+            return redirect()->back()
+                ->with('success', 'Service completed. Patient has finished all required steps.');
+        }
+
+        // Transfer to next department
+        $transferred = $queueItem->transferToNextDepartment();
+
+        if ($transferred) {
+            return redirect()->back()
+                ->with('success', 'Service completed and patient transferred to next department.');
+        } else {
+            return redirect()->back()
+                ->with('success', 'Service completed.');
+        }
     }
 
     public function transfer(Request $request, QueueItem $queueItem)
@@ -135,7 +197,7 @@ class QueueController extends Controller
 
         $user = auth()->user();
 
-        if (!$user->isAdmin() && !$user->departments->contains($queueItem->current_department_id)) {
+        if ($user->isReception() && !$user->isAdmin() && !$user->departments->contains($queueItem->current_department_id)) {
             abort(403);
         }
 
@@ -193,6 +255,12 @@ class QueueController extends Controller
             ->whereIn('status', ['waiting', 'serving'])
             ->orderBy('queue_position')
             ->get();
+
+        // Add flow information to each queue item
+        $queueItems->each(function ($item) {
+            $item->is_final_department = $item->isFinalDepartment();
+            $item->has_next_department = !$item->isFinalDepartment() && $item->getNextDepartment() !== null;
+        });
 
         return Inertia::render('Queue/Department', [
             'department' => $department,

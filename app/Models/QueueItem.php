@@ -21,13 +21,19 @@ class QueueItem extends Model
         'called_at',
         'served_at',
         'completed_at',
-        'notes'
+        'notes',
+        'waiting_started_at',
+        'serving_started_at',
+        'waiting_duration_seconds',
+        'serving_duration_seconds'
     ];
 
     protected $casts = [
         'called_at' => 'datetime',
         'served_at' => 'datetime',
-        'completed_at' => 'datetime'
+        'completed_at' => 'datetime',
+        'waiting_started_at' => 'datetime',
+        'serving_started_at' => 'datetime'
     ];
 
     public function patient(): BelongsTo
@@ -79,5 +85,100 @@ class QueueItem extends Model
     public function scopeInDepartment($query, $departmentId)
     {
         return $query->where('current_department_id', $departmentId);
+    }
+
+    /**
+     * Start waiting time tracking
+     */
+    public function startWaiting()
+    {
+        $this->update([
+            'waiting_started_at' => now(),
+            'status' => 'waiting'
+        ]);
+    }
+
+    /**
+     * Start serving time tracking
+     */
+    public function startServing($userId = null)
+    {
+        $this->update([
+            'serving_started_at' => now(),
+            'status' => 'serving',
+            'served_by' => $userId,
+            'called_at' => now(),
+            'served_at' => now()
+        ]);
+    }
+
+    /**
+     * Complete service and calculate durations
+     */
+    public function completeService()
+    {
+        $waitingDuration = $this->waiting_started_at ? now()->diffInSeconds($this->waiting_started_at) : 0;
+        $servingDuration = $this->serving_started_at ? now()->diffInSeconds($this->serving_started_at) : 0;
+
+        $this->update([
+            'status' => 'done',
+            'completed_at' => now(),
+            'waiting_duration_seconds' => $waitingDuration,
+            'serving_duration_seconds' => $servingDuration
+        ]);
+    }
+
+    /**
+     * Get the next department in the flow
+     */
+    public function getNextDepartment()
+    {
+        return DepartmentFlow::getNextDepartment($this->original_department_id, $this->current_department_id);
+    }
+
+    /**
+     * Check if this is the final department in the flow
+     */
+    public function isFinalDepartment()
+    {
+        return DepartmentFlow::isFinalDepartment($this->original_department_id, $this->current_department_id);
+    }
+
+    /**
+     * Transfer to next department in the flow
+     */
+    public function transferToNextDepartment()
+    {
+        $nextFlow = $this->getNextDepartment();
+
+        if (!$nextFlow) {
+            return false; // No next department, patient is done
+        }
+
+        $nextDepartment = $nextFlow->stepDepartment;
+
+        // Get next queue position in target department
+        $nextPosition = QueueItem::where('current_department_id', $nextDepartment->id)
+            ->today()
+            ->max('queue_position') + 1;
+
+        // Create new queue item for next department
+        QueueItem::create([
+            'queue_number' => $this->queue_number, // Keep same queue number
+            'patient_id' => $this->patient_id,
+            'original_department_id' => $this->original_department_id, // Keep original
+            'current_department_id' => $nextDepartment->id,
+            'queue_position' => $nextPosition,
+            'status' => 'waiting',
+            'waiting_started_at' => now()
+        ]);
+
+        // Mark current queue item as transferred
+        $this->update([
+            'status' => 'transferred',
+            'completed_at' => now()
+        ]);
+
+        return true;
     }
 }
