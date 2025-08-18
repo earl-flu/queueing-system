@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('age')->nullable();
             $table->boolean('is_priority')->default(0);
-            $table->enum('priority_category', ['PWD', 'Senior Citizen', 'Pregnant Women'])->nullable();
+            $table->enum('priority_category', ['PWD', 'Senior Citizen', 'Pregnant Women', 'Fever', 'Possible TB'])->nullable();
             $table->enum('gender', ['male', 'female'])->nullable();
             $table->timestamps();
         });

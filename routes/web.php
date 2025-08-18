@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\OfficeController;
 use App\Http\Controllers\PaperController;
 use App\Http\Controllers\PaperDashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QueueController;
 use App\Http\Controllers\ThemeController;
+use App\Http\Controllers\WindowController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -31,7 +33,7 @@ Route::get('/test', function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -54,6 +56,15 @@ Route::middleware('auth')->group(function () {
 
     // Department management routes
     Route::resource('departments', DepartmentController::class);
+
+    // Windows
+    Route::prefix('windows')->name('windows.')->group(function () {
+        Route::get('/', [WindowController::class, 'index'])->name('index');
+        Route::get('/{window}', [WindowController::class, 'show'])->name('show');
+        Route::get('/{window}/data', [WindowController::class, 'data'])->name('data');
+        Route::get('/{window}/edit', [WindowController::class, 'edit'])->name('edit')->middleware('admin');
+        Route::put('/{window}', [WindowController::class, 'update'])->name('update')->middleware('admin');
+    });
 });
 
 

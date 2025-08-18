@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\Department;
+use App\Models\Window;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -97,5 +98,27 @@ class DatabaseSeeder extends Seeder
             $billingDept->id,
             $labDept->id
         ]);
+
+        // Seed Windows
+        $window1 = Window::create(['name' => 'Window 1', 'slug' => 'window-1']);
+        $window2 = Window::create(['name' => 'Window 2', 'slug' => 'window-2']);
+
+        // Attach some departments with positions
+        $billing = Department::where('code', 'BILL')->first();
+        $lab = Department::where('code', 'LAB')->first();
+        if ($billing && $lab && $dentalDept) {
+            $window1->departments()->sync([
+                $billing->id => ['position' => 0],
+                $lab->id => ['position' => 1],
+                $dentalDept->id => ['position' => 2],
+            ]);
+        }
+
+        if ($obDept && $dentalDept) {
+            $window2->departments()->sync([
+                $obDept->id => ['position' => 0],
+                $dentalDept->id => ['position' => 1],
+            ]);
+        }
     }
 }

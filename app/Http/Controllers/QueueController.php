@@ -90,7 +90,7 @@ class QueueController extends Controller
             'patient.phone' => 'nullable|string|max:20',
             'patient.age' => 'nullable|string|max:3',
             'patient.is_priority' => 'boolean',
-            'patient.priority_category' => 'nullable|required_if:patient.is_priority,true|in:PWD,Senior Citizen,Pregnant Women',
+            'patient.priority_category' => 'nullable|required_if:patient.is_priority,true|in:PWD,Senior Citizen,Pregnant Women,Fever,Possible TB',
             'patient.suffix' => 'nullable|in:Jr.,Sr.,II,III,IV,V',
             'patient.gender' => 'nullable|in:male,female',
             'final_department_id' => 'required|exists:departments,id'

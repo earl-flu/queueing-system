@@ -190,9 +190,11 @@ const submit = () => {
                   v-model="form.patient.priority_category"
                 >
                   <option value="">Select</option>
+                  <option value="Fever">Fever</option>
+                  <option value="Possible TB">Possible TB</option>
+                  <option value="Pregnant Women">Pregnant Women</option>
                   <option value="PWD">PWD</option>
                   <option value="Senior Citizen">Senior Citizen</option>
-                  <option value="Pregnant Women">Pregnant Women</option>
                 </select>
                 <div class="invalid-feedback d-block">
                   {{ form.errors["patient.priority_category"] }}
