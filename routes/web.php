@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\DepartmentFlowController;
 use App\Http\Controllers\OfficeController;
 use App\Http\Controllers\PaperController;
 use App\Http\Controllers\PaperDashboardController;
@@ -56,6 +57,11 @@ Route::middleware('auth')->group(function () {
 
     // Department management routes
     Route::resource('departments', DepartmentController::class);
+
+    // Department flow routes
+    Route::resource('department-flows', DepartmentFlowController::class)->parameters([
+        'department-flows' => 'department_flow'
+    ]);
 
     // Windows
     Route::prefix('windows')->name('windows.')->group(function () {

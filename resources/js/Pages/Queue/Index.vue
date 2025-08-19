@@ -173,13 +173,13 @@
                         >
                           Call
                         </button>
-                        <button
+                        <!-- <button
                           v-if="item.status === 'serving'"
                           @click="completeService(item.id)"
                           class="btn btn-primary btn-sm"
                         >
                           Complete
-                        </button>
+                        </button> -->
                         <Link
                           :href="
                             route(

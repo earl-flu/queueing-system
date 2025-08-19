@@ -23,7 +23,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
       <div>
         <h4 class="mb-0">{{ department.name }} Queue</h4>
-        <p class="text-muted mb-0">
+        <p class="mb-0">
           Room: {{ department.room || "N/A" }} | Today's Count: {{ todayCount }}
         </p>
       </div>
@@ -48,7 +48,7 @@
             <h5 class="card-title mb-4">Current Queue</h5>
 
             <div v-if="queueItems.length === 0" class="text-center py-5">
-              <p class="text-muted">No patients in queue</p>
+              <p class="">No patients in queue</p>
             </div>
 
             <div v-else class="row">
@@ -79,15 +79,18 @@
 
                       <div class="mb-3">
                         <h6 class="card-subtitle mb-1">
+                          {{ item.patient.last_name }}
                           {{ item.patient.first_name }}
+                          {{ item.patient.middle_name }}
+                          {{ item.patient.suffix }}
                         </h6>
                         <p
                           v-if="item.patient.phone"
-                          class="card-text text-muted small mb-1"
+                          class="card-text small mb-1"
                         >
                           {{ item.patient.phone }}
                         </p>
-                        <small class="text-muted"
+                        <small class=""
                           >Position: {{ item.queue_position }}</small
                         >
                       </div>
@@ -117,7 +120,7 @@
                         >
                           Next
                         </button>
-                        <button
+                        <!-- <button
                           v-if="
                             item.status === 'waiting' ||
                             item.status === 'serving'
@@ -126,7 +129,7 @@
                           class="btn btn-warning btn-sm flex-1"
                         >
                           Transfer
-                        </button>
+                        </button> -->
                       </div>
                     </div>
                   </div>
@@ -159,17 +162,28 @@
 
                       <div class="mb-3">
                         <h6 class="card-subtitle mb-1">
+                          {{ item.patient.last_name }}
                           {{ item.patient.first_name }}
+                          {{ item.patient.middle_name }}
+                          {{ item.patient.suffix }}
                         </h6>
                         <p
                           v-if="item.patient.phone"
-                          class="card-text text-muted small mb-1"
+                          class="card-text small mb-1"
                         >
                           {{ item.patient.phone }}
                         </p>
-                        <small class="text-muted"
+                        <small class="card-subtitle card-text"
                           >Position: {{ item.queue_position }}</small
                         >
+                        <p
+                          v-if="item.patient.priority_reason.description"
+                          class="card-text small mb-1 mt-3 text-white"
+                        >
+                          <span class="px-2 py-1 rounded-md bg-red-500">
+                            {{ item.patient.priority_reason.description }}
+                          </span>
+                        </p>
                       </div>
                       <div class="gap-2 flex">
                         <button
@@ -197,7 +211,7 @@
                         >
                           Next
                         </button>
-                        <button
+                        <!-- <button
                           v-if="
                             item.status === 'waiting' ||
                             item.status === 'serving'
@@ -206,7 +220,7 @@
                           class="btn btn-warning btn-sm flex-1"
                         >
                           Transfer
-                        </button>
+                        </button> -->
                       </div>
                     </div>
                   </div>
@@ -239,15 +253,18 @@
 
                       <div class="mb-3">
                         <h6 class="card-subtitle mb-1">
+                          {{ item.patient.last_name }}
                           {{ item.patient.first_name }}
+                          {{ item.patient.middle_name }}
+                          {{ item.patient.suffix }}
                         </h6>
                         <p
                           v-if="item.patient.phone"
-                          class="card-text text-muted small mb-1"
+                          class="card-text small mb-1"
                         >
                           {{ item.patient.phone }}
                         </p>
-                        <small class="text-muted"
+                        <small class=""
                           >Position: {{ item.queue_position }}</small
                         >
                       </div>
@@ -277,7 +294,7 @@
                         >
                           Next
                         </button>
-                        <button
+                        <!-- <button
                           v-if="
                             item.status === 'waiting' ||
                             item.status === 'serving'
@@ -286,7 +303,7 @@
                           class="btn btn-warning btn-sm flex-1"
                         >
                           Transfer
-                        </button>
+                        </button> -->
                       </div>
                     </div>
                   </div>

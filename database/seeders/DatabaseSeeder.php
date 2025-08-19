@@ -68,6 +68,7 @@ class DatabaseSeeder extends Seeder
         // Call the DepartmentFlowSeeder
         $this->call([
             DepartmentFlowSeeder::class,
+            PriorityReasonsTableSeeder::class,
         ]);
 
         // Assign staff to departments

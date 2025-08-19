@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('middle_name')->nullable();
             $table->string('last_name');
+            $table->foreignId('priority_reason_id')->nullable()->constrained();
             $table->enum('suffix', ['Jr.', 'Sr.', 'II', 'III', 'IV', 'V'])->nullable();
             $table->string('phone')->nullable();
             $table->string('age')->nullable();

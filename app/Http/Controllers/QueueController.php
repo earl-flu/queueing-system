@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Models\DepartmentFlow;
 use App\Models\Patient;
+use App\Models\PriorityReason;
 use App\Models\QueueItem;
 use App\Models\QueueTransfer;
 use Illuminate\Http\Request;
@@ -69,8 +70,10 @@ class QueueController extends Controller
             abort(403);
         }
         $departments = Department::where('is_active', true)->get();
+        $priority_reasons = PriorityReason::where('is_active', true)->get();
         return Inertia::render('Queue/Create', [
-            'departments' => $departments
+            'departments' => $departments,
+            'priority_reasons' => $priority_reasons,
         ]);
     }
 
@@ -90,7 +93,7 @@ class QueueController extends Controller
             'patient.phone' => 'nullable|string|max:20',
             'patient.age' => 'nullable|string|max:3',
             'patient.is_priority' => 'boolean',
-            'patient.priority_category' => 'nullable|required_if:patient.is_priority,true|in:PWD,Senior Citizen,Pregnant Women,Fever,Possible TB',
+            'patient.priority_reason_id' => 'nullable|required_if:patient.is_priority,true|exists:priority_reasons,id',
             'patient.suffix' => 'nullable|in:Jr.,Sr.,II,III,IV,V',
             'patient.gender' => 'nullable|in:male,female',
             'final_department_id' => 'required|exists:departments,id'
@@ -249,7 +252,7 @@ class QueueController extends Controller
             abort(403);
         }
 
-        $queueItems = QueueItem::with(['patient', 'originalDepartment', 'currentDepartment'])
+        $queueItems = QueueItem::with(['patient', 'originalDepartment', 'currentDepartment', 'patient.priorityReason'])
             ->where('current_department_id', $departmentId)
             ->today()
             ->whereIn('status', ['waiting', 'serving'])

@@ -121,27 +121,40 @@ onBeforeUnmount(() => {
             <div class="parent-icon">
               <i class="material-icons-outlined">inventory_2</i>
             </div>
-            <div class="menu-title">Office</div>
+            <div class="menu-title">Departments</div>
           </a>
           <ul>
-            <!-- <li :class="isActive(route().current('offices.create'))">
-              <Link :href="route('offices.create')"
-                ><i class="material-icons-outlined">arrow_right</i>Add
-                Office</Link
-              >
-            </li> -->
-            <!-- <li
+            <li
               :class="
                 isActive(
-                  route().current('offices.index') ||
-                    route().current('offices.edit')
+                  route().current('departments.index') ||
+                    route().current('departments.edit')
                 )
               "
             >
-              <Link :href="route('offices.index')"
-                ><i class="material-icons-outlined">arrow_right</i>Offices</Link
+              <Link :href="route('departments.index')"
+                ><i class="material-icons-outlined">arrow_right</i>All</Link
               >
-            </li> -->
+            </li>
+            <li :class="isActive(route().current('departments.create'))">
+              <Link :href="route('departments.create')"
+                ><i class="material-icons-outlined">arrow_right</i>Add
+                Department</Link
+              >
+            </li>
+            <li
+              :class="
+                isActive(
+                  route().current('department-flows.index') ||
+                    route().current('department-flows.edit')
+                )
+              "
+            >
+              <Link :href="route('department-flows.index')"
+                ><i class="material-icons-outlined">arrow_right</i>Department
+                Flows</Link
+              >
+            </li>
           </ul>
         </li>
 
@@ -150,14 +163,14 @@ onBeforeUnmount(() => {
             <div class="parent-icon">
               <i class="material-icons-outlined">inventory_2</i>
             </div>
-            <div class="menu-title">Tags</div>
+            <div class="menu-title">Screens</div>
           </a>
           <ul>
-            <!-- <li :class="isActive(route().current('tags.create'))">
-              <Link :href="route('tags.create')"
-                ><i class="material-icons-outlined">arrow_right</i>Add Tag</Link
+            <li :class="isActive(route().current('windows.index'))">
+              <Link :href="route('windows.index')"
+                ><i class="material-icons-outlined">arrow_right</i>All</Link
               >
-            </li> -->
+            </li>
             <!-- <li
               :class="
                 isActive(

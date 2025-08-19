@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Patient extends Model
 {
@@ -18,7 +19,7 @@ class Patient extends Model
         'age',
         'gender',
         'is_priority',
-        'priority_category'
+        'priority_reason_id'
     ];
 
     protected $casts = [
@@ -33,5 +34,10 @@ class Patient extends Model
     public function getFullNameAttribute(): string
     {
         return $this->first_name . ' ' . $this->last_name;
+    }
+
+    public function priorityReason(): BelongsTo
+    {
+        return $this->belongsTo(PriorityReason::class);
     }
 }

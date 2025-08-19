@@ -16,7 +16,7 @@ class DepartmentController extends Controller
 
     public function index()
     {
-        $departments = Department::with(['users', 'queueItems' => function ($query) {
+        $departments = Department::with(['users', 'currentQueueItems', 'activeQueue' => function ($query) {
             $query->today()->whereIn('status', ['waiting', 'serving']);
         }])->get();
 
@@ -40,6 +40,7 @@ class DepartmentController extends Controller
             'name' => 'required|string|max:255|unique:departments',
             'code' => 'required|string|max:10|unique:departments',
             'room' => 'nullable|string|max:50',
+            'is_active' => 'boolean',
             'users' => 'array',
             'users.*' => 'exists:users,id'
         ]);
@@ -47,7 +48,8 @@ class DepartmentController extends Controller
         $department = Department::create([
             'name' => $validated['name'],
             'code' => strtoupper($validated['code']),
-            'room' => $validated['room']
+            'room' => $validated['room'],
+            'is_active' => $validated['is_active'] ?? true
         ]);
 
         if (isset($validated['users'])) {

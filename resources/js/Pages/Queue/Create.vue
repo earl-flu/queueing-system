@@ -8,6 +8,10 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
+  priority_reasons: {
+    type: Array,
+    default: () => [],
+  },
 });
 
 const form = useForm({
@@ -19,7 +23,7 @@ const form = useForm({
     phone: "",
     age: "",
     gender: "",
-    priority_category: "",
+    priority_reason_id: "",
     is_priority: false,
   },
   final_department_id: "",
@@ -181,23 +185,25 @@ const submit = () => {
               </div>
 
               <div class="col-md-12" v-if="form.patient.is_priority">
-                <label for="priority_category" class="form-label"
+                <label for="priority_reason_id" class="form-label"
                   >Priority Category</label
                 >
                 <select
-                  id="priority_category"
+                  id="priority_reason_id"
                   class="form-select"
-                  v-model="form.patient.priority_category"
+                  v-model="form.patient.priority_reason_id"
                 >
                   <option value="">Select</option>
-                  <option value="Fever">Fever</option>
-                  <option value="Possible TB">Possible TB</option>
-                  <option value="Pregnant Women">Pregnant Women</option>
-                  <option value="PWD">PWD</option>
-                  <option value="Senior Citizen">Senior Citizen</option>
+                  <option
+                    v-for="reason in props.priority_reasons"
+                    :key="reason.id"
+                    :value="reason.id"
+                  >
+                    {{ reason.description }}
+                  </option>
                 </select>
                 <div class="invalid-feedback d-block">
-                  {{ form.errors["patient.priority_category"] }}
+                  {{ form.errors["patient.priority_reason_id"] }}
                 </div>
               </div>
 
