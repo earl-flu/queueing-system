@@ -60,7 +60,18 @@
                     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
                   "
                 >
-                  {{ getNowServing(dept.id) ?? "—" }}
+                  <div v-if="!getNowServing(dept.id)">-</div>
+                  <div v-else>
+                    <li
+                      class="list-none"
+                      v-for="serving in getNowServing(dept.id)"
+                      :key="serving.queue_number"
+                    >
+                      {{ serving.queue_number }}
+                    </li>
+                  </div>
+                  <!-- {{ getNowServing(dept.id) ? getNowServing(dept.id) : "—" }} -->
+                  <!-- {{ getNowServing(dept.id) ?? "—" }} -->
                 </div>
               </div>
               <div>
@@ -141,7 +152,9 @@ const getNowServing = (departmentId) => {
   const list = (dataByDepartment.value[departmentId] || []).filter(
     (i) => i.status === "serving"
   );
-  return list.length ? list[0].queue_number : null;
+  return list.length ? list.slice(0, 2) : null;
+  // console.log(test);
+  // return list.length ? list[0].queue_number : null;
 };
 
 const getUpNext = (departmentId) => {
