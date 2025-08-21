@@ -181,4 +181,31 @@ class QueueItem extends Model
 
         return true;
     }
+
+    /**
+     * Mark the queue item as no show and finalize durations
+     */
+    public function markNoShow()
+    {
+        $waitingDuration = $this->waiting_started_at ? now()->diffInSeconds($this->waiting_started_at) : 0;
+        $servingDuration = $this->serving_started_at ? now()->diffInSeconds($this->serving_started_at) : 0;
+
+        $this->update([
+            'status' => 'no_show',
+            'completed_at' => now(),
+            'waiting_duration_seconds' => $waitingDuration,
+            'serving_duration_seconds' => $servingDuration
+        ]);
+    }
+
+    public function isComingTo($targetDept, $currentDept)
+    {
+        //Get the target Department Flow
+        //[step: 1 = Registration, step:2 = MSS, step:3 Billing,]
+
+        //Get the current department        
+        // MSS = 2
+
+        // Get the patients where current department in [Registration, MSS] and is waiting then count
+    }
 }

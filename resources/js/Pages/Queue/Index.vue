@@ -80,6 +80,7 @@
                   <option value="serving">Serving</option>
                   <option value="done">Done</option>
                   <option value="transferred">Transferred</option>
+                  <option value="no_show">No Show</option>
                 </select>
               </div>
               <div class="col-md-4 d-flex align-items-end mt-2">
@@ -148,7 +149,7 @@
                         :class="getStatusBadgeClass(item.status)"
                         class="badge"
                       >
-                        {{ item.status.toUpperCase() }}
+                        {{ getStatusLabel(item.status) }}
                       </span>
                     </td>
                     <td class="text-muted">
@@ -166,13 +167,13 @@
                         role="group"
                         v-if="hasAccessToDepartment(item.current_department)"
                       >
-                        <button
+                        <!-- <button
                           v-if="item.status === 'waiting'"
                           @click="callPatient(item.id)"
                           class="btn btn-success btn-sm"
                         >
                           Call
-                        </button>
+                        </button> -->
                         <!-- <button
                           v-if="item.status === 'serving'"
                           @click="completeService(item.id)"
@@ -309,8 +310,20 @@ const getStatusBadgeClass = (status) => {
     serving: "bg-success text-white",
     done: "bg-secondary text-white",
     transferred: "bg-info text-white",
+    no_show: "bg-danger text-white",
   };
   return classes[status] || "bg-secondary text-white";
+};
+
+const getStatusLabel = (status) => {
+  const map = {
+    waiting: "WAITING",
+    serving: "SERVING",
+    done: "DONE",
+    transferred: "TRANSFERRED",
+    no_show: "NO SHOW",
+  };
+  return map[status] || status.toUpperCase();
 };
 
 const formatTime = (datetime) => {

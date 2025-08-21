@@ -26,6 +26,7 @@ class Department extends Model
         return $this->belongsToMany(User::class, 'department_users');
     }
 
+
     public function currentQueueItems(): HasMany
     {
         return $this->hasMany(QueueItem::class, 'current_department_id');
@@ -35,6 +36,8 @@ class Department extends Model
     {
         return $this->hasMany(QueueItem::class, 'original_department_id');
     }
+
+
     public function activeQueue(): HasMany
     {
         return $this->hasMany(QueueItem::class, 'current_department_id')
@@ -84,10 +87,42 @@ class Department extends Model
     }
     public function getTodayQueueCount(): int
     {
-        $counter = $this->dailyCounters()
-            ->where('date', today())
-            ->first();
+        $count = $this->currentQueueItems()
+            ->whereDate('created_at', today())
+            ->count();
 
-        return $counter ? $counter->counter : 0;
+        return $count ? $count : 0;
+    }
+
+    public function getTodayComingQueueCount(): int // In other queue count
+    {
+
+        $count = $this->originalQueueItems()
+            ->whereDate('created_at', today())
+            ->where('current_department_id', '!=', 'original_department_id')
+            ->count();
+
+        return $count ? $count : 0;
+    }
+
+    public function getTodayServedQueueCount(): int
+    {
+        $count = $this->currentQueueItems()
+            ->whereDate('created_at', today())
+            ->whereIn('status', ['transferred', 'done'])
+            ->whereNotNull('completed_at')
+            ->count();
+
+        return $count ? $count : 0;
+    }
+
+    public function getTodayWaitingQueueCount(): int
+    {
+        $count = $this->currentQueueItems()
+            ->whereDate('created_at', today())
+            ->where('status', 'waiting')
+            ->count();
+
+        return $count ? $count : 0;
     }
 }

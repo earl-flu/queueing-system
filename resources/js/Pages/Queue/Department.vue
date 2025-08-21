@@ -24,7 +24,10 @@
       <div>
         <h4 class="mb-0">{{ department.name }} Queue</h4>
         <p class="mb-0">
-          Room: {{ department.room || "N/A" }} | Today's Count: {{ todayCount }}
+          Room: {{ department.room || "N/A" }} | Served:
+          {{ todayServedCount }}
+          | Waiting: {{ todayWaitingCount }}
+          <!-- | Coming: {{ todayComingCount }} -->
         </p>
       </div>
       <div class="d-flex gap-2">
@@ -61,78 +64,8 @@
                   :key="item.id"
                   class="mb-3"
                 >
-                  <div class="card">
-                    <div class="card-body">
-                      <div
-                        class="d-flex justify-content-between align-items-start mb-3"
-                      >
-                        <h3 class="card-title text-primary mb-0 font-bold">
-                          {{ item.queue_number }}
-                        </h3>
-                        <span
-                          :class="getStatusBadgeClass(item.status)"
-                          class="badge"
-                        >
-                          {{ item.status.toUpperCase() }}
-                        </span>
-                      </div>
-
-                      <div class="mb-3">
-                        <h6 class="card-subtitle mb-1">
-                          {{ item.patient.last_name }}
-                          {{ item.patient.first_name }}
-                          {{ item.patient.middle_name }}
-                          {{ item.patient.suffix }}
-                        </h6>
-                        <p
-                          v-if="item.patient.phone"
-                          class="card-text small mb-1"
-                        >
-                          {{ item.patient.phone }}
-                        </p>
-                        <small class=""
-                          >Position: {{ item.queue_position }}</small
-                        >
-                      </div>
-                      <div class="gap-2 flex">
-                        <button
-                          v-if="item.status === 'waiting'"
-                          @click="callPatient(item.id)"
-                          class="btn btn-success btn-sm flex-1"
-                        >
-                          Call
-                        </button>
-                        <button
-                          v-if="
-                            item.status === 'serving' && isFinalDepartment(item)
-                          "
-                          @click="completeService(item.id)"
-                          class="btn btn-primary btn-sm flex-1"
-                        >
-                          Complete
-                        </button>
-                        <button
-                          v-if="
-                            item.status === 'serving' && hasNextDepartment(item)
-                          "
-                          @click="completeAndTransfer(item.id)"
-                          class="btn btn-info btn-sm flex-1"
-                        >
-                          Next
-                        </button>
-                        <!-- <button
-                          v-if="
-                            item.status === 'waiting' ||
-                            item.status === 'serving'
-                          "
-                          @click="openTransferModal(item)"
-                          class="btn btn-warning btn-sm flex-1"
-                        >
-                          Transfer
-                        </button> -->
-                      </div>
-                    </div>
-                  </div>
+                  <!-- COMPONENT HERE -->
+                  <ServingCard :item="item" />
                 </div>
               </div>
               <div class="col-md-4 border-x-4">
@@ -156,12 +89,12 @@
                           :class="getStatusBadgeClass(item.status)"
                           class="badge"
                         >
-                          {{ item.status.toUpperCase() }}
+                          {{ getStatusLabel(item.status) }}
                         </span>
                       </div>
 
                       <div class="mb-3">
-                        <h6 class="card-subtitle mb-1">
+                        <h6 class="card-subtitle mb-1 uppercase">
                           {{ item.patient.last_name }}
                           {{ item.patient.first_name }}
                           {{ item.patient.middle_name }}
@@ -193,6 +126,7 @@
                         >
                           Call
                         </button>
+
                         <button
                           v-if="
                             item.status === 'serving' && isFinalDepartment(item)
@@ -247,12 +181,12 @@
                           :class="getStatusBadgeClass(item.status)"
                           class="badge"
                         >
-                          {{ item.status.toUpperCase() }}
+                          {{ getStatusLabel(item.status) }}
                         </span>
                       </div>
 
                       <div class="mb-3">
-                        <h6 class="card-subtitle mb-1">
+                        <h6 class="card-subtitle mb-1 uppercase">
                           {{ item.patient.last_name }}
                           {{ item.patient.first_name }}
                           {{ item.patient.middle_name }}
@@ -424,6 +358,8 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import Modal from "@/Components/Modal.vue";
+import ServingCard from "@/Components/ServingCard.vue";
+import { useElapsedTime } from "@/Composables/useElapsedTime";
 import { Head, Link, router, useForm } from "@inertiajs/vue3";
 import { ref, computed } from "vue";
 
@@ -432,6 +368,9 @@ const props = defineProps({
   queueItems: Array,
   canTransfer: Array,
   todayCount: Number,
+  todayComingCount: Number,
+  todayServedCount: Number,
+  todayWaitingCount: Number,
 });
 
 const showTransferModal = ref(false);
@@ -545,7 +484,35 @@ const getStatusBadgeClass = (status) => {
     serving: "bg-success text-white",
     done: "bg-secondary text-white",
     transferred: "bg-info text-white",
+    no_show: "bg-danger text-white",
   };
   return classes[status] || "bg-secondary text-white";
+};
+
+const getStatusLabel = (status) => {
+  const map = {
+    waiting: "WAITING",
+    serving: "SERVING",
+    done: "DONE",
+    transferred: "TRANSFERRED",
+    no_show: "NO SHOW",
+  };
+  return map[status] || status.toUpperCase();
+};
+
+const markNoShow = (id) => {
+  if (!confirm("Mark this patient as No Show?")) {
+    return;
+  }
+  router.post(
+    route("queue.no-show", id),
+    {},
+    {
+      preserveScroll: true,
+      onSuccess: () => {
+        router.reload({ only: ["queueItems"] });
+      },
+    }
+  );
 };
 </script>

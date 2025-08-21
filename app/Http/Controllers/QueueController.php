@@ -191,6 +191,19 @@ class QueueController extends Controller
         }
     }
 
+    public function noShow(QueueItem $queueItem)
+    {
+        $user = auth()->user();
+
+        if ($user->isReception() && !$user->isAdmin() && !$user->departments->contains($queueItem->current_department_id)) {
+            abort(403);
+        }
+
+        $queueItem->markNoShow();
+
+        return redirect()->back()->with('success', 'Marked as no show.');
+    }
+
     public function transfer(Request $request, QueueItem $queueItem)
     {
         $validated = $request->validate([
@@ -271,7 +284,10 @@ class QueueController extends Controller
             'canTransfer' => Department::where('is_active', true)
                 ->where('id', '!=', $departmentId)
                 ->get(),
-            'todayCount' => $department->getTodayQueueCount()
+            'todayCount' => $department->getTodayQueueCount(),
+            'todayServedCount' => $department->getTodayServedQueueCount(),
+            'todayComingCount' => $department->getTodayComingQueueCount(),
+            'todayWaitingCount' => $department->getTodayWaitingQueueCount(),
         ]);
     }
 

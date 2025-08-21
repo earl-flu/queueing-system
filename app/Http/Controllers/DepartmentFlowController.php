@@ -78,7 +78,8 @@ class DepartmentFlowController extends Controller
     {
         $validated = $request->validate([
             'final_department_id' => 'required|exists:departments,id',
-            'step_department_id' => 'required|different:final_department_id|exists:departments,id',
+            // 'step_department_id' => 'required|different:final_department_id|exists:departments,id',
+            'step_department_id' => 'required|exists:departments,id',
             'step_order' => 'required|integer|min:1',
             'is_required' => 'boolean',
         ]);
