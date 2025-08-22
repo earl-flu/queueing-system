@@ -59,6 +59,17 @@
               />
               <InputError class="mt-1" :message="form.errors.room" />
             </div>
+            <div class="col-md-6">
+              <InputLabel for="description" value="Description (optional)" />
+              <TextInput
+                id="description"
+                v-model="form.description"
+                type="text"
+                class="mt-1 block w-full"
+                autocomplete="off"
+              />
+              <InputError class="mt-1" :message="form.errors.description" />
+            </div>
 
             <div class="col-md-6">
               <InputLabel for="users" value="Assigned Staff (optional)" />
@@ -117,6 +128,7 @@ const form = useForm({
   name: props.department?.name || "",
   code: props.department?.code || "",
   room: props.department?.room || "",
+  description: props.department?.description || "",
   users: (props.department?.users || []).map((u) => u.id),
   is_active: props.department?.is_active ?? true,
 });

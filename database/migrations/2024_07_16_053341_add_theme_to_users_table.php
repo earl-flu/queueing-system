@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('theme')->default('blue-theme');
+            $table->string('theme')->default('light');
         });
     }
 

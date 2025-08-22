@@ -16,13 +16,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-
-        // $this->call([
-        //     UserSeeder::class,
-        //     OfficeSeeder::class,
-        //     TagSeeder::class
-        // ]);
-        // Create admin user
         $admin = User::create([
             'name' => 'Admin User',
             'email' => 'admin@opd.com',
@@ -33,93 +26,96 @@ class DatabaseSeeder extends Seeder
 
         // Create departments
         $departments = [
-            ['name' => 'Dental', 'code' => 'DEN', 'room' => 'Room 1'],
-            ['name' => 'Obstetrics', 'code' => 'OB', 'room' => 'Room 2'],
+            ['name' => 'Registration', 'code' => 'REG', 'room' => 'Room 1'],
+            ['name' => 'MSS', 'code' => 'MSS', 'room' => 'Room 1'],
+            ['name' => 'Philhealth', 'code' => 'PHIC', 'room' => 'Room 1'],
             ['name' => 'Billing', 'code' => 'BILL', 'room' => 'Room 3'],
-            ['name' => 'Laboratory', 'code' => 'LAB', 'room' => 'Room 4'],
-            ['name' => 'Radiology', 'code' => 'RAD', 'room' => 'Room 5'],
-            ['name' => 'Pharmacy', 'code' => 'PHAR', 'room' => 'Room 6'],
+            ['name' => 'Animal Bite - 1', 'code' => 'AB1', 'room' => 'Room 8', 'description' => 'Animal Bite First Injection'],
+            ['name' => 'Animal Bite - 2', 'code' => 'AB2', 'room' => 'Room 8', 'description' => 'Animal Bite – Follow-up Injection (2nd or Later)'],
+            ['name' => 'TB DOTS', 'code' => 'AA', 'room' => 'Room 1'],
+            ['name' => 'Dental', 'code' => 'DEN', 'room' => 'Room 1'],
+            ['name' => 'Psych', 'code' => 'PS', 'room' => 'Room 1', 'description' => 'Psychology/Mental Health Room'],
+            ['name' => 'Neurology', 'code' => 'NEU', 'room' => 'Room 1'],
+            ['name' => 'Endocrinology', 'code' => 'EN', 'room' => 'Room 1'],
+            ['name' => 'Int. Medicine', 'code' => 'INT', 'room' => 'Room 1'],
+            ['name' => 'OB-Gyne', 'code' => 'OB', 'room' => 'Room 2'],
+            ['name' => 'Pedia', 'code' => 'PED', 'room' => 'Room 2'],
+            ['name' => 'General Consultation', 'code' => 'GEN', 'room' => 'Room 2'],
+            ['name' => 'Surgery', 'code' => 'SUR', 'room' => 'Room 2'],
+            ['name' => 'ENT', 'code' => 'ENT', 'room' => 'Room 2'],
         ];
 
         foreach ($departments as $dept) {
             Department::create($dept);
         }
 
-        // Create staff users
+        // Create staff users with department code mapping
         $staffUsers = [
-            ['name' => 'Dental Staff', 'email' => 'dental@opd.com', 'role' => 'staff'],
-            ['name' => 'OB Staff', 'email' => 'ob@opd.com', 'role' => 'staff'],
-            ['name' => 'Billing Staff', 'email' => 'billing@opd.com', 'role' => 'staff'],
-            ['name' => 'Lab Staff', 'email' => 'lab@opd.com', 'role' => 'staff'],
-            ['name' => 'Reception Staff', 'email' => 'reception@opd.com', 'role' => 'reception'],
-            ['name' => 'Registration Staff', 'email' => 'registration@opd.com', 'role' => 'staff'],
+            // Administrative Staff
+            ['name' => 'Reception Staff', 'email' => 'reception@opd.com', 'role' => 'reception', 'dept_code' => 'REG'],
+            ['name' => 'MSS Staff', 'email' => 'mss@opd.com', 'role' => 'staff', 'dept_code' => 'MSS'],
+            ['name' => 'Philhealth Staff', 'email' => 'phic@opd.com', 'role' => 'staff', 'dept_code' => 'PHIC'],
+            ['name' => 'Billing Staff', 'email' => 'billing@opd.com', 'role' => 'staff', 'dept_code' => 'BILL'],
+
+            // Medical Staff
+            ['name' => 'Animal Bite1 Staff', 'email' => 'abtc1@opd.com', 'role' => 'staff', 'dept_code' => 'AB1'],
+            ['name' => 'Animal Bite2 Staff', 'email' => 'abtc2@opd.com', 'role' => 'staff', 'dept_code' => 'AB2'],
+            ['name' => 'TB DOTS Staff', 'email' => 'tbdots@opd.com', 'role' => 'staff', 'dept_code' => 'AA'],
+            ['name' => 'Dental Staff', 'email' => 'dental@opd.com', 'role' => 'staff', 'dept_code' => 'DEN'],
+            ['name' => 'Psychology Staff', 'email' => 'psych@opd.com', 'role' => 'staff', 'dept_code' => 'PS'],
+            ['name' => 'Neurology Staff', 'email' => 'neuro@opd.com', 'role' => 'staff', 'dept_code' => 'NEU'],
+            ['name' => 'Endocrinology Staff', 'email' => 'endo@opd.com', 'role' => 'staff', 'dept_code' => 'EN'],
+            ['name' => 'Internal Medicine Staff', 'email' => 'intmed@opd.com', 'role' => 'staff', 'dept_code' => 'INT'],
+            ['name' => 'OB-Gyne Staff', 'email' => 'ob@opd.com', 'role' => 'staff', 'dept_code' => 'OB'],
+            ['name' => 'Pediatric Staff', 'email' => 'pedia@opd.com', 'role' => 'staff', 'dept_code' => 'PED'],
+            ['name' => 'General Consultation Staff', 'email' => 'genconsultation@opd.com', 'role' => 'staff', 'dept_code' => 'GEN'],
+            ['name' => 'Surgery Staff', 'email' => 'surgery@opd.com', 'role' => 'staff', 'dept_code' => 'SUR'],
+            ['name' => 'ENT Staff', 'email' => 'ent@opd.com', 'role' => 'staff', 'dept_code' => 'ENT'],
         ];
 
+        // Create users and store their department assignments
+        $staffDepartmentAssignments = [];
+
         foreach ($staffUsers as $userData) {
-            User::create([
+            $user = User::create([
                 'name' => $userData['name'],
                 'email' => $userData['email'],
                 'password' => Hash::make('password'),
                 'role' => $userData['role'],
                 'email_verified_at' => now(),
             ]);
-        }
 
+            // Store assignment for later processing
+            if (isset($userData['dept_code'])) {
+                $staffDepartmentAssignments[] = [
+                    'user_id' => $user->id,
+                    'dept_code' => $userData['dept_code']
+                ];
+            }
+        }
+        // dd($staffDepartmentAssignments);
+        /**
+         * [[user_id => 1, dep_code = REG], [user_id => 2, dep_code = OB]]
+         */
         // Call the DepartmentFlowSeeder
         $this->call([
-            DepartmentFlowSeeder::class,
+            // DepartmentFlowSeeder::class,
             PriorityReasonsTableSeeder::class,
         ]);
 
-        // Assign staff to departments
-        $dentalDept = Department::where('code', 'DEN')->first();
-        $obDept = Department::where('code', 'OB')->first();
-        $billingDept = Department::where('code', 'BILL')->first();
-        $labDept = Department::where('code', 'LAB')->first();
-        $registrationDept = Department::where('code', 'REG')->first();
+        // Assign all staff to their respective departments
+        foreach ($staffDepartmentAssignments as $assignment) {
+            $department = Department::where('code', $assignment['dept_code'])->first();
 
-        $dentalStaff = User::where('email', 'dental@opd.com')->first();
-        $obStaff = User::where('email', 'ob@opd.com')->first();
-        $billingStaff = User::where('email', 'billing@opd.com')->first();
-        $labStaff = User::where('email', 'lab@opd.com')->first();
-        $reception = User::where('email', 'reception@opd.com')->first();
-        $registrationStaff = User::where('email', 'registration@opd.com')->first();
+            if ($department) {
+                $department->users()->attach($assignment['user_id']);
 
-        // Assign staff to their respective departments
-        $dentalDept->users()->attach($dentalStaff->id);
-        $obDept->users()->attach($obStaff->id);
-        $billingDept->users()->attach($billingStaff->id);
-        $labDept->users()->attach($labStaff->id);
-        $registrationDept->users()->attach($registrationStaff);
-
-        // Reception can access all departments
-        $reception->departments()->attach([
-            $dentalDept->id,
-            $obDept->id,
-            $billingDept->id,
-            $labDept->id
-        ]);
-
-        // Seed Windows
-        $window1 = Window::create(['name' => 'Window 1', 'slug' => 'window-1']);
-        $window2 = Window::create(['name' => 'Window 2', 'slug' => 'window-2']);
-
-        // Attach some departments with positions
-        $billing = Department::where('code', 'BILL')->first();
-        $lab = Department::where('code', 'LAB')->first();
-        if ($billing && $lab && $dentalDept) {
-            $window1->departments()->sync([
-                $billing->id => ['position' => 0],
-                $lab->id => ['position' => 1],
-                $dentalDept->id => ['position' => 2],
-            ]);
-        }
-
-        if ($obDept && $dentalDept) {
-            $window2->departments()->sync([
-                $obDept->id => ['position' => 0],
-                $dentalDept->id => ['position' => 1],
-            ]);
+                // Optional: Log the assignment for debugging
+                // \Log::info("Assigned user {$assignment['user_id']} to department {$assignment['dept_code']}");
+            } else {
+                // Log warning if department not found
+                \Log::warning("Department with code {$assignment['dept_code']} not found for user assignment");
+            }
         }
     }
 }

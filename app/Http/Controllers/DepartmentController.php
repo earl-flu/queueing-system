@@ -40,6 +40,7 @@ class DepartmentController extends Controller
             'name' => 'required|string|max:255|unique:departments',
             'code' => 'required|string|max:10|unique:departments',
             'room' => 'nullable|string|max:50',
+            'description' => 'nullable|string|max:255',
             'is_active' => 'boolean',
             'users' => 'array',
             'users.*' => 'exists:users,id'
@@ -49,6 +50,7 @@ class DepartmentController extends Controller
             'name' => $validated['name'],
             'code' => strtoupper($validated['code']),
             'room' => $validated['room'],
+            'description' => $validated['description'],
             'is_active' => $validated['is_active'] ?? true
         ]);
 
@@ -77,6 +79,7 @@ class DepartmentController extends Controller
             'name' => 'required|string|max:255|unique:departments,name,' . $department->id,
             'code' => 'required|string|max:10|unique:departments,code,' . $department->id,
             'room' => 'nullable|string|max:50',
+            'description' => 'nullable|string|max:255',
             'is_active' => 'boolean',
             'users' => 'array',
             'users.*' => 'exists:users,id'
@@ -86,6 +89,7 @@ class DepartmentController extends Controller
             'name' => $validated['name'],
             'code' => strtoupper($validated['code']),
             'room' => $validated['room'],
+            'description' => $validated['description'],
             'is_active' => $validated['is_active'] ?? true
         ]);
 

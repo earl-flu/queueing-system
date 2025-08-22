@@ -14,7 +14,8 @@ class Department extends Model
         'name',
         'code',
         'room',
-        'is_active'
+        'is_active',
+        'description'
     ];
 
     protected $casts = [
