@@ -291,6 +291,31 @@ class QueueController extends Controller
         ]);
     }
 
+    public function departmentQueueData($departmentId)
+    {
+        $department = Department::findOrFail($departmentId);
+        $user = auth()->user();
+
+        if (!$user->isAdmin() && !$user->departments->contains($department->id)) {
+            abort(403);
+        }
+
+        $queueItems = QueueItem::with(['patient', 'originalDepartment', 'currentDepartment', 'patient.priorityReason'])
+            ->where('current_department_id', $departmentId)
+            ->today()
+            ->whereIn('status', ['waiting', 'serving'])
+            ->orderBy('queue_position')
+            ->get();
+
+        // Add flow information to each queue item
+        $queueItems->each(function ($item) {
+            $item->is_final_department = $item->isFinalDepartment();
+            $item->has_next_department = !$item->isFinalDepartment() && $item->getNextDepartment() !== null;
+        });
+
+        return response()->json($queueItems);
+    }
+
     public function resetCounter(Request $request, $departmentId)
     {
         $department = Department::findOrFail($departmentId);

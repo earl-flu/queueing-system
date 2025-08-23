@@ -23,7 +23,7 @@ class DepartmentFlowSeeder extends Seeder
             ['code' => 'NEU'], // Neuro
             ['code' => 'EN'], // Endo
             ['code' => 'INT'], // Int. Medicine
-            ['code' => 'OB'], // Ob-gyne
+            ['code' => 'OB'], // Ob-Gyne
             ['code' => 'PED'], // Pedia
             ['code' => 'GEN'], // Gen. Consult.
             ['code' => 'SUR'], // Surgery

@@ -68,6 +68,11 @@
                       :key="serving.queue_number"
                     >
                       {{ serving.queue_number }}
+                      <span class="text-xs text-gray-400 uppercase align-top">
+                        {{
+                          serving.patient.is_priority ? "Priority" : ""
+                        }}</span
+                      >
                     </li>
                   </div>
                   <!-- {{ getNowServing(dept.id) ? getNowServing(dept.id) : "—" }} -->
@@ -85,7 +90,7 @@
                     :key="q.id"
                     class="badge fs-5 px-4 py-3 fw-bold"
                     :style="{
-                      background: '#0d1077',
+                      background: q.patient.is_priority ? '#DFA620' : '#0d1077',
                       color: 'white',
                       boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
                     }"

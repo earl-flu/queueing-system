@@ -54,6 +54,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/department/{departmentId}/reset-counter', [QueueController::class, 'resetCounter'])
             ->name('reset-counter')
             ->middleware('admin');
+        Route::get('/{departmentId}/data', [QueueController::class, 'departmentQueueData'])
+            ->name('departmentQueueData');
     });
 
     // Department management routes

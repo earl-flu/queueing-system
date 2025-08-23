@@ -361,7 +361,7 @@ import Modal from "@/Components/Modal.vue";
 import ServingCard from "@/Components/ServingCard.vue";
 import { useElapsedTime } from "@/Composables/useElapsedTime";
 import { Head, Link, router, useForm } from "@inertiajs/vue3";
-import { ref, computed } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 
 const props = defineProps({
   department: Object,
@@ -376,6 +376,22 @@ const props = defineProps({
 const showTransferModal = ref(false);
 const showResetModal = ref(false);
 const selectedItem = ref(null);
+
+let intervalId = null;
+
+const reloadQueueItems = () => {
+  router.reload({ only: ["queueItems", "todayWaitingCount"] });
+};
+
+onMounted(() => {
+  intervalId = setInterval(() => {
+    reloadQueueItems();
+  }, 3000); // every 3 seconds
+});
+
+onBeforeUnmount(() => {
+  if (intervalId) clearInterval(intervalId);
+});
 
 const transferForm = useForm({
   to_department_id: "",
