@@ -64,7 +64,7 @@ class DepartmentController extends Controller
 
     public function edit(Department $department)
     {
-        $users = User::where('role', 'staff')->get();
+        $users = User::orderBy('name')->get();
         $department->load('users');
 
         return Inertia::render('Departments/Edit', [

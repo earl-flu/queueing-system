@@ -13,136 +13,52 @@ class DepartmentFlowSeeder extends Seeder
      */
     public function run(): void
     {
-        // Get or create departments
-        $registration = Department::firstOrCreate(['name' => 'Registration'], [
-            'code' => 'REG',
-            'is_active' => true
-        ]);
+        //Get all the list of Department where code = 
+        $departments = [
+            ['code' => 'AB1'], // Animal Bite 1
+            ['code' => 'AB2'], // Animal Bite 2
+            ['code' => 'AA'], // TB DOTS
+            ['code' => 'DEN'], // Dental
+            ['code' => 'PS'], // Psych
+            ['code' => 'NEU'], // Neuro
+            ['code' => 'EN'], // Endo
+            ['code' => 'INT'], // Int. Medicine
+            ['code' => 'OB'], // Ob-gyne
+            ['code' => 'PED'], // Pedia
+            ['code' => 'GEN'], // Gen. Consult.
+            ['code' => 'SUR'], // Surgery
+            ['code' => 'ENT'], // ENT
+        ];
 
-        $mss = Department::firstOrCreate(['name' => 'MSS'], [
-            'code' => 'MSS',
-            'is_active' => true
-        ]);
+        //for each and get the id of the department
+        $steps = [
+            ['code' => 'REG', 'step_order' => 1],
+            ['code' => 'PHIC', 'step_order' => 2],
+            ['code' => 'MSS', 'step_order' => 3],
+        ];
 
-        $billing = Department::firstOrCreate(['name' => 'Billing'], [
-            'code' => 'BIL',
-            'is_active' => true
-        ]);
+        // Fetch all departments once and map by code
+        $departmentsMap = Department::pluck('id', 'code');
 
-        $dental = Department::firstOrCreate(['name' => 'Dental'], [
-            'code' => 'DEN',
-            'is_active' => true
-        ]);
+        foreach ($departments as $department) {
+            $departmentId = $departmentsMap[$department['code']] ?? null;
+            if (!$departmentId) continue; // skip if not found
 
-        $obstetrics = Department::firstOrCreate(['name' => 'Obstetrics'], [
-            'code' => 'OB',
-            'is_active' => true
-        ]);
-
-        // Clear existing flows
-        DepartmentFlow::truncate();
-
-        // Dental Department Flow: Registration -> MSS -> Billing -> Dental
-        DepartmentFlow::create([
-            'final_department_id' => $dental->id,
-            'step_department_id' => $registration->id,
-            'step_order' => 1,
-            'is_required' => true
-        ]);
-
-        DepartmentFlow::create([
-            'final_department_id' => $dental->id,
-            'step_department_id' => $mss->id,
-            'step_order' => 2,
-            'is_required' => true
-        ]);
-
-        DepartmentFlow::create([
-            'final_department_id' => $dental->id,
-            'step_department_id' => $billing->id,
-            'step_order' => 3,
-            'is_required' => true
-        ]);
-
-        DepartmentFlow::create([
-            'final_department_id' => $dental->id,
-            'step_department_id' => $dental->id,
-            'step_order' => 4,
-            'is_required' => true
-        ]);
-
-        // Obstetrics Department Flow: Registration -> MSS -> Billing -> Obstetrics
-        DepartmentFlow::create([
-            'final_department_id' => $obstetrics->id,
-            'step_department_id' => $registration->id,
-            'step_order' => 1,
-            'is_required' => true
-        ]);
-
-        DepartmentFlow::create([
-            'final_department_id' => $obstetrics->id,
-            'step_department_id' => $mss->id,
-            'step_order' => 2,
-            'is_required' => true
-        ]);
-
-        DepartmentFlow::create([
-            'final_department_id' => $obstetrics->id,
-            'step_department_id' => $billing->id,
-            'step_order' => 3,
-            'is_required' => true
-        ]);
-
-        DepartmentFlow::create([
-            'final_department_id' => $obstetrics->id,
-            'step_department_id' => $obstetrics->id,
-            'step_order' => 4,
-            'is_required' => true
-        ]);
-
-        // Registration Department Flow: Direct (no intermediate steps)
-        DepartmentFlow::create([
-            'final_department_id' => $registration->id,
-            'step_department_id' => $registration->id,
-            'step_order' => 1,
-            'is_required' => true
-        ]);
-
-        // MSS Department Flow: Registration -> MSS
-        DepartmentFlow::create([
-            'final_department_id' => $mss->id,
-            'step_department_id' => $registration->id,
-            'step_order' => 1,
-            'is_required' => true
-        ]);
-
-        DepartmentFlow::create([
-            'final_department_id' => $mss->id,
-            'step_department_id' => $mss->id,
-            'step_order' => 2,
-            'is_required' => true
-        ]);
-
-        // Billing Department Flow: Registration -> MSS -> Billing
-        DepartmentFlow::create([
-            'final_department_id' => $billing->id,
-            'step_department_id' => $registration->id,
-            'step_order' => 1,
-            'is_required' => true
-        ]);
-
-        DepartmentFlow::create([
-            'final_department_id' => $billing->id,
-            'step_department_id' => $mss->id,
-            'step_order' => 2,
-            'is_required' => true
-        ]);
-
-        DepartmentFlow::create([
-            'final_department_id' => $billing->id,
-            'step_department_id' => $billing->id,
-            'step_order' => 3,
-            'is_required' => true
-        ]);
+            foreach ($steps as $step) {
+                $stepDeptId = $departmentsMap[$step['code']] ?? null;
+                DepartmentFlow::create([
+                    'final_department_id' => $departmentId,
+                    'step_department_id' => $stepDeptId,
+                    'step_order' => $step['step_order'],
+                    'is_required' => true
+                ]);
+            }
+            DepartmentFlow::create([
+                'final_department_id' => $departmentId,
+                'step_department_id' => $departmentId,
+                'step_order' => 4,
+                'is_required' => true
+            ]);
+        }
     }
 }

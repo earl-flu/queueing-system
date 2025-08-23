@@ -209,20 +209,20 @@ const submit = () => {
 
               <div class="col-md-12">
                 <label for="final_department_id" class="form-label"
-                  >Final Destination Department</label
+                  >Destination Department</label
                 >
                 <select
                   id="final_department_id"
                   class="form-select"
                   v-model="form.final_department_id"
                 >
-                  <option value="">Select final destination department</option>
+                  <option value="">Select destination department</option>
                   <option
                     v-for="dept in props.departments"
                     :key="dept.id"
                     :value="dept.id"
                   >
-                    {{ dept.name }}
+                    {{ dept.name }} {{ dept.description ?? "" }}
                   </option>
                 </select>
                 <div class="invalid-feedback d-block">

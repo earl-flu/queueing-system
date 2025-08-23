@@ -69,7 +69,7 @@ class QueueController extends Controller
         if (!$user->isAdmin() && !$user->isReception()) {
             abort(403);
         }
-        $departments = Department::where('is_active', true)->get();
+        $departments = Department::where('is_active', true)->orderBy('name')->get();
         $priority_reasons = PriorityReason::where('is_active', true)->get();
         return Inertia::render('Queue/Create', [
             'departments' => $departments,
