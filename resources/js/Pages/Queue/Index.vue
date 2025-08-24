@@ -119,6 +119,12 @@
                         {{ item.patient.last_name }}
                         {{ item.patient.first_name }}
                         {{ item.patient.middle_name }} {{ item.patient.suffix }}
+                        <p v-if="item.patient.is_priority">
+                          <span
+                            class="text-xs bg-danger text-white px-2 rounded-md"
+                            >priority</span
+                          >
+                        </p>
                       </div>
                       <div v-if="item.patient.phone" class="text-muted small">
                         {{ item.patient.phone }}

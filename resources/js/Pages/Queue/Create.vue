@@ -149,13 +149,25 @@ const roles = [
                   placeholder="Select Department"
                 >
                   <!-- How each option is displayed in the dropdown -->
-                  <template #option="{ name, description }">
+                  <template #option="{ name, description, queue_count }">
                     {{ name }} {{ description }}
+                    <span
+                      class="text-xs bg-green-400 text-white p-0.5 px-2 ml-5 rounded-md"
+                      v-if="queue_count > 0"
+                      >{{ queue_count }}</span
+                    >
                   </template>
 
                   <!-- How the selected value is displayed -->
-                  <template #selected-option="{ name, description }">
+                  <template
+                    #selected-option="{ name, description, queue_count }"
+                  >
                     {{ name }} {{ description }}
+                    <span
+                      class="text-xs bg-green-400 text-white p-0.5 px-2 ml-5 rounded-md"
+                      v-if="queue_count > 0"
+                      >{{ queue_count }}</span
+                    >
                   </template>
                 </v-select>
 
