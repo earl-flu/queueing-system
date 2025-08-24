@@ -20,11 +20,17 @@
     </div>
     <!--end breadcrumb-->
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex gap-2 align-items-center mb-4">
       <h4 class="mb-0">Queue Management</h4>
-      <Link :href="route('queue.create')" class="btn btn-grd btn-grd-primary">
-        Add New Patient
+      <p class="flex-1"></p>
+      <Link :href="route('queue.create')" class="btn btn-grd btn-primary">
+        Department View
       </Link>
+      <template v-if="isReception">
+        <Link :href="route('queue.create')" class="btn btn-grd btn-grd-primary">
+          Add New Patient
+        </Link>
+      </template>
     </div>
 
     <div class="row">

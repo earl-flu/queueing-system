@@ -31,9 +31,14 @@
         </p>
       </div>
       <div class="d-flex gap-2">
-        <Link :href="route('queue.create')" class="btn btn-grd btn-grd-primary">
-          Add Patient
-        </Link>
+        <template v-if="isReception">
+          <Link
+            :href="route('queue.create')"
+            class="btn btn-grd btn-grd-primary"
+          >
+            Add Patient
+          </Link>
+        </template>
         <button
           v-if="$page.props.auth.user.is_admin"
           @click="showResetModal = true"
@@ -71,7 +76,7 @@
               <div class="col-md-4 border-x-4">
                 <h6 class="text-center mb-3 font-extrabold">PRIORITY</h6>
                 <div
-                  v-for="item in queueItems.filter(
+                  v-for="(item, index) in queueItems.filter(
                     (i) => i.patient.is_priority && i.status !== 'serving'
                   )"
                   :key="item.id"
@@ -110,7 +115,7 @@
                           >Position: {{ item.queue_position }}</small
                         >
                         <p
-                          v-if="item.patient.priority_reason.description"
+                          v-if="item.patient.priority_reason"
                           class="card-text small mb-1 mt-3 text-white"
                         >
                           <span class="px-2 py-1 rounded-md bg-red-500">
@@ -120,30 +125,11 @@
                       </div>
                       <div class="gap-2 flex">
                         <button
-                          v-if="item.status === 'waiting'"
+                          v-if="item.status === 'waiting' && index === 0"
                           @click="callPatient(item.id)"
                           class="btn btn-success btn-sm flex-1"
                         >
                           Call
-                        </button>
-
-                        <button
-                          v-if="
-                            item.status === 'serving' && isFinalDepartment(item)
-                          "
-                          @click="completeService(item.id)"
-                          class="btn btn-primary btn-sm flex-1"
-                        >
-                          Complete
-                        </button>
-                        <button
-                          v-if="
-                            item.status === 'serving' && hasNextDepartment(item)
-                          "
-                          @click="completeAndTransfer(item.id)"
-                          class="btn btn-info btn-sm flex-1"
-                        >
-                          Next
                         </button>
                         <!-- <button
                           v-if="
@@ -163,7 +149,7 @@
               <div class="col-md-4">
                 <h6 class="text-center mb-3 font-extrabold">REGULAR</h6>
                 <div
-                  v-for="item in queueItems.filter(
+                  v-for="(item, index) in queueItems.filter(
                     (i) => !i.patient.is_priority && i.status !== 'serving'
                   )"
                   :key="item.id"
@@ -204,29 +190,11 @@
                       </div>
                       <div class="gap-2 flex">
                         <button
-                          v-if="item.status === 'waiting'"
+                          v-if="item.status === 'waiting' && index === 0"
                           @click="callPatient(item.id)"
                           class="btn btn-success btn-sm flex-1"
                         >
                           Call
-                        </button>
-                        <button
-                          v-if="
-                            item.status === 'serving' && isFinalDepartment(item)
-                          "
-                          @click="completeService(item.id)"
-                          class="btn btn-primary btn-sm flex-1"
-                        >
-                          Complete
-                        </button>
-                        <button
-                          v-if="
-                            item.status === 'serving' && hasNextDepartment(item)
-                          "
-                          @click="completeAndTransfer(item.id)"
-                          class="btn btn-info btn-sm flex-1"
-                        >
-                          Next
                         </button>
                         <!-- <button
                           v-if="
@@ -373,6 +341,7 @@ const props = defineProps({
   todayWaitingCount: Number,
 });
 
+const isReception = computed(() => props.user?.role === "reception");
 const showTransferModal = ref(false);
 const showResetModal = ref(false);
 const selectedItem = ref(null);

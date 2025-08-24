@@ -49,13 +49,21 @@ const elapsed = useElapsedTime(props.item.called_at);
         <p class="text-right" style="margin-bottom: 0">{{ elapsed }}</p>
         <small class="">Position: {{ item.queue_position }}</small>
         <p
-          v-if="item.patient.priority_reason.description"
+          v-if="item.patient.priority_reason"
           class="card-text small mb-1 mt-3 text-white"
         >
           <span class="px-2 py-1 rounded-md bg-red-500">
             {{ item.patient.priority_reason.description }}
           </span>
         </p>
+        <!-- <p
+          v-if="item.patient.priority_reason.description"
+          class="card-text small mb-1 mt-3 text-white"
+        >
+          <span class="px-2 py-1 rounded-md bg-red-500">
+            {{ item.patient.priority_reason.description }}
+          </span>
+        </p> -->
       </div>
       <div class="gap-2 flex">
         <button
@@ -84,7 +92,7 @@ const elapsed = useElapsedTime(props.item.called_at);
           @click="completeAndTransfer(item.id)"
           class="btn btn-info btn-sm flex-1"
         >
-          Next
+          Done
         </button>
         <!-- <button
                           v-if="

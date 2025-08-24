@@ -155,6 +155,13 @@ class QueueItem extends Model
             return false; // No next department, patient is done
         }
 
+        // Check if already forwarded to next department - to avoid duplicate
+        $queueNumber = $this->queue_number;
+        $isAlreadyForwardedToNextDept = QueueItem::where('queue_number', $queueNumber)->where('current_department_id', $nextFlow['step_department_id'])->exists();
+        if ($isAlreadyForwardedToNextDept) {
+            return;
+        }
+
         $nextDepartment = $nextFlow->stepDepartment;
 
         // Get next queue position in target department

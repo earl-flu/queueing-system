@@ -85,6 +85,7 @@ const roles = [
                   class="form-control"
                   v-model="form.patient.last_name"
                   id="last_name"
+                  autofocus
                 />
                 <div class="invalid-feedback d-block">
                   {{ form.errors["patient.last_name"] }}
@@ -99,7 +100,6 @@ const roles = [
                   class="form-control"
                   v-model="form.patient.first_name"
                   id="first_name"
-                  autofocus
                 />
                 <div class="invalid-feedback d-block">
                   {{ form.errors["patient.first_name"] }}

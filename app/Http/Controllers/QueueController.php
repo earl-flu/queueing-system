@@ -69,22 +69,19 @@ class QueueController extends Controller
         if (!$user->isAdmin() && !$user->isReception()) {
             abort(403);
         }
-        // dd(today());
-        $departmentsWithQueueToday = Department::withCount([
-            'originalQueueItems as original_queue_items_today_count' => function ($query) {
-                $query->whereDate('created_at', today());
-            }
-        ])
-            ->having('original_queue_items_today_count', '>', 0)
-            ->get();
 
-        // dd($departmentsWithQueueToday);
         $departments = Department::where('is_active', true)
-            ->withCount(['originalQueueItems as queue_count' => function ($query) {
-                $query->whereDate('created_at', today());
-            }])
+            ->addSelect([
+                'queue_count' => function ($query) {
+                    $query->from('queue_items')
+                        ->selectRaw('COUNT(DISTINCT patient_id)')
+                        ->whereColumn('original_department_id', 'departments.id')
+                        ->whereDate('created_at', today());
+                }
+            ])
             ->orderBy('name')
             ->get();
+
         $priority_reasons = PriorityReason::where('is_active', true)->get();
         return Inertia::render('Queue/Create', [
             'departments' => $departments,
