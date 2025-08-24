@@ -2,6 +2,8 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, useForm } from "@inertiajs/vue3";
 import { useToast } from "vue-toastification";
+import vSelect from "vue-select";
+import "vue-select/dist/vue-select.css";
 
 const props = defineProps({
   departments: {
@@ -39,6 +41,13 @@ const submit = () => {
     },
   });
 };
+
+// Roles (could also come from props)
+const roles = [
+  { label: "Admin", value: "admin" },
+  { label: "Doctor", value: "doctor" },
+  { label: "Nurse", value: "nurse" },
+];
 </script>
 
 <template>
@@ -68,7 +77,23 @@ const submit = () => {
             <h5 class="mb-4">New Queue Entry</h5>
             <form class="row g-3" @submit.prevent="submit">
               <div class="col-md-3">
-                <label for="first_name" class="form-label">First Name</label>
+                <label for="last_name" class="form-label"
+                  >Last Name <span class="text-sm text-red-500">*</span></label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="form.patient.last_name"
+                  id="last_name"
+                />
+                <div class="invalid-feedback d-block">
+                  {{ form.errors["patient.last_name"] }}
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label for="first_name" class="form-label"
+                  >First Name <span class="text-sm text-red-500">*</span></label
+                >
                 <input
                   type="text"
                   class="form-control"
@@ -92,19 +117,6 @@ const submit = () => {
                   {{ form.errors["patient.middle_name"] }}
                 </div>
               </div>
-
-              <div class="col-md-3">
-                <label for="last_name" class="form-label">Last Name</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="form.patient.last_name"
-                  id="last_name"
-                />
-                <div class="invalid-feedback d-block">
-                  {{ form.errors["patient.last_name"] }}
-                </div>
-              </div>
               <div class="col-md-3">
                 <label for="suffix" class="form-label">Suffix</label>
                 <select
@@ -122,6 +134,33 @@ const submit = () => {
                 </select>
                 <div class="invalid-feedback d-block">
                   {{ form.errors["patient.suffix"] }}
+                </div>
+              </div>
+              <div class="col-md-12">
+                <label for="final_department_id" class="form-label"
+                  >Destination Department
+                  <span class="text-sm text-red-500">*</span></label
+                >
+                <v-select
+                  v-model="form.final_department_id"
+                  label="name"
+                  :options="props.departments"
+                  :reduce="(dept) => dept.id"
+                  placeholder="Select Department"
+                >
+                  <!-- How each option is displayed in the dropdown -->
+                  <template #option="{ name, description }">
+                    {{ name }} {{ description }}
+                  </template>
+
+                  <!-- How the selected value is displayed -->
+                  <template #selected-option="{ name, description }">
+                    {{ name }} {{ description }}
+                  </template>
+                </v-select>
+
+                <div class="invalid-feedback d-block">
+                  {{ form.errors.final_department_id }}
                 </div>
               </div>
 
@@ -186,7 +225,8 @@ const submit = () => {
 
               <div class="col-md-12" v-if="form.patient.is_priority">
                 <label for="priority_reason_id" class="form-label"
-                  >Priority Category</label
+                  >Priority Category
+                  <span class="text-sm text-red-500">*</span></label
                 >
                 <select
                   id="priority_reason_id"
@@ -206,30 +246,6 @@ const submit = () => {
                   {{ form.errors["patient.priority_reason_id"] }}
                 </div>
               </div>
-
-              <div class="col-md-12">
-                <label for="final_department_id" class="form-label"
-                  >Destination Department</label
-                >
-                <select
-                  id="final_department_id"
-                  class="form-select"
-                  v-model="form.final_department_id"
-                >
-                  <option value="">Select destination department</option>
-                  <option
-                    v-for="dept in props.departments"
-                    :key="dept.id"
-                    :value="dept.id"
-                  >
-                    {{ dept.name }} {{ dept.description ?? "" }}
-                  </option>
-                </select>
-                <div class="invalid-feedback d-block">
-                  {{ form.errors.final_department_id }}
-                </div>
-              </div>
-
               <div class="col-md-12 mt-4">
                 <div class="d-md-flex d-grid align-items-center gap-3">
                   <button
