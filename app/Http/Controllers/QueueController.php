@@ -26,7 +26,7 @@ class QueueController extends Controller
 
         $query = QueueItem::with(['patient', 'originalDepartment', 'currentDepartment.users', 'servedByUser'])
             ->today()
-            ->orderBy('created_at', 'asc');
+            ->orderBy('created_at', 'desc');
 
         if ($departmentId) {
             $query->where('current_department_id', $departmentId);
@@ -180,7 +180,6 @@ class QueueController extends Controller
     public function completeAndTransfer(QueueItem $queueItem)
     {
         $user = auth()->user();
-
         if ($user->isReception() && !$user->isAdmin() && !$user->departments->contains($queueItem->current_department_id)) {
             abort(403);
         }
@@ -196,6 +195,7 @@ class QueueController extends Controller
 
         // Transfer to next department
         $transferred = $queueItem->transferToNextDepartment();
+
 
         if ($transferred) {
             return redirect()->back()
