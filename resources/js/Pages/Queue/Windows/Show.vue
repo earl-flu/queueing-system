@@ -70,7 +70,14 @@
                       v-for="serving in getNowServing(dept.id)"
                       :key="serving.queue_number"
                     >
-                      {{ serving.queue_number }}
+                      <span
+                        :style="{ animation: 'blink 0.9s 8' }"
+                        @animationend="removeBlinkingStyle"
+                        class="p-2"
+                      >
+                        {{ serving.queue_number }}
+                      </span>
+
                       <span class="text-xs text-gray-400 uppercase align-top">
                         {{
                           serving.patient.is_priority ? "Priority" : ""
@@ -235,6 +242,18 @@ body,
 .card {
   border-radius: 15px !important;
   overflow: hidden;
+}
+
+@keyframes blink {
+  0% {
+    background-color: yellow;
+  }
+  50% {
+    background-color: transparent;
+  }
+  100% {
+    background-color: yellow;
+  }
 }
 </style>
 
