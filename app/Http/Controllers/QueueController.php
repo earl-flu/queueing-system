@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CallPatient;
 use App\Models\Department;
 use App\Models\DepartmentFlow;
 use App\Models\Patient;
@@ -155,6 +156,8 @@ class QueueController extends Controller
         }
 
         $queueItem->startServing($user->id);
+
+        broadcast(new CallPatient($queueItem));
 
         return redirect()->back()
             ->with('success', 'Patient called for service.');

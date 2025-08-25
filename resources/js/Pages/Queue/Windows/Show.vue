@@ -13,6 +13,9 @@
           <i class="fas fa-clock me-2"></i>
           Last updated: {{ lastUpdatedDisplay }}
         </div>
+        <div>
+          <button @click="enableSpeech">Enable Announcements</button>
+        </div>
       </div>
       <div class="row g-4">
         <div
@@ -111,6 +114,8 @@
 import { Head } from "@inertiajs/vue3";
 import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 
+const speechEnabled = ref(false);
+
 const props = defineProps({
   window: Object,
   departments: Array,
@@ -142,6 +147,22 @@ const fetchData = async () => {
 };
 
 onMounted(() => {
+  window.Echo.channel("queue").listen("CallPatient", (event) => {
+    console.log("Patient called:", event.queueItem);
+    // Speak out patient's name using speech synthesis
+    if ("speechSynthesis" in window) {
+      const msg = new SpeechSynthesisUtterance(
+        `Now calling patient ${event.queueItem.queue_number}`
+      );
+      msg.lang = "en-US"; // or "fil-PH" if you want Filipino accent
+      window.speechSynthesis.speak(msg);
+    } else {
+      console.warn("Speech synthesis not supported in this browser.");
+    }
+  });
+});
+
+onMounted(() => {
   intervalId = setInterval(fetchData, 3000);
   // go fullscreen automatically
   if (document.documentElement.requestFullscreen) {
@@ -152,6 +173,14 @@ onMounted(() => {
 onBeforeUnmount(() => {
   if (intervalId) clearInterval(intervalId);
 });
+
+function enableSpeech() {
+  speechEnabled.value = true;
+
+  // say a test phrase to "unlock" speech
+  const msg = new SpeechSynthesisUtterance("Announcements enabled");
+  window.speechSynthesis.speak(msg);
+}
 
 const getNowServing = (departmentId) => {
   const list = (dataByDepartment.value[departmentId] || []).filter(
