@@ -23,9 +23,14 @@
     <div class="d-flex gap-2 align-items-center mb-4">
       <h4 class="mb-0">Queue Management</h4>
       <p class="flex-1"></p>
-      <Link :href="route('queue.create')" class="btn btn-grd btn-primary">
-        Department View
-      </Link>
+      <template v-if="userDepartment">
+        <Link
+          :href="route('queue.department', userDepartment.id)"
+          class="btn btn-grd btn-primary"
+        >
+          {{ userDepartment.name }} Department Queue
+        </Link>
+      </template>
       <template v-if="isReception">
         <Link :href="route('queue.create')" class="btn btn-grd btn-grd-primary">
           Add New Patient
@@ -256,6 +261,7 @@ const props = defineProps({
 
 const isAdmin = computed(() => props.user?.role === "admin");
 const isReception = computed(() => props.user?.role === "reception");
+const userDepartment = computed(() => props.user?.departments[0]);
 
 const hasAccessToDepartment = (department) => {
   if (isReception.value) return false;
