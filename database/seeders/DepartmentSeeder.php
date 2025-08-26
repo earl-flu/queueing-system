@@ -15,10 +15,10 @@ class DepartmentSeeder extends Seeder
     {
         //  // Create departments
         $departments = [
-            ['name' => 'Registration', 'code' => 'REG', 'room' => 'Room 1'],
-            ['name' => 'MSS', 'code' => 'MSS', 'room' => 'Room 1'],
-            ['name' => 'Philhealth', 'code' => 'PHIC', 'room' => 'Room 1'],
-            ['name' => 'Billing', 'code' => 'BIL', 'room' => 'Room 3'],
+            ['name' => 'Registration', 'code' => 'REG', 'room' => ''],
+            ['name' => 'MSS', 'code' => 'MSS', 'room' => ''],
+            ['name' => 'Philhealth', 'code' => 'PHIC', 'room' => ''],
+            ['name' => 'Billing', 'code' => 'BIL', 'room' => ''],
             ['name' => 'Animal Bite - 1', 'code' => 'A', 'room' => 'Room 8', 'description' => '(First Injection)'],
             ['name' => 'Animal Bite - 2', 'code' => 'F', 'room' => 'Room 8', 'description' => '(Follow-up Injection - 2nd or Later)'],
             ['name' => 'TB DOTS', 'code' => 'Q', 'room' => 'Room 1'],

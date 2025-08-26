@@ -43,7 +43,13 @@ const submit = () => {
         }
       );
       const queueNumber = page.props.flash.queueItemData.queue_number;
-      console.log(page.props.flash.queueItemData);
+      const flowDepartments = page.props.flash.departmentFlowNames;
+
+      // build list items from departments
+      const stepsHtml = flowDepartments
+        .map((dept) => `<li>${dept.department_name}</li>`)
+        .join("");
+
       // open a small print window
       const printWindow = window.open("", "_blank", "width=600,height=600");
       printWindow.document.write(`
@@ -71,10 +77,7 @@ const submit = () => {
                   <p style="margin:0;">Steps:
                   </p>
                   <ol style="text-align: left; margin:0;">
-                      <li>Registration</li>
-                      <li>PHIC</li>
-                      <li>MSS</li>
-                      <li>Room 6</li>
+                     ${stepsHtml}
                   </ol>
               </div>
                 <div>

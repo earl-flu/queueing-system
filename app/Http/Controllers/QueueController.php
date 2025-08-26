@@ -142,11 +142,8 @@ class QueueController extends Controller
             ]);
         });
         $departmentFlowNames = $queueItem->getDepartmentFlowNames();
-        dd($departmentFlowNames);
-        // return Inertia::render('Queue/Create', [
-        //     'queueItem' => $queueItem,
-        // ]);
-        return redirect()->back()->with('queueItemData', $queueItem);
+
+        return redirect()->back()->with(['queueItemData' => $queueItem, 'departmentFlowNames' => $departmentFlowNames]);
     }
 
     public function call(QueueItem $queueItem)
