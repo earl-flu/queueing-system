@@ -15,26 +15,26 @@ class DepartmentFlowSeeder extends Seeder
     {
         //Get all the list of Department where code = 
         $departments = [
-            ['code' => 'AB1'], // Animal Bite 1
-            ['code' => 'AB2'], // Animal Bite 2
-            ['code' => 'AA'], // TB DOTS
-            ['code' => 'DEN'], // Dental
-            ['code' => 'PS'], // Psych
-            ['code' => 'NEU'], // Neuro
-            ['code' => 'EN'], // Endo
-            ['code' => 'INT'], // Int. Medicine
-            ['code' => 'OB'], // Ob-Gyne
-            ['code' => 'PED'], // Pedia
-            ['code' => 'GEN'], // Gen. Consult.
-            ['code' => 'SUR'], // Surgery
-            ['code' => 'ENT'], // ENT
+            ['code' => 'A'], // Animal Bite 1
+            ['code' => 'F'], // Animal Bite 2
+            ['code' => 'Q'], // TB DOTS
+            ['code' => 'D'], // Dental
+            ['code' => 'C'], // Psych
+            ['code' => 'N'], // Neuro
+            ['code' => 'E'], // Endo
+            ['code' => 'I'], // Int. Medicine
+            ['code' => 'O'], // Ob-Gyne
+            ['code' => 'P'], // Pedia
+            ['code' => 'G'], // Gen. Consult.
+            ['code' => 'S'], // Surgery
+            ['code' => 'H'], // ENT
         ];
 
         //for each and get the id of the department
         $steps = [
             ['code' => 'REG', 'step_order' => 1],
-            ['code' => 'PHIC', 'step_order' => 2],
-            ['code' => 'MSS', 'step_order' => 3],
+            ['code' => 'MSS', 'step_order' => 2],
+            ['code' => 'PHIC', 'step_order' => 3],
         ];
 
         // Fetch all departments once and map by code

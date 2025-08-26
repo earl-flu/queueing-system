@@ -27,7 +27,6 @@ class Department extends Model
         return $this->belongsToMany(User::class, 'department_users');
     }
 
-
     public function currentQueueItems(): HasMany
     {
         return $this->hasMany(QueueItem::class, 'current_department_id');

@@ -33,11 +33,60 @@ const form = useForm({
 
 const submit = () => {
   form.post(route("queue.store"), {
-    onSuccess: () => {
+    onSuccess: (page) => {
       const toast = useToast();
-      toast.success("Patient added to queue successfully", {
-        timeout: 3000,
-      });
+      form.reset();
+      toast.success(
+        `Patient ${form.patient.last_name} has been added to queue successfully`,
+        {
+          timeout: 3000,
+        }
+      );
+      const queueNumber = page.props.flash.queueItemData.queue_number;
+      console.log(page.props.flash.queueItemData);
+      // open a small print window
+      const printWindow = window.open("", "_blank", "width=600,height=600");
+      printWindow.document.write(`
+        <html>
+          <head><title>Queue Number</title></head>
+          <body>
+              <div style="
+              margin:0 auto;
+              width:220px;
+              height:300px; 
+              border:1px solid black;
+              font-family: montserrat;
+              text-align: center;
+              box-sizing: border-box;">
+          <div style="padding:15px; 
+              display:flex;
+              flex-direction:column; 
+              box-sizing:border-box;
+              height:100%;
+              justify-content: space-between;
+              ">
+              <h3 style="margin:0;">Your OPD Number:</h3>
+              <h2 style="font-size:48px; margin:0; font-family: sans-serif">${queueNumber}</h2>
+              <div style="font-size:14px;">
+                  <p style="margin:0;">Steps:
+                  </p>
+                  <ol style="text-align: left; margin:0;">
+                      <li>Registration</li>
+                      <li>PHIC</li>
+                      <li>MSS</li>
+                      <li>Room 6</li>
+                  </ol>
+              </div>
+                <div>
+                    <p style="margin: 0; font-size:13px;">Please be seated. <br>You will be served shortly.</p>
+                    <p style="color:#cdcdcd; font-size:9px; margin:0;">Generated: 08/26/25 1:56AM</p>
+                </div>
+            </div>
+        </div>
+            <script>window.print(); window.close();<\/script>
+          </body>
+        </html>
+      `);
     },
   });
 };
@@ -82,7 +131,7 @@ const roles = [
                 >
                 <input
                   type="text"
-                  class="form-control"
+                  class="form-control uppercase"
                   v-model="form.patient.last_name"
                   id="last_name"
                   autofocus
@@ -97,7 +146,7 @@ const roles = [
                 >
                 <input
                   type="text"
-                  class="form-control"
+                  class="form-control uppercase"
                   v-model="form.patient.first_name"
                   id="first_name"
                 />
@@ -109,7 +158,7 @@ const roles = [
                 <label for="middle_name" class="form-label">Middle Name</label>
                 <input
                   type="text"
-                  class="form-control"
+                  class="form-control uppercase"
                   v-model="form.patient.middle_name"
                   id="middle_name"
                 />

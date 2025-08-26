@@ -112,7 +112,7 @@ class QueueController extends Controller
             'final_department_id' => 'required|exists:departments,id'
         ]);
 
-        DB::transaction(function () use ($validated) {
+        $queueItem = DB::transaction(function () use ($validated) {
             $patient = Patient::create($validated['patient']);
             $finalDepartment = Department::findOrFail($validated['final_department_id']);
 
@@ -131,7 +131,7 @@ class QueueController extends Controller
                 ->today()
                 ->max('queue_position') + 1;
 
-            QueueItem::create([
+            return QueueItem::create([
                 'queue_number' => $finalDepartment->getNextQueueNumber(),
                 'patient_id' => $patient->id,
                 'original_department_id' => $finalDepartment->id, // Store final destination
@@ -141,9 +141,12 @@ class QueueController extends Controller
                 'waiting_started_at' => now()
             ]);
         });
-
-        return redirect()->route('queue.index')
-            ->with('success', 'Patient added to queue successfully.');
+        $departmentFlowNames = $queueItem->getDepartmentFlowNames();
+        dd($departmentFlowNames);
+        // return Inertia::render('Queue/Create', [
+        //     'queueItem' => $queueItem,
+        // ]);
+        return redirect()->back()->with('queueItemData', $queueItem);
     }
 
     public function call(QueueItem $queueItem)

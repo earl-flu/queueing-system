@@ -32,6 +32,24 @@ class DepartmentFlow extends Model
     }
 
     /**
+     * Get the department flow for given department
+     */
+    public static function getDepartmentFlowNames($finalDepartmentId)
+    {
+        return self::with(['stepDepartment:id,name,room']) // only load id & name
+            ->where('final_department_id', $finalDepartmentId)
+            ->orderBy('step_order')
+            ->get()
+            ->map(function ($flow) {
+                return [
+                    'id' => $flow->id,
+                    'step_order' => $flow->step_order,
+                    'department_name' => $flow->stepDepartment->name . ' ' . $flow->stepDepartment->room,
+                ];
+            });
+    }
+
+    /**
      * Get the first department in the flow for a given final department
      */
     public static function getFirstDepartment($finalDepartmentId)

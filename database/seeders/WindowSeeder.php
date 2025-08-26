@@ -36,9 +36,9 @@ class WindowSeeder extends Seeder
         $window1->departments()->sync($syncDataWindow1);
 
         $window2Displays = [
-            ['dept_code' => 'PS', 'position' => 0],
-            ['dept_code' => 'DEN', 'position' => 1],
-            ['dept_code' => 'AB1', 'position' => 2],
+            ['dept_code' => 'C', 'position' => 0],
+            ['dept_code' => 'D', 'position' => 1],
+            ['dept_code' => 'A', 'position' => 2],
         ];
 
         $syncDataWindow2 = [];

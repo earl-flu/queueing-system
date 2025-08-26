@@ -129,6 +129,14 @@ class QueueItem extends Model
     }
 
     /**
+     * Get the departmentflowNames
+     */
+    public function getDepartmentFlowNames()
+    {
+        return DepartmentFlow::getDepartmentFlowNames($this->original_department_id);
+    }
+
+    /**
      * Get the next department in the flow
      */
     public function getNextDepartment()
