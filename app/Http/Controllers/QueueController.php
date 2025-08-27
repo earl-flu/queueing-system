@@ -141,9 +141,15 @@ class QueueController extends Controller
                 'waiting_started_at' => now()
             ]);
         });
-        $departmentFlowNames = $queueItem->getDepartmentFlowNames();
 
-        return redirect()->back()->with(['queueItemData' => $queueItem, 'departmentFlowNames' => $departmentFlowNames]);
+        $departmentFlowNames = $queueItem->getDepartmentFlowNames();
+        $patient = Patient::findOrFail($queueItem->patient_id);
+
+        return redirect()->back()->with([
+            'queueItemData' => $queueItem,
+            'departmentFlowNames' => $departmentFlowNames,
+            'patient' => $patient,
+        ]);
     }
 
     public function skip(QueueItem $queueItem)

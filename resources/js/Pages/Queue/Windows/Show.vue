@@ -202,7 +202,7 @@ const getUpNext = (departmentId) => {
   return (dataByDepartment.value[departmentId] || [])
     .filter((i) => i.status !== "serving")
     .sort((a, b) => a.queue_position - b.queue_position)
-    .slice(0, 5);
+    .slice(0, 20);
 };
 </script>
 

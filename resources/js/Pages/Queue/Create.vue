@@ -42,9 +42,27 @@ const submit = () => {
           timeout: 3000,
         }
       );
+
+      const isPriority = page.props.flash.patient.is_priority;
+      console.log(isPriority);
       const queueNumber = page.props.flash.queueItemData.queue_number;
-      const spanQueueNumber = `<span style="color:red;">${queueNumber}</span>`;
+      const spanQueueNumber = isPriority
+        ? `<span style="color:red;">${queueNumber}</span>`
+        : `<span>${queueNumber}</span>`;
       const flowDepartments = page.props.flash.departmentFlowNames;
+      const queueDate = page.props.flash.queueItemData.created_at;
+
+      const dateObject = new Date(queueDate);
+      const formatter = new Intl.DateTimeFormat("en-US", {
+        month: "2-digit",
+        day: "2-digit",
+        year: "2-digit",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      });
+
+      const formattedDate = formatter.format(dateObject);
 
       // build list items from departments
       const stepsHtml = flowDepartments
@@ -83,7 +101,7 @@ const submit = () => {
               </div>
                 <div>
                     <p style="margin: 0; font-size:13px;">Please be seated. <br>You will be served shortly.</p>
-                    <p style="color:#cdcdcd; font-size:9px; margin:0;">Generated: 08/26/25 1:56AM</p>
+                    <p style="color:#6e877b; font-size:10px; margin:0;">Generated: ${formattedDate}</p>
                 </div>
             </div>
         </div>
@@ -229,7 +247,7 @@ const roles = [
                 </div>
               </div>
 
-              <div class="col-md-6">
+              <!-- <div class="col-md-6">
                 <label for="phone" class="form-label">Phone</label>
                 <input
                   type="text"
@@ -240,9 +258,9 @@ const roles = [
                 <div class="invalid-feedback d-block">
                   {{ form.errors["patient.phone"] }}
                 </div>
-              </div>
+              </div> -->
 
-              <div class="col-md-3">
+              <!-- <div class="col-md-3">
                 <label for="gender" class="form-label">Gender</label>
                 <select
                   id="gender"
@@ -269,7 +287,7 @@ const roles = [
                 <div class="invalid-feedback d-block">
                   {{ form.errors["patient.age"] }}
                 </div>
-              </div>
+              </div> -->
 
               <div class="col-md-12">
                 <div class="form-check">

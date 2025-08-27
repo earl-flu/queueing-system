@@ -47,6 +47,7 @@ class HandleInertiaRequests extends Middleware
             // 👇 Flash messages (available as $page.props.flash in Vue)
             'flash' => [
                 'queueItemData' => fn() => $request->session()->get('queueItemData'),
+                'patient' => fn() => $request->session()->get('patient'),
                 'departmentFlowNames' => fn() => $request->session()->get('departmentFlowNames'),
                 // 'error'   => fn() => $request->session()->get('error'),
                 // 'info'    => fn() => $request->session()->get('info'),
