@@ -156,10 +156,11 @@ const fetchData = async () => {
 onMounted(() => {
   window.Echo.channel("queue").listen("CallPatient", (event) => {
     console.log("Patient called:", event.queueItem);
+    console.log(event.queueItem);
     // Speak out patient's name using speech synthesis
     if ("speechSynthesis" in window) {
       const msg = new SpeechSynthesisUtterance(
-        `Now calling patient ${event.queueItem.queue_number}`
+        `Now calling patient ${event.queueItem.queue_number}. Please proceed to ${event.queueItem.current_department.name}`
       );
       msg.lang = "en-US"; // or "fil-PH" if you want Filipino accent
       window.speechSynthesis.speak(msg);

@@ -20,7 +20,7 @@ class CallPatient implements ShouldBroadcast
      */
     public function __construct(public QueueItem $queueItem)
     {
-        $this->queueItem = $queueItem;
+        $this->queueItem = $queueItem->load('currentDepartment');
     }
 
     /**
