@@ -4,6 +4,7 @@ import { useStatusLabel } from "@/Composables/useStatusLabel";
 import { useElapsedTime } from "@/Composables/useElapsedTime";
 import { useCallPatient } from "@/Composables/useCallPatient";
 import { useMarkNoShow } from "@/Composables/useMarkNoShow";
+import { useSkip } from "@/Composables/useSkip";
 import { useCompleteAndTransfer } from "@/Composables/useCompleteAndTransfer";
 import { useCompleteService } from "@/Composables/useCompleteService";
 
@@ -19,13 +20,14 @@ const { getStatusLabel } = useStatusLabel();
 const { completeService } = useCompleteService();
 const { callPatient } = useCallPatient();
 const { markNoShow } = useMarkNoShow();
+const { skip } = useSkip();
 const { completeAndTransfer } = useCompleteAndTransfer();
 const elapsed = useElapsedTime(props.item.called_at);
 </script>
 
 
 <template>
-  <div class="card">
+  <div class="card shadow border">
     <div class="card-body">
       <div class="d-flex justify-content-between align-items-start mb-3">
         <h3 class="card-title text-primary mb-0 font-bold">
@@ -56,30 +58,23 @@ const elapsed = useElapsedTime(props.item.called_at);
             {{ item.patient.priority_reason.description }}
           </span>
         </p>
-        <!-- <p
-          v-if="item.patient.priority_reason.description"
-          class="card-text small mb-1 mt-3 text-white"
-        >
-          <span class="px-2 py-1 rounded-md bg-red-500">
-            {{ item.patient.priority_reason.description }}
-          </span>
-        </p> -->
       </div>
       <div class="gap-2 flex">
-        <button
-          v-if="item.status === 'waiting'"
-          @click="callPatient(item.id)"
-          class="btn btn-success btn-sm flex-1"
-        >
-          Call
-        </button>
-        <button
+        <!-- <button
           v-if="item.status === 'serving'"
           @click="markNoShow(item.id)"
           class="btn btn-outline-danger btn-sm flex-1"
         >
           No Show
+        </button> -->
+        <button
+          v-if="item.status === 'serving'"
+          @click="skip(item.id)"
+          class="btn btn-outline-danger btn-sm flex-1"
+        >
+          Skip
         </button>
+
         <button
           v-if="item.status === 'serving' && item.is_final_department"
           @click="completeService(item.id)"
@@ -89,7 +84,7 @@ const elapsed = useElapsedTime(props.item.called_at);
         </button>
         <button
           v-if="item.status === 'serving' && item.has_next_department"
-          @click="completeAndTransfer(item.id)"
+          @click="completeAndTransfer(item)"
           class="btn btn-info btn-sm flex-1"
         >
           Done

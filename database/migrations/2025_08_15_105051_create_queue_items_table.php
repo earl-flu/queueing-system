@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('queue_position');
             $table->timestamp('called_at')->nullable();
             $table->timestamp('served_at')->nullable();
+            $table->timestamp('skipped_at')->nullable();
             $table->timestamp('completed_at')->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();

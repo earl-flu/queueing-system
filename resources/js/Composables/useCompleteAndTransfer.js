@@ -1,17 +1,17 @@
 import { router } from "@inertiajs/vue3";
 
 export function useCompleteAndTransfer() {
-    const completeAndTransfer = (id) => {
+    const completeAndTransfer = (item) => {
         if (
             !confirm(
-                "Are you sure you want to complete this service and transfer to next department?"
+                `Are you sure you want to complete ${item.queue_number} service and transfer to next department?`
             )
         ) {
             return;
         }
 
         router.post(
-            route("queue.complete-and-transfer", id),
+            route("queue.complete-and-transfer", item),
             {},
             {
                 preserveScroll: true,

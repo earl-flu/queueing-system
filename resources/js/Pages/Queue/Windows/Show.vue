@@ -185,7 +185,7 @@ function enableSpeech() {
   speechEnabled.value = true;
 
   // say a test phrase to "unlock" speech
-  const msg = new SpeechSynthesisUtterance("Announcements enabled");
+  const msg = new SpeechSynthesisUtterance("Announcements Enabled");
   window.speechSynthesis.speak(msg);
 }
 

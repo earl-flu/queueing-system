@@ -146,6 +146,27 @@ class QueueController extends Controller
         return redirect()->back()->with(['queueItemData' => $queueItem, 'departmentFlowNames' => $departmentFlowNames]);
     }
 
+    public function skip(QueueItem $queueItem)
+    {
+        $user = auth()->user();
+
+        // Check if user has access to this department
+        if ($user->isReception() && !$user->isAdmin() && !$user->departments->contains($queueItem->current_department_id)) {
+            abort(403);
+        }
+
+        // Update the queue item status to 'skipped' and record the time
+        $queueItem->status = 'skipped';
+        $queueItem->skipped_at = now();
+        $queueItem->save();
+
+        // Optionally, broadcast an event if the frontend needs to react to skipped items
+        // broadcast(new QueueItemUpdated($queueItem));
+
+        return redirect()->back()
+            ->with('success', 'Patient queue item has been skipped.');
+    }
+
     public function call(QueueItem $queueItem)
     {
         $user = auth()->user();
@@ -283,7 +304,7 @@ class QueueController extends Controller
         $queueItems = QueueItem::with(['patient', 'originalDepartment', 'currentDepartment', 'patient.priorityReason'])
             ->where('current_department_id', $departmentId)
             ->today()
-            ->whereIn('status', ['waiting', 'serving'])
+            ->whereIn('status', ['waiting', 'serving', 'skipped'])
             ->orderBy('queue_position')
             ->get();
 

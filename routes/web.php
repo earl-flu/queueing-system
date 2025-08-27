@@ -50,6 +50,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/{queueItem}/complete-and-transfer', [QueueController::class, 'completeAndTransfer'])->name('complete-and-transfer');
         Route::post('/{queueItem}/no-show', [QueueController::class, 'noShow'])->name('no-show');
         Route::post('/{queueItem}/transfer', [QueueController::class, 'transfer'])->name('transfer');
+        Route::post('/{queueItem}/transfer', [QueueController::class, 'skip'])->name('skip');
         Route::get('/department/{departmentId}', [QueueController::class, 'departmentQueue'])->name('department');
         Route::post('/department/{departmentId}/reset-counter', [QueueController::class, 'resetCounter'])
             ->name('reset-counter')

@@ -87,11 +87,12 @@
                   class="form-select"
                 >
                   <option value="all">All Status</option>
-                  <option value="waiting">Waiting</option>
-                  <option value="serving">Serving</option>
                   <option value="done">Done</option>
-                  <option value="transferred">Transferred</option>
                   <option value="no_show">No Show</option>
+                  <option value="serving">Serving</option>
+                  <option value="skipped">Skipped</option>
+                  <option value="transferred">Transferred</option>
+                  <option value="waiting">Waiting</option>
                 </select>
               </div>
               <div class="col-md-4 d-flex align-items-end mt-2">

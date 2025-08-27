@@ -12,7 +12,7 @@ return new class extends Migration
     {
         // Update enum to include no_show (MySQL-compatible). If using SQLite, this will be a no-op.
         try {
-            DB::statement("ALTER TABLE queue_items MODIFY status ENUM('waiting','serving','done','transferred','no_show') DEFAULT 'waiting'");
+            DB::statement("ALTER TABLE queue_items MODIFY status ENUM('waiting','serving','done','transferred','skipped','no_show') DEFAULT 'waiting'");
         } catch (\Throwable $e) {
             // Ignore if the database does not support ALTERing enum (e.g., SQLite in tests)
         }

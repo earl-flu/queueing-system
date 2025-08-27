@@ -43,6 +43,7 @@ const submit = () => {
         }
       );
       const queueNumber = page.props.flash.queueItemData.queue_number;
+      const spanQueueNumber = `<span style="color:red;">${queueNumber}</span>`;
       const flowDepartments = page.props.flash.departmentFlowNames;
 
       // build list items from departments
@@ -72,7 +73,7 @@ const submit = () => {
               justify-content: space-between;
               ">
               <h3 style="margin:0;">Your OPD Number:</h3>
-              <h2 style="font-size:48px; margin:0; font-family: sans-serif">${queueNumber}</h2>
+              <h2 style="font-size:48px; margin:0; font-family: sans-serif">${spanQueueNumber}</h2>
               <div style="font-size:14px;">
                   <p style="margin:0;">Steps:
                   </p>

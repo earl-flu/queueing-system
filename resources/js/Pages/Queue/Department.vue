@@ -60,12 +60,16 @@
             </div>
 
             <div v-else class="row">
-              <div class="col-md-4">
-                <h6 class="text-center mb-3 font-extrabold">NOW SERVING</h6>
+              <div class="col-md-3">
+                <h6 class="text-center mb-4 font-extrabold text-2xl">
+                  NOW SERVING
+                </h6>
                 <div
-                  v-for="item in queueItems.filter(
-                    (i) => i.status === 'serving'
-                  )"
+                  v-for="item in queueItems
+                    .filter((i) => i.status === 'serving')
+                    .sort(
+                      (a, b) => new Date(b.called_at) - new Date(a.called_at)
+                    )"
                   :key="item.id"
                   class="mb-3"
                 >
@@ -73,16 +77,23 @@
                   <ServingCard :item="item" />
                 </div>
               </div>
-              <div class="col-md-4 border-x-4">
-                <h6 class="text-center mb-3 font-extrabold">PRIORITY</h6>
+              <div class="col-md-3 border-x-4">
+                <h6 class="text-center mb-4 font-extrabold text-2xl leading-5">
+                  <span class="text-xs align-top">WAITING</span>
+                  <br />
+                  PRIORITY
+                </h6>
                 <div
                   v-for="(item, index) in queueItems.filter(
-                    (i) => i.patient.is_priority && i.status !== 'serving'
+                    (i) =>
+                      i.patient.is_priority &&
+                      i.status !== 'serving' &&
+                      i.status !== 'skipped'
                   )"
                   :key="item.id"
                   class="mb-3"
                 >
-                  <div class="card">
+                  <div class="card shadow border">
                     <div class="card-body">
                       <div
                         class="d-flex justify-content-between align-items-start mb-3"
@@ -146,16 +157,23 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-4">
-                <h6 class="text-center mb-3 font-extrabold">REGULAR</h6>
+              <div class="col-md-3 border-r-4">
+                <h6 class="text-center mb-4 font-extrabold text-2xl leading-5">
+                  <span class="text-xs align-top">WAITING</span>
+                  <br />
+                  REGULAR
+                </h6>
                 <div
                   v-for="(item, index) in queueItems.filter(
-                    (i) => !i.patient.is_priority && i.status !== 'serving'
+                    (i) =>
+                      !i.patient.is_priority &&
+                      i.status !== 'serving' &&
+                      i.status !== 'skipped'
                   )"
                   :key="item.id"
                   class="mb-3"
                 >
-                  <div class="card">
+                  <div class="card shadow border">
                     <div class="card-body">
                       <div
                         class="d-flex justify-content-between align-items-start mb-3"
@@ -179,6 +197,12 @@
                           {{ item.patient.suffix }}
                         </h6>
                         <p
+                          v-if="item.status === 'skipped'"
+                          class="card-text small mb-1"
+                        >
+                          {{ getTimeAgo(item.skipped_at) }}
+                        </p>
+                        <p
                           v-if="item.patient.phone"
                           class="card-text small mb-1"
                         >
@@ -191,6 +215,93 @@
                       <div class="gap-2 flex">
                         <button
                           v-if="item.status === 'waiting' && index === 0"
+                          @click="callPatient(item.id)"
+                          class="btn btn-success btn-sm flex-1"
+                        >
+                          Call
+                        </button>
+                        <!-- <button
+                          v-if="
+                            item.status === 'waiting' ||
+                            item.status === 'serving'
+                          "
+                          @click="openTransferModal(item)"
+                          class="btn btn-warning btn-sm flex-1"
+                        >
+                          Transfer
+                        </button> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <h6 class="text-center mb-4 font-extrabold text-2xl">
+                  SKIPPED
+                </h6>
+                <div
+                  v-for="item in queueItems.filter(
+                    (i) => i.status === 'skipped'
+                  )"
+                  :key="item.id"
+                  class="mb-3"
+                >
+                  <div class="card shadow border opacity-50 hover:bg-gray-100">
+                    <div class="card-body">
+                      <div
+                        class="d-flex justify-content-between align-items-start mb-3"
+                      >
+                        <h3 class="card-title text-primary mb-0 font-bold">
+                          {{ item.queue_number }}
+                        </h3>
+                        <span
+                          :class="getStatusBadgeClass(item.status)"
+                          class="badge"
+                        >
+                          {{ getStatusLabel(item.status) }}
+                        </span>
+                      </div>
+
+                      <div class="mb-3">
+                        <h6 class="card-subtitle mb-1 uppercase">
+                          {{ item.patient.last_name }}
+                          {{ item.patient.first_name }}
+                          {{ item.patient.middle_name }}
+                          {{ item.patient.suffix }}
+                        </h6>
+                        <p
+                          v-if="item.status === 'skipped'"
+                          class="card-text small mb-1 text-gray-500"
+                        >
+                          Skipped:
+                          {{
+                            new Date(item.skipped_at).toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })
+                          }}
+                        </p>
+                        <p
+                          v-if="item.patient.phone"
+                          class="card-text small mb-1"
+                        >
+                          {{ item.patient.phone }}
+                        </p>
+                        <small class="text-gray-300"
+                          >Position: {{ item.queue_position }}</small
+                        >
+                        <p
+                          v-if="item.patient.priority_reason"
+                          class="card-text small mb-1 mt-3 text-white"
+                        >
+                          <span class="px-2 py-1 rounded-md bg-red-500">
+                            {{ item.patient.priority_reason.description }}
+                          </span>
+                        </p>
+                      </div>
+                      <div class="gap-2 flex">
+                        <button
+                          v-if="item.status === 'skipped'"
                           @click="callPatient(item.id)"
                           class="btn btn-success btn-sm flex-1"
                         >
@@ -327,9 +438,9 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import Modal from "@/Components/Modal.vue";
 import ServingCard from "@/Components/ServingCard.vue";
-import { useElapsedTime } from "@/Composables/useElapsedTime";
 import { Head, Link, router, useForm } from "@inertiajs/vue3";
 import { ref, computed, onMounted, onBeforeUnmount } from "vue";
+import { useElapsedTime } from "@/Composables/useElapsedTime";
 
 const props = defineProps({
   department: Object,
