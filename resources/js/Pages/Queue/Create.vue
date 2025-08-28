@@ -4,6 +4,9 @@ import { Head, useForm } from "@inertiajs/vue3";
 import { useToast } from "vue-toastification";
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
+import { usePrintQueue } from "@/Composables/usePrintQueue";
+
+const { printQueueTicket } = usePrintQueue();
 
 const props = defineProps({
   departments: {
@@ -42,73 +45,12 @@ const submit = () => {
           timeout: 3000,
         }
       );
-
-      const isPriority = page.props.flash.patient.is_priority;
-      console.log(isPriority);
-      const queueNumber = page.props.flash.queueItemData.queue_number;
-      const spanQueueNumber = isPriority
-        ? `<span style="color:red;">${queueNumber}</span>`
-        : `<span>${queueNumber}</span>`;
-      const flowDepartments = page.props.flash.departmentFlowNames;
-      const queueDate = page.props.flash.queueItemData.created_at;
-
-      const dateObject = new Date(queueDate);
-      const formatter = new Intl.DateTimeFormat("en-US", {
-        month: "2-digit",
-        day: "2-digit",
-        year: "2-digit",
-        hour: "numeric",
-        minute: "2-digit",
-        hour12: true,
+      printQueueTicket({
+        queueNumber: page.props.flash.queueItemData.queue_number,
+        isPriority: true, // or from form.patient.is_priority
+        flowDepartments: page.props.flash.queueItemData.department_flow_names,
+        queueDate: page.props.flash.queueItemData.created_at,
       });
-
-      const formattedDate = formatter.format(dateObject);
-
-      // build list items from departments
-      const stepsHtml = flowDepartments
-        .map((dept) => `<li>${dept.department_name}</li>`)
-        .join("");
-
-      // open a small print window
-      const printWindow = window.open("", "_blank", "width=600,height=600");
-      printWindow.document.write(`
-        <html>
-          <head><title>Queue Number</title></head>
-          <body>
-              <div style="
-              margin:0 auto;
-              width:220px;
-              height:300px; 
-              border:1px solid black;
-              font-family: montserrat;
-              text-align: center;
-              box-sizing: border-box;">
-          <div style="padding:15px; 
-              display:flex;
-              flex-direction:column; 
-              box-sizing:border-box;
-              height:100%;
-              justify-content: space-between;
-              ">
-              <h3 style="margin:0;">Your OPD Number:</h3>
-              <h2 style="font-size:48px; margin:0; font-family: sans-serif">${spanQueueNumber}</h2>
-              <div style="font-size:14px;">
-                  <p style="margin:0;">Steps:
-                  </p>
-                  <ol style="text-align: left; margin:0;">
-                     ${stepsHtml}
-                  </ol>
-              </div>
-                <div>
-                    <p style="margin: 0; font-size:13px;">Please be seated. <br>You will be served shortly.</p>
-                    <p style="color:#6e877b; font-size:10px; margin:0;">Generated: ${formattedDate}</p>
-                </div>
-            </div>
-        </div>
-            <script>window.print(); window.close();<\/script>
-          </body>
-        </html>
-      `);
     },
   });
 };

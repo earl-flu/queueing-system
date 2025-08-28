@@ -36,6 +36,9 @@ class QueueItem extends Model
         'serving_started_at' => 'datetime'
     ];
 
+    // The attributes that should be appended to the model's array form.
+    protected $appends = ['department_flow_names'];
+
     public function patient(): BelongsTo
     {
         return $this->belongsTo(Patient::class);
@@ -129,12 +132,16 @@ class QueueItem extends Model
     }
 
     /**
-     * Get the departmentflowNames
+     * Get the department flow names for the queue item.
+     *
+     * @return array
      */
-    public function getDepartmentFlowNames()
+    public function getDepartmentFlowNamesAttribute()
     {
         return DepartmentFlow::getDepartmentFlowNames($this->original_department_id);
     }
+
+
 
     /**
      * Get the next department in the flow

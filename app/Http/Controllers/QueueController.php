@@ -145,12 +145,12 @@ class QueueController extends Controller
             ]);
         });
 
-        $departmentFlowNames = $queueItem->getDepartmentFlowNames();
+        // $departmentFlowNames = $queueItem->getDepartmentFlowNames();
         $patient = Patient::findOrFail($queueItem->patient_id);
 
         return redirect()->back()->with([
             'queueItemData' => $queueItem,
-            'departmentFlowNames' => $departmentFlowNames,
+            // 'departmentFlowNames' => $departmentFlowNames,
             'patient' => $patient,
         ]);
     }

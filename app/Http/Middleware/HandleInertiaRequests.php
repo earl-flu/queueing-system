@@ -48,7 +48,7 @@ class HandleInertiaRequests extends Middleware
             'flash' => [
                 'queueItemData' => fn() => $request->session()->get('queueItemData'),
                 'patient' => fn() => $request->session()->get('patient'),
-                'departmentFlowNames' => fn() => $request->session()->get('departmentFlowNames'),
+                // 'departmentFlowNames' => fn() => $request->session()->get('departmentFlowNames'),
                 // 'error'   => fn() => $request->session()->get('error'),
                 // 'info'    => fn() => $request->session()->get('info'),
             ],
