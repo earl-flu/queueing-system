@@ -2,7 +2,7 @@
   <Head :title="`Edit ${form.name}`" />
   <AuthenticatedLayout>
     <div class="d-flex justify-content-between align-items-center mb-3">
-      <h3 class="m-0">Edit Window</h3>
+      <h3 class="m-0">Edit Screens</h3>
       <Link :href="route('windows.show', window.id)" class="btn btn-secondary"
         >View</Link
       >

@@ -35,7 +35,7 @@ const user = computed(() => $page.props.auth.user);
               src="https://images.pexels.com/photos/1022922/pexels-photo-1022922.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
               class="rounded-circle p-1 border"
               width="45"
-           style="height: 45px !important;"
+              style="height: 45px !important"
               alt=""
             />
           </a>
@@ -46,22 +46,23 @@ const user = computed(() => $page.props.auth.user);
                   src="https://images.pexels.com/photos/1022922/pexels-photo-1022922.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
                   class="rounded-circle p-1 shadow mb-3"
                   width="90"
-                  style="height: 90px !important;"
+                  style="height: 90px !important"
                   alt=""
                 />
                 <h5 class="user-name mb-0 fw-bold">Hello, {{ user.name }}</h5>
               </div>
             </a>
             <hr class="dropdown-divider" />
-            <a
-              class="dropdown-item d-flex align-items-center gap-2 py-2"
-              href="javascript:;"
-              ><i class="material-icons-outlined">person_outline</i>Profile</a
-            >
-            <a
+            <!-- <a
               class="dropdown-item d-flex align-items-center gap-2 py-2"
               href="javascript:;"
               ><i class="material-icons-outlined">local_bar</i>Setting</a
+            > -->
+            <Link
+              :href="route('profile.edit')"
+              class="dropdown-item d-flex align-items-center gap-2 py-2"
+              ><i class="material-icons-outlined">person_outline</i
+              >Profile</Link
             >
             <hr class="dropdown-divider" />
             <Link

@@ -1,7 +1,7 @@
 <template>
-  <Head title="Windows" />
+  <Head title="Screens" />
   <AuthenticatedLayout>
-    <h3 class="mb-3">Windows</h3>
+    <h3 class="mb-3">Screens</h3>
     <div class="row g-3">
       <div v-for="w in windows" :key="w.id" class="col-12 col-md-6 col-xl-4">
         <div class="card h-100">

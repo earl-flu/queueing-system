@@ -7,6 +7,7 @@ use App\Http\Controllers\PaperController;
 use App\Http\Controllers\PaperDashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QueueController;
+use App\Http\Controllers\ScreenController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\WindowController;
 use Illuminate\Foundation\Application;
@@ -38,10 +39,10 @@ Route::middleware('auth')->group(function () {
     // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Queue management routes
-    Route::prefix('queue')->name('queue.')->group(function () {
+    Route::name('queue.')->group(function () {
         Route::get('/', [QueueController::class, 'index'])->name('index');
         Route::get('/create', [QueueController::class, 'create'])->name('create');
         Route::post('/store', [QueueController::class, 'store'])->name('store');
@@ -67,8 +68,8 @@ Route::middleware('auth')->group(function () {
         'department-flows' => 'department_flow'
     ]);
 
-    // Windows
-    Route::prefix('windows')->name('windows.')->group(function () {
+    // Screens
+    Route::prefix('screens')->name('windows.')->group(function () {
         Route::get('/', [WindowController::class, 'index'])->name('index');
         Route::get('/{window}', [WindowController::class, 'show'])->name('show');
         Route::get('/{window}/data', [WindowController::class, 'data'])->name('data');
