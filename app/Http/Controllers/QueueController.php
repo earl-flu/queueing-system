@@ -18,6 +18,9 @@ class QueueController extends Controller
     public function index(Request $request)
     {
         $user = auth()->user();
+        if (!$user->isAdmin() && $user->departments->isEmpty()) {
+            abort(403, 'This user does not have a department assigned');
+        }
 
         $departmentId = $request->get('department', $user->isAdmin() ? '' : $user->departments->first()->id);
         $status = $request->get('status', 'all');
