@@ -118,7 +118,7 @@ const roles = [
                   {{ form.errors["patient.first_name"] }}
                 </div>
               </div>
-              <div class="col-md-3">
+              <!-- <div class="col-md-3">
                 <label for="middle_name" class="form-label">Middle Name</label>
                 <input
                   type="text"
@@ -129,8 +129,8 @@ const roles = [
                 <div class="invalid-feedback d-block">
                   {{ form.errors["patient.middle_name"] }}
                 </div>
-              </div>
-              <div class="col-md-3">
+              </div> -->
+              <!-- <div class="col-md-3">
                 <label for="suffix" class="form-label">Suffix</label>
                 <select
                   id="suffix"
@@ -148,8 +148,8 @@ const roles = [
                 <div class="invalid-feedback d-block">
                   {{ form.errors["patient.suffix"] }}
                 </div>
-              </div>
-              <div class="col-md-12">
+              </div> -->
+              <div class="col-md-6">
                 <label for="final_department_id" class="form-label"
                   >Destination Department
                   <span class="text-sm text-red-500">*</span></label
