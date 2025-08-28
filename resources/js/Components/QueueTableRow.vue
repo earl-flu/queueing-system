@@ -53,6 +53,8 @@ const formatTime = (datetime) => {
 const handlePrint = (q) => {
   printQueueTicket({
     queueNumber: q.queue_number,
+    firstName: q.patient.first_name,
+    lastName: q.patient.last_name,
     isPriority: q.patient.is_priority, // or from form.patient.is_priority
     flowDepartments: q.department_flow_names,
     queueDate: q.created_at,

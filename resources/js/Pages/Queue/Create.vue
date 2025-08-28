@@ -38,7 +38,7 @@ const submit = () => {
   form.post(route("queue.store"), {
     onSuccess: (page) => {
       const toast = useToast();
-      form.reset();
+
       toast.success(
         `Patient ${form.patient.last_name} has been added to queue successfully`,
         {
@@ -47,10 +47,13 @@ const submit = () => {
       );
       printQueueTicket({
         queueNumber: page.props.flash.queueItemData.queue_number,
-        isPriority: true, // or from form.patient.is_priority
+        firstName: page.props.flash.patient.first_name,
+        lastName: page.props.flash.patient.last_name,
+        isPriority: page.props.flash.patient.is_priority, // or from form.patient.is_priority
         flowDepartments: page.props.flash.queueItemData.department_flow_names,
         queueDate: page.props.flash.queueItemData.created_at,
       });
+      form.reset();
     },
   });
 };
