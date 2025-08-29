@@ -207,6 +207,7 @@ class QueueController extends Controller
 
     public function completeAndTransfer(QueueItem $queueItem)
     {
+
         $user = auth()->user();
         if ($user->isReception() && !$user->isAdmin() && !$user->departments->contains($queueItem->current_department_id)) {
             abort(403);

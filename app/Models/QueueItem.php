@@ -172,7 +172,12 @@ class QueueItem extends Model
 
         // Check if already forwarded to next department - to avoid duplicate
         $queueNumber = $this->queue_number;
-        $isAlreadyForwardedToNextDept = QueueItem::where('queue_number', $queueNumber)->where('current_department_id', $nextFlow['step_department_id'])->exists();
+
+        $isAlreadyForwardedToNextDept = QueueItem::where('queue_number', $queueNumber)
+            ->where('current_department_id', $nextFlow['step_department_id'])
+            ->today()
+            ->exists();
+
         if ($isAlreadyForwardedToNextDept) {
             return;
         }
