@@ -9,12 +9,19 @@ use App\Models\Patient;
 use App\Models\PriorityReason;
 use App\Models\QueueItem;
 use App\Models\QueueTransfer;
+use App\Services\SmsGateService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Http;
 
 class QueueController extends Controller
 {
+    public function __construct(SmsGateService $smsGateService)
+    {
+        $this->smsGateService = $smsGateService;
+    }
+
     public function index(Request $request)
     {
         $user = auth()->user();
@@ -67,12 +74,41 @@ class QueueController extends Controller
         ]);
     }
 
+    public function testDirectSms()
+    {
+        try {
+            $response = Http::withBasicAuth('sms', 'WuSab1t5')
+                ->timeout(30)
+                ->withHeaders(['Content-Type' => 'application/json'])
+                ->post('http://192.168.1.58:8080/v1/message', [
+                    'message' => 'Test from Laravel',
+                    'phoneNumbers' => ['+639815426706'], // Use your actual number
+                    'simSlot' => 1
+                ]);
+
+            return response()->json([
+                'success' => $response->successful(),
+                'status' => $response->status(),
+                'response' => $response->body(),
+                'data' => $response->successful() ? $response->json() : null
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
     public function create()
     {
         $user = auth()->user();
         if (!$user->isAdmin() && !$user->isReception()) {
             abort(403);
         }
+
+        // $this->smsGateService->sendSms('+639815426706', 'Hello, this is a test message2');
+        // $this->testDirectSms();
 
         $departments = Department::where('is_active', true)
             ->addSelect([

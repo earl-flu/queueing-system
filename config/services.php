@@ -34,5 +34,11 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'sms_gate' => [
+        'url'       => env('SMS_GATE_URL'),
+        'user'      => env('SMS_GATE_USER'),
+        'pass'      => env('SMS_GATE_PASS'),
+        'device_id' => env('SMS_GATE_DEVICE_ID'),
+    ],
 
 ];

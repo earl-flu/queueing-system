@@ -92,7 +92,7 @@ const roles = [
           <div class="card-body p-4">
             <h5 class="mb-4">New Queue Entry</h5>
             <form class="row g-3" @submit.prevent="submit">
-              <div class="col-md-3">
+              <div class="col-md-6">
                 <label for="last_name" class="form-label"
                   >Last Name <span class="text-sm text-red-500">*</span></label
                 >
@@ -107,7 +107,7 @@ const roles = [
                   {{ form.errors["patient.last_name"] }}
                 </div>
               </div>
-              <div class="col-md-3">
+              <div class="col-md-6">
                 <label for="first_name" class="form-label"
                   >First Name <span class="text-sm text-red-500">*</span></label
                 >
@@ -152,7 +152,7 @@ const roles = [
                   {{ form.errors["patient.suffix"] }}
                 </div>
               </div> -->
-              <div class="col-md-6">
+              <div class="col-md-12">
                 <label for="final_department_id" class="form-label"
                   >Destination Department
                   <span class="text-sm text-red-500">*</span></label
