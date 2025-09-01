@@ -120,9 +120,13 @@ class QueueItem extends Model
      */
     public function completeService()
     {
-        $waitingDuration = $this->waiting_started_at ? now()->diffInSeconds($this->waiting_started_at) : 0;
-        $servingDuration = $this->serving_started_at ? now()->diffInSeconds($this->serving_started_at) : 0;
+        $waitingDuration = $this->waiting_started_at
+            ? $this->waiting_started_at->diffInSeconds(now())
+            : 0;
 
+        $servingDuration = $this->serving_started_at
+            ? $this->serving_started_at->diffInSeconds(now())
+            : 0;
         $this->update([
             'status' => 'done',
             'completed_at' => now(),

@@ -15,8 +15,8 @@ class WindowSeeder extends Seeder
     public function run(): void
     {
         // Seed Windows
-        $window1 = Window::create(['name' => 'Window 1', 'slug' => 'window-1']);
-        $window2 = Window::create(['name' => 'Window 2', 'slug' => 'window-2']);
+        $window1 = Window::create(['name' => 'Screen 1', 'slug' => 'window-1']);
+        $window2 = Window::create(['name' => 'Screen 2', 'slug' => 'window-2']);
 
         $window1Displays = [
             ['dept_code' => 'REG', 'position' => 0],

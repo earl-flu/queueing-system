@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\DashboardApiController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DepartmentFlowController;
 use App\Http\Controllers\OfficeController;
@@ -35,7 +37,25 @@ Route::get('/test', function () {
 });
 
 Route::middleware('auth')->group(function () {
-    // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/admin', [DashboardController::class, 'adminDashboard'])->name('dashboard.admin')->middleware('admin');
+    Route::get('/dashboard/staff', [DashboardController::class, 'staffDashboard'])->name('dashboard.staff');
+
+    // Dashboard API routes
+    Route::prefix('api/dashboard')->name('dashboard.api.')->group(function () {
+        Route::get('/today-stats', [DashboardApiController::class, 'getTodayStats'])->name('today-stats');
+        Route::get('/department-stats', [DashboardApiController::class, 'getDepartmentStats'])->name('department-stats');
+        Route::get('/performance-metrics', [DashboardApiController::class, 'getPerformanceMetrics'])->name('performance-metrics');
+        Route::get('/recent-activity', [DashboardApiController::class, 'getRecentActivity'])->name('recent-activity');
+        Route::get('/hourly-stats', [DashboardApiController::class, 'getHourlyStats'])->name('hourly-stats');
+        Route::get('/user-stats', [DashboardApiController::class, 'getUserStats'])->name('user-stats');
+        Route::get('/user-department-stats', [DashboardApiController::class, 'getUserDepartmentStats'])->name('user-department-stats');
+        Route::get('/user-recent-activity', [DashboardApiController::class, 'getUserRecentActivity'])->name('user-recent-activity');
+        Route::get('/department/{departmentId}/analytics', [DashboardApiController::class, 'getDepartmentAnalytics'])->name('department-analytics');
+        Route::get('/admin-data', [DashboardApiController::class, 'getAdminDashboardData'])->name('admin-data')->middleware('admin');
+        Route::get('/staff-data', [DashboardApiController::class, 'getStaffDashboardData'])->name('staff-data');
+    });
+
     // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
