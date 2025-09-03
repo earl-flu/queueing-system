@@ -38,8 +38,10 @@ Route::get('/test', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/dashboard/admin', [DashboardController::class, 'adminDashboard'])->name('dashboard.admin')->middleware('admin');
-    Route::get('/dashboard/staff', [DashboardController::class, 'staffDashboard'])->name('dashboard.staff');
+    // Route::get('/dashboard/admin', [DashboardController::class, 'adminDashboard'])->name('dashboard.admin')->middleware('admin');
+    // Route::get('/dashboard/staff', [DashboardController::class, 'staffDashboard'])->name('dashboard.staff');
+    Route::get('/dashboard/admin/{date?}', [DashboardController::class, 'adminDashboard'])->name('dashboard.admin.date')->middleware('admin');
+    Route::get('/dashboard/staff/{date?}', [DashboardController::class, 'staffDashboard'])->name('dashboard.staff.date');
 
     // Dashboard API routes
     Route::prefix('api/dashboard')->name('dashboard.api.')->group(function () {

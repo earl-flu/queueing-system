@@ -8,7 +8,18 @@ const props = defineProps({
   userStats: Object,
   departmentStats: Array,
   recentActivity: Array,
+  selectedDate: String,
 });
+
+const selectedDate = ref(
+  props.selectedDate || new Date().toISOString().split("T")[0]
+);
+const isLoading = ref(false);
+
+const updateDate = () => {
+  isLoading.value = true;
+  window.location.href = `/dashboard/staff/${selectedDate.value}`;
+};
 
 const formatTime = (seconds) => {
   if (!seconds) return "0:00";
@@ -63,12 +74,77 @@ const getStatusColor = (status) => {
             </li>
             <li class="breadcrumb-item active" aria-current="page">
               Staff Dashboard
+              <span
+                v-if="selectedDate !== new Date().toISOString().split('T')[0]"
+                class="ms-2 text-muted"
+              >
+                ({{ selectedDate }})
+              </span>
             </li>
           </ol>
         </nav>
       </div>
     </div>
     <!--end breadcrumb-->
+
+    <!-- Date Filter -->
+    <div class="row mb-3">
+      <div class="col-12">
+        <div class="card radius-10">
+          <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between">
+              <div>
+                <h6 class="mb-0">
+                  Date Filter
+                  <span
+                    v-if="
+                      selectedDate !== new Date().toISOString().split('T')[0]
+                    "
+                    class="ms-2 text-primary"
+                  >
+                    - {{ selectedDate }}
+                  </span>
+                </h6>
+                <small class="text-muted"
+                  >Select a date to view dashboard data</small
+                >
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                <input
+                  type="date"
+                  v-model="selectedDate"
+                  class="form-control"
+                  @change="updateDate"
+                />
+                <button
+                  @click="updateDate"
+                  class="btn btn-primary"
+                  type="button"
+                  :disabled="isLoading"
+                >
+                  <i v-if="!isLoading" class="bx bx-search"></i>
+                  <i v-else class="bx bx-loader-alt bx-spin"></i>
+                  {{ isLoading ? "Loading..." : "Update" }}
+                </button>
+                <button
+                  @click="
+                    () => {
+                      selectedDate = new Date().toISOString().split('T')[0];
+                      updateDate();
+                    }
+                  "
+                  class="btn btn-outline-secondary"
+                  type="button"
+                >
+                  <i class="bx bx-calendar"></i> Today
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--end Date Filter-->
 
     <div class="row">
       <!-- Personal Performance Cards -->
@@ -82,7 +158,7 @@ const getStatusColor = (status) => {
                     <h4 class="mb-1 text-primary">
                       {{ userStats.total_served_today }}
                     </h4>
-                    <p class="mb-0 text-secondary">Patients Served Today</p>
+                    <p class="mb-0 text-secondary">Patients Served</p>
                   </div>
                   <div class="ms-auto fs-2 text-primary">
                     <i class="bx bx-user-check"></i>
@@ -353,5 +429,18 @@ const getStatusColor = (status) => {
 
 .btn i {
   font-size: 1.1em;
+}
+
+.bx-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style>

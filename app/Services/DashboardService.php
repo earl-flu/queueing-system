@@ -15,25 +15,31 @@ class DashboardService
      */
     public function getTodayStats(): array
     {
-        $today = today();
+        return $this->getStatsForDate(today());
+    }
 
+    /**
+     * Get statistics for a specific date
+     */
+    public function getStatsForDate(Carbon $date): array
+    {
         return [
-            'total_patients' => QueueItem::today()->count(),
-            'waiting' => QueueItem::today()->waiting()->count(),
-            'serving' => QueueItem::today()->serving()->count(),
-            'completed' => QueueItem::today()->where('status', 'done')->count(),
-            'transferred' => QueueItem::today()->where('status', 'transferred')->count(),
-            'no_show' => QueueItem::today()->where('status', 'no_show')->count(),
-            'total_waiting_time' => QueueItem::today()
+            'total_patients' => QueueItem::whereDate('created_at', $date)->count(),
+            'waiting' => QueueItem::whereDate('created_at', $date)->waiting()->count(),
+            'serving' => QueueItem::whereDate('created_at', $date)->serving()->count(),
+            'completed' => QueueItem::whereDate('created_at', $date)->where('status', 'done')->count(),
+            'transferred' => QueueItem::whereDate('created_at', $date)->where('status', 'transferred')->count(),
+            'no_show' => QueueItem::whereDate('created_at', $date)->where('status', 'no_show')->count(),
+            'total_waiting_time' => QueueItem::whereDate('created_at', $date)
                 ->whereNotNull('waiting_duration_seconds')
                 ->sum('waiting_duration_seconds'),
-            'total_serving_time' => QueueItem::today()
+            'total_serving_time' => QueueItem::whereDate('created_at', $date)
                 ->whereNotNull('serving_duration_seconds')
                 ->sum('serving_duration_seconds'),
-            'avg_waiting_time' => QueueItem::today()
+            'avg_waiting_time' => QueueItem::whereDate('created_at', $date)
                 ->whereNotNull('waiting_duration_seconds')
                 ->avg('waiting_duration_seconds'),
-            'avg_serving_time' => QueueItem::today()
+            'avg_serving_time' => QueueItem::whereDate('created_at', $date)
                 ->whereNotNull('serving_duration_seconds')
                 ->avg('serving_duration_seconds'),
         ];
@@ -44,19 +50,27 @@ class DashboardService
      */
     public function getDepartmentStats(): array
     {
+        return $this->getDepartmentStatsForDate(today());
+    }
+
+    /**
+     * Get department performance statistics for a specific date
+     */
+    public function getDepartmentStatsForDate(Carbon $date): array
+    {
         $departments = Department::where('is_active', true)->get();
         $stats = [];
 
         foreach ($departments as $department) {
-            $todayQueue = QueueItem::today()->where('current_department_id', $department->id);
-            $completedQueue = $todayQueue->whereIn('status', ['done', 'transferred']);
+            $dateQueue = QueueItem::whereDate('created_at', $date)->where('current_department_id', $department->id);
+            $completedQueue = $dateQueue->whereIn('status', ['done', 'transferred']);
 
-            $avgWaitingTime = QueueItem::today()
+            $avgWaitingTime = QueueItem::whereDate('created_at', $date)
                 ->where('current_department_id', $department->id)
                 ->whereNotNull('waiting_duration_seconds')
                 ->avg('waiting_duration_seconds');
 
-            $avgServingTime = QueueItem::today()
+            $avgServingTime = QueueItem::whereDate('created_at', $date)
                 ->where('current_department_id', $department->id)
                 ->whereNotNull('serving_duration_seconds')
                 ->avg('serving_duration_seconds');
@@ -65,15 +79,15 @@ class DashboardService
                 'id' => $department->id,
                 'name' => $department->name,
                 'code' => $department->code,
-                'total_patients' => $todayQueue->count(),
-                'waiting' => $todayQueue->waiting()->count(),
-                'serving' => $todayQueue->serving()->count(),
+                'total_patients' => $dateQueue->count(),
+                'waiting' => $dateQueue->waiting()->count(),
+                'serving' => $dateQueue->serving()->count(),
                 'completed' => $completedQueue->count(),
                 'avg_waiting_time' => round($avgWaitingTime ?? 0, 2),
                 'avg_serving_time' => round($avgServingTime ?? 0, 2),
                 'avg_total_time' => round(($avgWaitingTime ?? 0) + ($avgServingTime ?? 0), 2),
-                'efficiency_score' => $this->calculateEfficiencyScore($department->id),
-                'current_queue_position' => $todayQueue->waiting()->min('queue_position') ?? 0,
+                'efficiency_score' => $this->calculateEfficiencyScoreForDate($department->id, $date),
+                'current_queue_position' => $dateQueue->waiting()->min('queue_position') ?? 0,
             ];
         }
 
@@ -359,5 +373,225 @@ class DashboardService
                     ->whereIn('status', ['done', 'transferred'])->count(),
             ]
         ];
+    }
+
+    /**
+     * Get performance metrics for a specific date
+     */
+    public function getPerformanceMetricsForDate(Carbon $date): array
+    {
+        $weekStart = $date->copy()->startOfWeek();
+        $monthStart = $date->copy()->startOfMonth();
+
+        return [
+            'daily' => [
+                'total_patients' => QueueItem::whereDate('created_at', $date)->count(),
+                'avg_waiting_time' => QueueItem::whereDate('created_at', $date)
+                    ->whereNotNull('waiting_duration_seconds')
+                    ->avg('waiting_duration_seconds'),
+                'avg_serving_time' => QueueItem::whereDate('created_at', $date)
+                    ->whereNotNull('serving_duration_seconds')
+                    ->avg('serving_duration_seconds'),
+                'completion_rate' => $this->calculateCompletionRate($date),
+            ],
+            'weekly' => [
+                'total_patients' => QueueItem::whereBetween('created_at', [$weekStart, $date])->count(),
+                'avg_waiting_time' => QueueItem::whereBetween('created_at', [$weekStart, $date])
+                    ->whereNotNull('waiting_duration_seconds')
+                    ->avg('waiting_duration_seconds'),
+                'avg_serving_time' => QueueItem::whereBetween('created_at', [$weekStart, $date])
+                    ->whereNotNull('serving_duration_seconds')
+                    ->avg('serving_duration_seconds'),
+                'completion_rate' => $this->calculateCompletionRate($weekStart, $date),
+            ],
+            'monthly' => [
+                'total_patients' => QueueItem::whereBetween('created_at', [$monthStart, $date])->count(),
+                'avg_waiting_time' => QueueItem::whereBetween('created_at', [$monthStart, $date])
+                    ->whereNotNull('waiting_duration_seconds')
+                    ->avg('waiting_duration_seconds'),
+                'avg_serving_time' => QueueItem::whereBetween('created_at', [$monthStart, $date])
+                    ->whereNotNull('serving_duration_seconds')
+                    ->avg('serving_duration_seconds'),
+                'completion_rate' => $this->calculateCompletionRate($monthStart, $date),
+            ]
+        ];
+    }
+
+    /**
+     * Get recent activity for a specific date
+     */
+    public function getRecentActivityForDate(Carbon $date, int $limit = 10): array
+    {
+        return QueueItem::with(['patient', 'currentDepartment', 'servedByUser'])
+            ->whereDate('created_at', $date)
+            ->orderBy('created_at', 'desc')
+            ->limit($limit)
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'queue_number' => $item->queue_number,
+                    'patient_name' => $item->patient->first_name .  $item->patient->last_name ?? 'Unknown',
+                    'department' => $item->currentDepartment->name ?? 'Unknown',
+                    'status' => $item->status,
+                    'created_at' => $item->created_at->format('H:i'),
+                    'served_by' => $item->servedByUser->name ?? null,
+                    'waiting_time' => $item->waiting_duration_seconds ?
+                        gmdate('H:i:s', $item->waiting_duration_seconds) : null,
+                    'serving_time' => $item->serving_duration_seconds ?
+                        gmdate('H:i:s', $item->serving_duration_seconds) : null,
+                ];
+            })
+            ->toArray();
+    }
+
+    /**
+     * Get hourly statistics for a specific date
+     */
+    public function getHourlyStatsForDate(Carbon $date): array
+    {
+        $hourlyData = [];
+
+        for ($hour = 8; $hour <= 17; $hour++) {
+            $startTime = $date->copy()->setTime($hour, 0, 0);
+            $endTime = $date->copy()->setTime($hour, 59, 59);
+
+            $hourlyData[] = [
+                'hour' => $hour . ':00',
+                'new_patients' => QueueItem::whereBetween('created_at', [$startTime, $endTime])->count(),
+                'completed' => QueueItem::whereBetween('completed_at', [$startTime, $endTime])
+                    ->whereIn('status', ['done', 'transferred'])->count(),
+                'avg_waiting_time' => QueueItem::whereBetween('created_at', [$startTime, $endTime])
+                    ->whereNotNull('waiting_duration_seconds')
+                    ->avg('waiting_duration_seconds'),
+            ];
+        }
+
+        return $hourlyData;
+    }
+
+    /**
+     * Get user statistics for a specific date
+     */
+    public function getUserStatsForDate(User $user, Carbon $date): array
+    {
+        return [
+            'total_served_today' => $user->servedQueues()
+                ->whereDate('created_at', $date)
+                ->whereIn('status', ['done', 'transferred'])
+                ->count(),
+            'avg_serving_time' => $user->servedQueues()
+                ->whereDate('created_at', $date)
+                ->whereNotNull('serving_duration_seconds')
+                ->avg('serving_duration_seconds'),
+            'current_serving' => $user->servedQueues()
+                ->whereDate('created_at', $date)
+                ->where('status', 'serving')
+                ->count(),
+            'efficiency_score' => $this->calculateUserEfficiencyScoreForDate($user->id, $date),
+        ];
+    }
+
+    /**
+     * Get department statistics for a specific user and date
+     */
+    public function getDepartmentStatsForUserForDate(User $user, Carbon $date): array
+    {
+        $departments = $user->departments()->where('is_active', true)->get();
+        $stats = [];
+
+        foreach ($departments as $department) {
+            $dateQueue = QueueItem::whereDate('created_at', $date)->where('current_department_id', $department->id);
+
+            $stats[] = [
+                'id' => $department->id,
+                'name' => $department->name,
+                'code' => $department->code,
+                'waiting' => $dateQueue->waiting()->count(),
+                'serving' => $dateQueue->serving()->count(),
+                'avg_waiting_time' => QueueItem::whereDate('created_at', $date)
+                    ->where('current_department_id', $department->id)
+                    ->whereNotNull('waiting_duration_seconds')
+                    ->avg('waiting_duration_seconds'),
+                'next_queue_number' => $dateQueue->waiting()->min('queue_position') ?? 0,
+            ];
+        }
+
+        return $stats;
+    }
+
+    /**
+     * Get recent activity for a specific user and date
+     */
+    public function getRecentActivityForUserForDate(User $user, Carbon $date, int $limit = 5): array
+    {
+        return QueueItem::with(['patient', 'currentDepartment'])
+            ->where('served_by', $user->id)
+            ->whereDate('created_at', $date)
+            ->orderBy('created_at', 'desc')
+            ->limit($limit)
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'queue_number' => $item->queue_number,
+                    'patient_name' => $item->patient->name ?? 'Unknown',
+                    'status' => $item->status,
+                    'created_at' => $item->created_at->format('H:i'),
+                    'serving_time' => $item->serving_duration_seconds ?
+                        gmdate('H:i:s', $item->serving_duration_seconds) : null,
+                ];
+            })
+            ->toArray();
+    }
+
+    /**
+     * Calculate efficiency score for a department on a specific date
+     */
+    private function calculateEfficiencyScoreForDate(int $departmentId, Carbon $date): float
+    {
+        $completed = QueueItem::whereDate('created_at', $date)
+            ->where('current_department_id', $departmentId)
+            ->whereIn('status', ['done', 'transferred'])
+            ->count();
+
+        $total = QueueItem::whereDate('created_at', $date)
+            ->where('current_department_id', $departmentId)
+            ->count();
+
+        if ($total === 0) return 0;
+
+        $avgWaitingTime = QueueItem::whereDate('created_at', $date)
+            ->where('current_department_id', $departmentId)
+            ->whereNotNull('waiting_duration_seconds')
+            ->avg('waiting_duration_seconds') ?? 0;
+
+        // Efficiency score based on completion rate and average waiting time
+        $completionRate = ($completed / $total) * 100;
+        $timeScore = max(0, 100 - ($avgWaitingTime / 60)); // Penalize long waiting times
+
+        return round(($completionRate * 0.7) + ($timeScore * 0.3), 1);
+    }
+
+    /**
+     * Calculate efficiency score for a user on a specific date
+     */
+    private function calculateUserEfficiencyScoreForDate(int $userId, Carbon $date): float
+    {
+        $served = QueueItem::where('served_by', $userId)
+            ->whereDate('created_at', $date)
+            ->whereIn('status', ['done', 'transferred'])
+            ->count();
+
+        $avgServingTime = QueueItem::where('served_by', $userId)
+            ->whereDate('created_at', $date)
+            ->whereNotNull('serving_duration_seconds')
+            ->avg('serving_duration_seconds') ?? 0;
+
+        // Efficiency based on number of patients served and average serving time
+        $servingScore = min(100, $served * 10); // 10 points per patient served
+        $timeScore = max(0, 100 - ($avgServingTime / 60)); // Penalize long serving times
+
+        return round(($servingScore * 0.6) + ($timeScore * 0.4), 1);
     }
 }
