@@ -16,7 +16,7 @@ class PriorityReasonsTableSeeder extends Seeder
         DB::table('priority_reasons')->insert(
             [
                 [
-                    'description' => 'Cough for more than 2 weeks',
+                    'description' => 'Cough',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ],

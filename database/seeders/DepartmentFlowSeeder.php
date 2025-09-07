@@ -35,6 +35,7 @@ class DepartmentFlowSeeder extends Seeder
             ['code' => 'REG', 'step_order' => 1],
             ['code' => 'MSS', 'step_order' => 2],
             ['code' => 'PHIC', 'step_order' => 3],
+            ['code' => 'BIL', 'step_order' => 5],
         ];
 
         // Fetch all departments once and map by code

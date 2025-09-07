@@ -139,8 +139,8 @@ const handlePrint = (q) => {
         >
           View
         </Link>
-        <button @click="handlePrint(item)">
-          <i class="material-icons-outlined">printer</i>Print Queue Ticket
+        <button @click="handlePrint(item)" class="ml-2">
+          <i class="material-icons-outlined">printer</i>
         </button>
       </div>
     </td>
