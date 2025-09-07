@@ -3,10 +3,6 @@
   <div class="w-100 h-100" style="background: black; color: #333">
     <div class="container-fluid py-4">
       <div class="d-flex justify-content-between align-items-center mb-4">
-        <!-- <div>
-          <h1 class="m-0 text-white fw-bold display-5">{{ window.name }}</h1>
-          <p class="text-white-50 mb-0 mt-1">Queue Display System</p>
-        </div> -->
         <div
           class="text-white-50 bg-white bg-opacity-10 px-3 py-2 rounded-pill"
         >
@@ -71,22 +67,14 @@
                       :key="serving.queue_number"
                     >
                       <span
-                        :style="{ animation: 'blink 0.9s 8' }"
-                        @animationend="removeBlinkingStyle"
-                        class="p-2"
+                        :id="serving.queue_number"
+                        class="p-2 blink-bg-animation"
+                        :class="{ 'text-red-500': serving.patient.is_priority }"
                       >
                         {{ serving.queue_number }}
                       </span>
-
-                      <span class="text-xs text-gray-400 uppercase align-top">
-                        {{
-                          serving.patient.is_priority ? "Priority" : ""
-                        }}</span
-                      >
                     </li>
                   </div>
-                  <!-- {{ getNowServing(dept.id) ? getNowServing(dept.id) : "—" }} -->
-                  <!-- {{ getNowServing(dept.id) ?? "—" }} -->
                 </div>
               </div>
               <div>
@@ -116,6 +104,12 @@
     </div>
   </div>
 </template>
+
+<style scoped>
+.blink-bg-animation {
+  animation: blink 0.9s 8;
+}
+</style>
 
 <script setup>
 import { Head } from "@inertiajs/vue3";
@@ -156,7 +150,15 @@ const fetchData = async () => {
 onMounted(() => {
   window.Echo.channel("queue").listen("CallPatient", (event) => {
     console.log("Patient called:", event.queueItem);
-    console.log(event.queueItem);
+
+    const patientDeptId = event.queueItem.current_department.id;
+    const isDepartmentOnScreen = props.departments.some(
+      (dept) => dept.id === patientDeptId
+    );
+    if (!isDepartmentOnScreen) {
+      return;
+    }
+
     // Speak out patient's name using speech synthesis
     if ("speechSynthesis" in window) {
       const msg = new SpeechSynthesisUtterance(
@@ -167,6 +169,8 @@ onMounted(() => {
     } else {
       console.warn("Speech synthesis not supported in this browser.");
     }
+
+    animateBlink(event.queueItem.queue_number);
   });
 });
 
@@ -181,6 +185,17 @@ onMounted(() => {
 onBeforeUnmount(() => {
   if (intervalId) clearInterval(intervalId);
 });
+
+function animateBlink(queue_number) {
+  const span = document.getElementById(queue_number);
+  console.log(span);
+  span.classList.remove("blink-bg-animation");
+
+  setTimeout(() => {
+    span.classList.add("blink-bg-animation");
+  }, 500); // Delay adding the class by 1 second to ensure the animation restarts visibly
+  console.log(span);
+}
 
 function enableSpeech() {
   speechEnabled.value = true;

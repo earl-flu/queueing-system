@@ -69,6 +69,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/create', [QueueController::class, 'create'])->name('create');
         Route::post('/store', [QueueController::class, 'store'])->name('store');
         Route::post('/{queueItem}/call', [QueueController::class, 'call'])->name('call');
+        Route::post('/{queueItem}/call-again', [QueueController::class, 'call'])->name('call-again');
         Route::post('/{queueItem}/complete', [QueueController::class, 'complete'])->name('complete');
         Route::post('/{queueItem}/complete-and-transfer', [QueueController::class, 'completeAndTransfer'])->name('complete-and-transfer');
         Route::post('/{queueItem}/no-show', [QueueController::class, 'noShow'])->name('no-show');

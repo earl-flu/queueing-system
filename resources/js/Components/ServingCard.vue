@@ -3,6 +3,7 @@ import { useStatusBadge } from "@/Composables/useStatusBadge";
 import { useStatusLabel } from "@/Composables/useStatusLabel";
 import { useElapsedTime } from "@/Composables/useElapsedTime";
 import { useCallPatient } from "@/Composables/useCallPatient";
+import { useCallAgain } from "@/Composables/useCallAgain";
 import { useMarkNoShow } from "@/Composables/useMarkNoShow";
 import { useSkip } from "@/Composables/useSkip";
 import { useCompleteAndTransfer } from "@/Composables/useCompleteAndTransfer";
@@ -19,6 +20,7 @@ const { getStatusBadgeClass } = useStatusBadge();
 const { getStatusLabel } = useStatusLabel();
 const { completeService } = useCompleteService();
 const { callPatient } = useCallPatient();
+const { callAgain } = useCallAgain();
 const { markNoShow } = useMarkNoShow();
 const { skip } = useSkip();
 const { completeAndTransfer } = useCompleteAndTransfer();
@@ -76,6 +78,24 @@ const elapsed = useElapsedTime(props.item.called_at);
         </button>
 
         <button
+          @click="callAgain(item)"
+          class="btn btn-outline-warning btn-sm flex-1"
+        >
+          <i class="material-icons-outlined text-gray-500">volume_up</i>
+        </button>
+        <!-- <button
+                          v-if="
+                            item.status === 'waiting' ||
+                            item.status === 'serving'
+                          "
+                          @click="openTransferModal(item)"
+                          class="btn btn-warning btn-sm flex-1"
+                        >
+                          Transfer
+                        </button> -->
+      </div>
+      <div class="flex mt-2">
+        <button
           v-if="item.status === 'serving' && item.is_final_department"
           @click="completeService(item.id)"
           class="btn btn-primary btn-sm flex-1"
@@ -89,16 +109,6 @@ const elapsed = useElapsedTime(props.item.called_at);
         >
           Done
         </button>
-        <!-- <button
-                          v-if="
-                            item.status === 'waiting' ||
-                            item.status === 'serving'
-                          "
-                          @click="openTransferModal(item)"
-                          class="btn btn-warning btn-sm flex-1"
-                        >
-                          Transfer
-                        </button> -->
       </div>
     </div>
   </div>

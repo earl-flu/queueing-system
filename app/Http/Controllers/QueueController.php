@@ -230,6 +230,21 @@ class QueueController extends Controller
             ->with('success', 'Patient called for service.');
     }
 
+    public function callAgain(QueueItem $queueItem)
+    {
+        $user = auth()->user();
+
+        // Check if user has access to this department
+        if ($user->isReception() && !$user->isAdmin() && !$user->departments->contains($queueItem->current_department_id)) {
+            abort(403);
+        }
+
+        broadcast(new CallPatient($queueItem));
+
+        return redirect()->back()
+            ->with('success', 'Patient called again.');
+    }
+
     public function complete(QueueItem $queueItem)
     {
         $user = auth()->user();
