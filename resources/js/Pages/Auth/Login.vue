@@ -58,7 +58,7 @@ const submit = () => {
                     <div class="row">
                       <div class="col-12">
                         <div class="mb-5">
-                          <div class="mb-4">
+                          <!-- <div class="mb-4">
                             <a href="#!">
                               <img
                                 src="https://images.pexels.com/photos/430205/pexels-photo-430205.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
@@ -67,7 +67,7 @@ const submit = () => {
                                 height="57"
                               />
                             </a>
-                          </div>
+                          </div> -->
                           <h4 class="fw-bold">Get Started Now</h4>
                           <p class="mb-0">
                             Enter your credentials to login your account

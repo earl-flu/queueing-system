@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-bs-theme="{{ Auth::user() ? Auth::user()->theme : 'blue-theme' }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}"
+    data-bs-theme="{{ Auth::user() ? Auth::user()->theme : 'light' }}">
 
 <head>
     <meta charset="utf-8">
@@ -12,7 +13,7 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!--plugins-->
-    <!-- <link href="{{ asset('plugins/perfect-scrollbar/css/perfect-scrollbar.css')}} " rel="stylesheet"> -->
+    <!-- <link href="{{ asset('plugins/perfect-scrollbar/css/perfect-scrollbar.css') }} " rel="stylesheet"> -->
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/metismenu/metisMenu.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/metismenu/mm-vertical.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/simplebar/css/simplebar.css') }}">
@@ -54,7 +55,7 @@
     <script src="{{ asset('js/main.js') }}"></script>
     <!-- <script src="{{ asset('js/dashboard1.js') }}"></script> -->
     <script>
-       // new PerfectScrollbar(".user-list")
+        // new PerfectScrollbar(".user-list")
     </script>
 
 </body>
