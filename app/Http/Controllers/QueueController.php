@@ -119,10 +119,13 @@ class QueueController extends Controller
                         ->whereDate('created_at', today());
                 }
             ])
+            ->whereNotIn('code', ['REG', 'MSS', 'PHIC', 'BIL'])
             ->orderBy('name')
             ->get();
 
-        $priority_reasons = PriorityReason::where('is_active', true)->get();
+        $priority_reasons = PriorityReason::where('is_active', true)
+            ->orderBy('description')->get();
+
         return Inertia::render('Queue/Create', [
             'departments' => $departments,
             'priority_reasons' => $priority_reasons,

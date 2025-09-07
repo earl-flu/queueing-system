@@ -101,6 +101,7 @@ const roles = [
                   class="form-control uppercase"
                   v-model="form.patient.last_name"
                   id="last_name"
+                  placeholder="Last name"
                   autofocus
                 />
                 <div class="invalid-feedback d-block">
@@ -115,6 +116,7 @@ const roles = [
                   type="text"
                   class="form-control uppercase"
                   v-model="form.patient.first_name"
+                  placeholder="first name"
                   id="first_name"
                 />
                 <div class="invalid-feedback d-block">
@@ -154,15 +156,14 @@ const roles = [
               </div> -->
               <div class="col-md-12">
                 <label for="final_department_id" class="form-label"
-                  >Destination Department
-                  <span class="text-sm text-red-500">*</span></label
+                  >Services <span class="text-sm text-red-500">*</span></label
                 >
                 <v-select
                   v-model="form.final_department_id"
                   label="name"
                   :options="props.departments"
                   :reduce="(dept) => dept.id"
-                  placeholder="Select Department"
+                  placeholder="Select Service"
                 >
                   <!-- How each option is displayed in the dropdown -->
                   <template #option="{ name, description, queue_count }">
