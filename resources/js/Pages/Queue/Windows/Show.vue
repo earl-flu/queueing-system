@@ -193,7 +193,7 @@ function animateBlink(queue_number) {
 
   setTimeout(() => {
     span.classList.add("blink-bg-animation");
-  }, 500); // Delay adding the class by 1 second to ensure the animation restarts visibly
+  }, 800); // Delay adding the class by 1 second to ensure the animation restarts visibly
   console.log(span);
 }
 
