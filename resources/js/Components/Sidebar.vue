@@ -60,7 +60,7 @@ onBeforeUnmount(() => {
         <img src="assets/images/logo-icon.png" class="logo-img" alt="" />
       </div>
       <div class="logo-name flex-grow-1">
-        <h5 class="mb-0">OPD Queue</h5>
+        <h5 class="mb-0">OPDQ</h5>
       </div>
       <div @click="$emit('close-sidebar')" class="sidebar-close">
         <span class="material-icons-outlined">close</span>

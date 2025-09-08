@@ -8,7 +8,6 @@ export function usePrintQueue() {
         queueDate,
     }) => {
         const formatName = (firstName, lastName) => {
-            // Check for valid string inputs and if they're not empty
             if (
                 typeof firstName !== "string" ||
                 typeof lastName !== "string" ||
@@ -18,16 +17,13 @@ export function usePrintQueue() {
                 return "Invalid name";
             }
 
-            // Format the first name (and any middle names)
             const formattedFirstName = firstName
                 .trim()
                 .split(/\s+/)
                 .map((part) => {
-                    // If a part is a single letter (like a middle initial), just format that
                     if (part.length <= 1) {
                         return part.charAt(0);
                     }
-                    // For longer parts, format with a first letter, asterisks, and a last letter
                     const firstLetter = part.charAt(0);
                     const lastLetter = part.slice(-1);
                     const middleAsterisks = "•".repeat(part.length - 2);
@@ -35,13 +31,14 @@ export function usePrintQueue() {
                 })
                 .join(" ");
 
-            // Format the last name: capitalize the first letter and add a dot
             const formattedLastName =
                 lastName.trim().charAt(0).toUpperCase() + ".";
 
             return `${formattedFirstName} ${formattedLastName}`;
         };
+
         const formattedName = formatName(firstName, lastName);
+
         const spanQueueNumber = isPriority
             ? `<span style="color:red;">${queueNumber}</span>`
             : `<span>${queueNumber}</span>`;
@@ -61,11 +58,19 @@ export function usePrintQueue() {
             .map((dept) => `<li>${dept.department_name}</li>`)
             .join("");
 
-        const printWindow = window.open("", "_blank", "width=950,height=600");
-        printWindow.document.write(`
+        // ✅ Create hidden iframe for printing (works on mobile too)
+        const iframe = document.createElement("iframe");
+        iframe.style.position = "absolute";
+        iframe.style.width = "0";
+        iframe.style.height = "0";
+        iframe.style.border = "0";
+        document.body.appendChild(iframe);
+
+        iframe.contentDocument.open();
+        iframe.contentDocument.write(`
         <html>
           <head><title>Queue Number</title></head>
-          <body>
+          <body style="margin:0;">
             <div style="
                 margin:0 auto;
                 width:220px;
@@ -95,10 +100,16 @@ export function usePrintQueue() {
                     </div>
                 </div>
             </div>
-            <script>window.print(); window.close();<\/script>
+            <script>
+              window.onload = function() {
+                window.print();
+                setTimeout(() => window.close(), 100);
+              }
+            <\/script>
           </body>
         </html>
       `);
+        iframe.contentDocument.close();
     };
 
     return { printQueueTicket };
