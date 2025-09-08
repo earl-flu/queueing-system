@@ -223,6 +223,7 @@ class QueueController extends Controller
         }
 
         $queueItem->startServing($user->id);
+        $queueItem->addCallCount();
 
         broadcast(new CallPatient($queueItem));
 
@@ -240,6 +241,7 @@ class QueueController extends Controller
         }
 
         broadcast(new CallPatient($queueItem));
+        $queueItem->addCallCount();
 
         return redirect()->back()
             ->with('success', 'Patient called again.');

@@ -21,6 +21,7 @@ class QueueItem extends Model
         'called_at',
         'served_at',
         'completed_at',
+        'call_count',
         'notes',
         'waiting_started_at',
         'serving_started_at',
@@ -68,6 +69,16 @@ class QueueItem extends Model
     public function transfers(): HasMany
     {
         return $this->hasMany(QueueTransfer::class);
+    }
+
+    public function addCallCount(): int
+    {
+        // Increment the 'call_count' attribute in the database and on the model instance.
+        // Using Eloquent's `increment` method ensures an atomic update, preventing race conditions.
+        $this->increment('call_count');
+
+        // Return the updated call count from the model instance.
+        return $this->call_count;
     }
 
     public function scopeWaiting($query)

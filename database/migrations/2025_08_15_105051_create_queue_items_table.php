@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('current_department_id')->constrained('departments')->onDelete('cascade'); // Current department
             $table->foreignId('served_by')->nullable()->constrained('users')->onDelete('set null');
             $table->enum('status', ['waiting', 'serving', 'done', 'transferred'])->default('waiting');
+            $table->integer('call_count')->default(0);
             $table->integer('queue_position');
             $table->timestamp('called_at')->nullable();
             $table->timestamp('served_at')->nullable();

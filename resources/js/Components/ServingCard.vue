@@ -51,7 +51,9 @@ const elapsed = useElapsedTime(props.item.called_at);
           {{ item.patient.phone }}
         </p>
         <p class="text-right" style="margin-bottom: 0">{{ elapsed }}</p>
-        <small class="">Position: {{ item.queue_position }}</small>
+        <small class="text-gray-400">Position: {{ item.queue_position }}</small>
+        <br />
+        <small class="text-gray-400">Call Count: {{ item.call_count }}</small>
         <p
           v-if="item.patient.priority_reason"
           class="card-text small mb-1 mt-3 text-white"
