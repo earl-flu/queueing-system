@@ -90,6 +90,10 @@ class QueueItem extends Model
     {
         return $query->where('status', 'serving');
     }
+    public function scopeSkipped($query)
+    {
+        return $query->where('status', 'skipped');
+    }
 
     public function scopeToday($query)
     {
@@ -131,9 +135,9 @@ class QueueItem extends Model
      */
     public function completeService()
     {
-        $waitingDuration = $this->waiting_started_at
-            ? $this->waiting_started_at->diffInSeconds(now())
-            : 0;
+        // $waitingDuration = $this->waiting_started_at
+        //     ? $this->waiting_started_at->diffInSeconds(now())
+        //     : 0;
 
         $servingDuration = $this->serving_started_at
             ? $this->serving_started_at->diffInSeconds(now())
@@ -141,9 +145,21 @@ class QueueItem extends Model
         $this->update([
             'status' => 'done',
             'completed_at' => now(),
-            'waiting_duration_seconds' => $waitingDuration,
+            // 'waiting_duration_seconds' => $waitingDuration,
             'serving_duration_seconds' => $servingDuration
         ]);
+    }
+
+    public function setWaitingDuration(){
+        
+        $waitingDuration = $this->waiting_started_at
+        ? $this->waiting_started_at->diffInSeconds(now())
+        : 0;
+
+        $this->update([
+            'waiting_duration_seconds' => $waitingDuration,
+        ]);
+
     }
 
     /**

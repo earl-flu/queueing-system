@@ -234,6 +234,7 @@ const getStatusColor = (status) => {
                     <th>Waiting</th>
                     <th>Serving</th>
                     <th>Completed</th>
+                    <th>Skipped</th>
                     <th>Avg Wait</th>
                     <th>Avg Serve</th>
                     <th>Efficiency</th>
@@ -257,6 +258,9 @@ const getStatusColor = (status) => {
                     </td>
                     <td>
                       <span class="badge bg-success">{{ dept.completed }}</span>
+                    </td>
+                     <td>
+                      <span class="badge bg-danger">{{ dept.skipped }}</span>
                     </td>
                     <td>{{ formatTime(dept.avg_waiting_time) }}</td>
                     <td>{{ formatTime(dept.avg_serving_time) }}</td>

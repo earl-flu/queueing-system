@@ -24,7 +24,7 @@ class DashboardService
     public function getStatsForDate(Carbon $date): array
     {
         return [
-            'total_patients' => QueueItem::whereDate('created_at', $date)->count(),
+            'total_patients' => QueueItem::whereDate('created_at', $date)->distinct('patient_id')->count(),
             'waiting' => QueueItem::whereDate('created_at', $date)->waiting()->count(),
             'serving' => QueueItem::whereDate('created_at', $date)->serving()->count(),
             'completed' => QueueItem::whereDate('created_at', $date)->where('status', 'done')->count(),
@@ -60,37 +60,43 @@ class DashboardService
     {
         $departments = Department::where('is_active', true)->get();
         $stats = [];
-
+       
         foreach ($departments as $department) {
-            $dateQueue = QueueItem::whereDate('created_at', $date)->where('current_department_id', $department->id);
-            $completedQueue = $dateQueue->whereIn('status', ['done', 'transferred']);
-
-            $avgWaitingTime = QueueItem::whereDate('created_at', $date)
-                ->where('current_department_id', $department->id)
+            // Create a base query that we can reuse
+            $baseQuery = QueueItem::whereDate('created_at', $date)
+                ->where('current_department_id', $department->id);
+            
+            // Clone the base query for each count to avoid query builder pollution
+            $completedQueue = (clone $baseQuery)->whereIn('status', ['done', 'transferred'])->count();
+            $waitingQueue = (clone $baseQuery)->waiting()->count();
+            $servingQueue = (clone $baseQuery)->serving()->count();
+            $skippedQueue = (clone $baseQuery)->skipped()->count();
+            $totalPatients = (clone $baseQuery)->count();
+    
+            $avgWaitingTime = (clone $baseQuery)
                 ->whereNotNull('waiting_duration_seconds')
                 ->avg('waiting_duration_seconds');
-
-            $avgServingTime = QueueItem::whereDate('created_at', $date)
-                ->where('current_department_id', $department->id)
+    
+            $avgServingTime = (clone $baseQuery)
                 ->whereNotNull('serving_duration_seconds')
                 ->avg('serving_duration_seconds');
-
+    
             $stats[] = [
                 'id' => $department->id,
                 'name' => $department->name,
                 'code' => $department->code,
-                'total_patients' => $dateQueue->count(),
-                'waiting' => $dateQueue->waiting()->count(),
-                'serving' => $dateQueue->serving()->count(),
-                'completed' => $completedQueue->count(),
+                'total_patients' => $totalPatients,
+                'waiting' => $waitingQueue,
+                'serving' => $servingQueue,
+                'skipped' => $skippedQueue,
+                'completed' => $completedQueue,
                 'avg_waiting_time' => round($avgWaitingTime ?? 0, 2),
                 'avg_serving_time' => round($avgServingTime ?? 0, 2),
                 'avg_total_time' => round(($avgWaitingTime ?? 0) + ($avgServingTime ?? 0), 2),
-                'efficiency_score' => $this->calculateEfficiencyScoreForDate($department->id, $date),
-                'current_queue_position' => $dateQueue->waiting()->min('queue_position') ?? 0,
+                'efficiency_score' => $this->calculateEfficiencyScoreForDate($department->id, $date)
             ];
         }
-
+    
         return $stats;
     }
 
@@ -105,7 +111,7 @@ class DashboardService
 
         return [
             'daily' => [
-                'total_patients' => QueueItem::whereDate('created_at', $today)->count(),
+                'total_patients' => QueueItem::whereDate('created_at', $today)->distinct('patient_id')->count(),
                 'avg_waiting_time' => QueueItem::whereDate('created_at', $today)
                     ->whereNotNull('waiting_duration_seconds')
                     ->avg('waiting_duration_seconds'),
@@ -115,7 +121,7 @@ class DashboardService
                 'completion_rate' => $this->calculateCompletionRate($today),
             ],
             'weekly' => [
-                'total_patients' => QueueItem::whereBetween('created_at', [$weekStart, $today])->count(),
+                'total_patients' => QueueItem::whereBetween('created_at', [$weekStart, $today])->distinct('patient_id')->count(),
                 'avg_waiting_time' => QueueItem::whereBetween('created_at', [$weekStart, $today])
                     ->whereNotNull('waiting_duration_seconds')
                     ->avg('waiting_duration_seconds'),
@@ -125,7 +131,7 @@ class DashboardService
                 'completion_rate' => $this->calculateCompletionRate($weekStart, $today),
             ],
             'monthly' => [
-                'total_patients' => QueueItem::whereBetween('created_at', [$monthStart, $today])->count(),
+                'total_patients' => QueueItem::whereBetween('created_at', [$monthStart, $today])->distinct('patient_id')->count(),
                 'avg_waiting_time' => QueueItem::whereBetween('created_at', [$monthStart, $today])
                     ->whereNotNull('waiting_duration_seconds')
                     ->avg('waiting_duration_seconds'),
@@ -325,13 +331,17 @@ class DashboardService
      */
     private function calculateCompletionRate(Carbon $startDate, Carbon $endDate = null): float
     {
-        $endDate = $endDate ?? $startDate;
+        $startDate = Carbon::parse($startDate)->startOfDay();
+        $endDate = Carbon::parse($endDate)->endOfDay() ??  Carbon::parse($startDate)->endOfDay();
 
-        $total = QueueItem::whereBetween('created_at', [$startDate, $endDate])->count();
+        $total = QueueItem::whereBetween('created_at', [$startDate, $endDate])->distinct('patient_id')->count();
         $completed = QueueItem::whereBetween('created_at', [$startDate, $endDate])
-            ->whereIn('status', ['done', 'transferred'])
+            ->whereIn('status', ['done'])
             ->count();
-
+  
+        // dd(QueueItem::whereBetween('created_at', [$startDate, $endDate])
+        // ->whereIn('status', ['done', 'transferred'])
+        // ->get());
         if ($total === 0) return 0;
 
         return round(($completed / $total) * 100, 1);
@@ -385,7 +395,7 @@ class DashboardService
 
         return [
             'daily' => [
-                'total_patients' => QueueItem::whereDate('created_at', $date)->count(),
+                'total_patients' => QueueItem::whereDate('created_at', $date)->distinct('patient_id')->count(),
                 'avg_waiting_time' => QueueItem::whereDate('created_at', $date)
                     ->whereNotNull('waiting_duration_seconds')
                     ->avg('waiting_duration_seconds'),
@@ -393,9 +403,10 @@ class DashboardService
                     ->whereNotNull('serving_duration_seconds')
                     ->avg('serving_duration_seconds'),
                 'completion_rate' => $this->calculateCompletionRate($date),
+                // 'completion_rate' => $this->calculateCompletionRate($date),
             ],
             'weekly' => [
-                'total_patients' => QueueItem::whereBetween('created_at', [$weekStart, $date])->count(),
+                'total_patients' => QueueItem::whereBetween('created_at', [$weekStart, $date])->distinct('patient_id')->count(),
                 'avg_waiting_time' => QueueItem::whereBetween('created_at', [$weekStart, $date])
                     ->whereNotNull('waiting_duration_seconds')
                     ->avg('waiting_duration_seconds'),
@@ -405,7 +416,7 @@ class DashboardService
                 'completion_rate' => $this->calculateCompletionRate($weekStart, $date),
             ],
             'monthly' => [
-                'total_patients' => QueueItem::whereBetween('created_at', [$monthStart, $date])->count(),
+                'total_patients' => QueueItem::whereBetween('created_at', [$monthStart, $date])->distinct('patient_id')->count(),
                 'avg_waiting_time' => QueueItem::whereBetween('created_at', [$monthStart, $date])
                     ->whereNotNull('waiting_duration_seconds')
                     ->avg('waiting_duration_seconds'),

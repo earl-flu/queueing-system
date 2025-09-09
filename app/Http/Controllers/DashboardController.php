@@ -45,7 +45,7 @@ class DashboardController extends Controller
         $performanceMetrics = $this->dashboardService->getPerformanceMetricsForDate($selectedDate);
         $recentActivity = $this->dashboardService->getRecentActivityForDate($selectedDate);
         $hourlyStats = $this->dashboardService->getHourlyStatsForDate($selectedDate);
-
+        // dd($departmentStats);
         return Inertia::render('Dashboard/Admin', [
             'departments' => $departments,
             'stats' => $todayStats,

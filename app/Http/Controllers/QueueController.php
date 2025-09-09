@@ -222,6 +222,7 @@ class QueueController extends Controller
             abort(403);
         }
 
+        $queueItem->setWaitingDuration();
         $queueItem->startServing($user->id);
         $queueItem->addCallCount();
 
