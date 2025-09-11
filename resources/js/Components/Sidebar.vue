@@ -114,7 +114,7 @@ onBeforeUnmount(() => {
           </ul>
         </li>
 
-        <li class="menu-label">Library</li>
+        <li class="menu-label">Settings</li>
 
         <li>
           <a href="javascript:;" class="has-arrow">
