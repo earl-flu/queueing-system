@@ -10,7 +10,11 @@
           Last updated: {{ lastUpdatedDisplay }}
         </div>
         <div>
-          <button @click="enableSpeech">Enable Announcements</button>
+          <button @click="enableSpeech" class="btn btn-sm">
+            <i class="material-icons-outlined text-white-50">{{
+              speechEnabled ? "volume_up" : "volume_off"
+            }}</i>
+          </button>
         </div>
       </div>
       <div class="row g-4">
