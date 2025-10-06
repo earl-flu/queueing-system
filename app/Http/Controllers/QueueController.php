@@ -389,6 +389,8 @@ class QueueController extends Controller
             'todayServedCount' => $department->getTodayServedQueueCount(),
             'todayComingCount' => $department->getTodayComingQueueCount(),
             'todayWaitingCount' => $department->getTodayWaitingQueueCount(),
+            'todayServingCount' => $department->getTodayServingQueueCount(),
+            'todaySkippedCount' => $department->getTodaySkippedQueueCount()
         ]);
     }
 

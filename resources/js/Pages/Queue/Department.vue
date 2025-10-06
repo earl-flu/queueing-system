@@ -25,8 +25,9 @@
         <h4 class="mb-0">{{ department.name }} Queue</h4>
         <p class="mb-0">
           Room: {{ department.room || "N/A" }} | Served:
-          {{ todayServedCount }}
-          | Waiting: {{ todayWaitingCount }}
+          {{ todayServedCount }} | Serving: {{ todayServingCount }} | Skipped:
+          {{ todaySkippedCount }} | Waiting: {{ todayWaitingCount }} | Coming:
+          {{ todayComingCount }}
           <!-- | Coming: {{ todayComingCount }} -->
         </p>
       </div>
@@ -450,6 +451,8 @@ const props = defineProps({
   todayComingCount: Number,
   todayServedCount: Number,
   todayWaitingCount: Number,
+  todayServingCount: Number,
+  todaySkippedCount: Number,
 });
 
 const isReception = computed(() => props.user?.role === "reception");

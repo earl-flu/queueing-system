@@ -97,12 +97,15 @@ class Department extends Model
     public function getTodayComingQueueCount(): int // In other queue count
     {
 
-        $count = $this->originalQueueItems()
-            ->whereDate('created_at', today())
-            ->where('current_department_id', '!=', 'original_department_id')
-            ->count();
+        $allCount = $this->getTodayQueueCount();
+        $servedCount = $this->getTodayServedQueueCount();
+        $waitingCount = $this->getTodayWaitingQueueCount();
+        $skippedCount = $this->getTodaySkippedQueueCount();
+        $servingCount = $this->getTodayServingQueueCount();
 
-        return $count ? $count : 0;
+        $comingCount = $allCount - $servedCount - $waitingCount - $skippedCount - $servingCount;
+
+        return $comingCount ? $comingCount : 0;
     }
 
     public function getTodayServedQueueCount(): int
@@ -121,6 +124,26 @@ class Department extends Model
         $count = $this->currentQueueItems()
             ->whereDate('created_at', today())
             ->where('status', 'waiting')
+            ->count();
+
+        return $count ? $count : 0;
+    }
+
+    public function getTodayServingQueueCount(): int
+    {
+        $count = $this->currentQueueItems()
+            ->whereDate('created_at', today())
+            ->where('status', 'serving')
+            ->count();
+
+        return $count ? $count : 0;
+    }
+
+    public function getTodaySkippedQueueCount(): int
+    {
+        $count = $this->currentQueueItems()
+            ->whereDate('created_at', today())
+            ->where('status', 'skipped')
             ->count();
 
         return $count ? $count : 0;
