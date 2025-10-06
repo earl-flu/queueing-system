@@ -24,10 +24,14 @@ class UserSeeder extends Seeder
             'role' => 'admin',
             'email_verified_at' => now(),
         ]);
+        // Add Pharmacy
+        // Add Laboratory
+        // Add Radio
 
         // Create staff users with department code mapping
         $staffUsers = [
             // Administrative Staff
+            ['name' => 'Vitals Staff', 'email' => 'vitals@opd.com', 'role' => 'staff', 'dept_code' => 'VIT'],
             ['name' => 'Reception Staff', 'email' => 'reception@opd.com', 'role' => 'reception', 'dept_code' => 'REG'],
             ['name' => 'MSS Staff', 'email' => 'mss@opd.com', 'role' => 'staff', 'dept_code' => 'MSS'],
             ['name' => 'Philhealth Staff', 'email' => 'phic@opd.com', 'role' => 'staff', 'dept_code' => 'PHIC'],

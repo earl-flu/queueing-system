@@ -94,11 +94,15 @@ Route::middleware('auth')->group(function () {
     // Screens
     Route::prefix('screens')->name('windows.')->group(function () {
         Route::get('/', [WindowController::class, 'index'])->name('index');
-        Route::get('/{window}', [WindowController::class, 'show'])->name('show');
+        #Route::get('/{window}', [WindowController::class, 'show'])->name('show');
         Route::get('/{window}/data', [WindowController::class, 'data'])->name('data');
         Route::get('/{window}/edit', [WindowController::class, 'edit'])->name('edit')->middleware('admin');
         Route::put('/{window}', [WindowController::class, 'update'])->name('update')->middleware('admin');
     });
+});
+
+Route::prefix('screens')->name('windows.')->group(function () {
+    Route::get('/{window}', [WindowController::class, 'show'])->name('show');
 });
 
 
