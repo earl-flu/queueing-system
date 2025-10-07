@@ -87,7 +87,7 @@ export function usePrintQueue() {
                   justify-content: space-between;">
                   <h3 style="margin:0;">Your OPD Number:</h3>
                   <h2 style="font-size:55px; margin:0; font-family: sans-serif; line-height:100%;">${spanQueueNumber}</h2>
-                  <p style="margin:0; margin-top:-30px; font-size:12; text-transform:uppercase;">${formattedName}</p>
+                  <p style="margin:0; margin-top:-23px; font-size:12; text-transform:uppercase;">${formattedName}</p>
                   <div style="font-size:13px;">
                       <p style="margin:0;">Steps:</p>
                       <ol style="text-align: left; margin:0;">
