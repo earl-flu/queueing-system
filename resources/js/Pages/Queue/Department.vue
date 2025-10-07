@@ -40,13 +40,13 @@
             Add Patient
           </Link>
         </template>
-        <button
+        <!-- <button
           v-if="$page.props.auth.user.is_admin"
           @click="showResetModal = true"
           class="btn btn-grd btn-grd-danger"
         >
           Reset Counter
-        </button>
+        </button> -->
       </div>
     </div>
 
