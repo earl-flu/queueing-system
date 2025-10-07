@@ -47,7 +47,8 @@ const submit = () => {
                 <img
                   class="img-fluid rounded-start w-100 h-100 object-fit-cover"
                   loading="lazy"
-                  src="https://images.pexels.com/photos/317157/pexels-photo-317157.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                  src="/images/waiting-area.jpg"
+                  alt="Waiting Area"
                 />
               </div>
               <div

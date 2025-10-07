@@ -70,13 +70,13 @@
                       class="btn btn-outline-secondary"
                       >Edit</Link
                     >
-                    <button
+                    <!-- <button
                       v-if="$page.props.auth?.user?.is_admin"
                       class="btn btn-outline-danger"
                       @click="confirmDelete(dept)"
                     >
                       Delete
-                    </button>
+                    </button> -->
                   </div>
                 </td>
               </tr>
