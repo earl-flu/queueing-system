@@ -124,11 +124,11 @@ const submit = () => {
                     </form>
                     <div class="row">
                       <div class="col-12">
-                        <div class="mt-5">
+                        <!-- <div class="mt-5">
                           <Link :href="route('register')">
                             Create new account
                           </Link>
-                        </div>
+                        </div> -->
                       </div>
                     </div>
                   </div>
