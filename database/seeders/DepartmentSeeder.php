@@ -31,7 +31,7 @@ class DepartmentSeeder extends Seeder
             ['name' => 'OB-Gyne', 'slug' => 'obgyne', 'code' => 'O', 'room' => 'Room 2'],
             ['name' => 'Pedia', 'slug' => 'pedia', 'code' => 'P', 'room' => 'Room 2'],
             ['name' => 'General Consultation', 'slug' => 'general', 'code' => 'G', 'room' => 'Room 2'],
-            ['name' => 'Surgery', 'slug' => '', 'code' => 'surgery', 'room' => 'Room 2'],
+            ['name' => 'Surgery', 'slug' => 'surgery', 'code' => 'S', 'room' => 'Room 2'],
             ['name' => 'ENT', 'slug' => 'ent', 'code' => 'H', 'room' => 'Room 2'],
         ];
 
