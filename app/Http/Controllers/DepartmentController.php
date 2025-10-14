@@ -39,6 +39,7 @@ class DepartmentController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:departments',
             'code' => 'required|string|max:10|unique:departments',
+            'slug' => 'required|string|max:50|unique:departments',
             'room' => 'nullable|string|max:50',
             'description' => 'nullable|string|max:255',
             'is_active' => 'boolean',
@@ -49,6 +50,7 @@ class DepartmentController extends Controller
         $department = Department::create([
             'name' => $validated['name'],
             'code' => strtoupper($validated['code']),
+            'slug' => $validated['slug'],
             'room' => $validated['room'],
             'description' => $validated['description'],
             'is_active' => $validated['is_active'] ?? true
@@ -78,6 +80,7 @@ class DepartmentController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:departments,name,' . $department->id,
             'code' => 'required|string|max:10|unique:departments,code,' . $department->id,
+            'slug' => 'required|string|max:50|unique:departments,slug,' . $department->id,
             'room' => 'nullable|string|max:50',
             'description' => 'nullable|string|max:255',
             'is_active' => 'boolean',
@@ -88,6 +91,7 @@ class DepartmentController extends Controller
         $department->update([
             'name' => $validated['name'],
             'code' => strtoupper($validated['code']),
+            'slug' => $validated['slug'],
             'room' => $validated['room'],
             'description' => $validated['description'],
             'is_active' => $validated['is_active'] ?? true

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('code', 10)->unique(); // DEN, OB, BILLING, etc.
+            $table->string('slug')->unique()->nullable();
             $table->string('room')->nullable();
             $table->string('description')->nullable();
             $table->boolean('is_active')->default(true);

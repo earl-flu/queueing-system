@@ -14,6 +14,7 @@ class Department extends Model
         'name',
         'code',
         'room',
+        'slug',
         'is_active',
         'description'
     ];
