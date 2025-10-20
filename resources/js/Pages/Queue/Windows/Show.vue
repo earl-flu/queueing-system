@@ -192,13 +192,11 @@ onBeforeUnmount(() => {
 
 function animateBlink(queue_number) {
   const span = document.getElementById(queue_number);
-  console.log(span);
   span.classList.remove("blink-bg-animation");
 
   setTimeout(() => {
     span.classList.add("blink-bg-animation");
   }, 800); // Delay adding the class by 1 second to ensure the animation restarts visibly
-  console.log(span);
 }
 
 function enableSpeech() {
