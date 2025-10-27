@@ -30,6 +30,7 @@ const form = useForm({
     gender: "",
     priority_reason_id: "",
     is_priority: false,
+    will_pay: false,
   },
   final_department_id: "",
 });
@@ -249,6 +250,23 @@ const roles = [
                 </div>
                 <div class="invalid-feedback d-block">
                   {{ form.errors["patient.is_priority"] }}
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    v-model="form.patient.will_pay"
+                    id="will_pay"
+                  />
+                  <label class="form-check-label" for="will_pay"
+                    >Is Priority</label
+                  >
+                </div>
+                <div class="invalid-feedback d-block">
+                  {{ form.errors["patient.will_pay"] }}
                 </div>
               </div>
 
