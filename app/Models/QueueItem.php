@@ -150,16 +150,16 @@ class QueueItem extends Model
         ]);
     }
 
-    public function setWaitingDuration(){
-        
+    public function setWaitingDuration()
+    {
+
         $waitingDuration = $this->waiting_started_at
-        ? $this->waiting_started_at->diffInSeconds(now())
-        : 0;
+            ? $this->waiting_started_at->diffInSeconds(now())
+            : 0;
 
         $this->update([
             'waiting_duration_seconds' => $waitingDuration,
         ]);
-
     }
 
     /**
@@ -169,7 +169,7 @@ class QueueItem extends Model
      */
     public function getDepartmentFlowNamesAttribute()
     {
-        return DepartmentFlow::getDepartmentFlowNames($this->original_department_id);
+        return DepartmentFlow::getDepartmentFlowNames($this->original_department_id, $this->patient->will_pay);
     }
 
 

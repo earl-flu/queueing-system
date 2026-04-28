@@ -19,6 +19,7 @@ class Patient extends Model
         'age',
         'gender',
         'is_priority',
+        'will_pay',
         'priority_reason_id'
     ];
 

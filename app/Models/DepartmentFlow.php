@@ -34,11 +34,19 @@ class DepartmentFlow extends Model
     /**
      * Get the department flow for given department
      */
-    public static function getDepartmentFlowNames($finalDepartmentId)
+    public static function getDepartmentFlowNames($finalDepartmentId, $will_pay)
     {
-        return self::with(['stepDepartment:id,name,room']) // only load id & name
-            ->where('final_department_id', $finalDepartmentId)
-            ->orderBy('step_order')
+        $query = self::with(['stepDepartment:id,name,room,slug'])
+            ->where('final_department_id', $finalDepartmentId);
+
+        // If will_pay is true, exclude departments with slugs 'mss' and 'philhealth'
+        if ($will_pay) {
+            $query->whereHas('stepDepartment', function ($q) {
+                $q->whereNotIn('slug', ['mss', 'philhealth']);
+            });
+        }
+
+        return $query->orderBy('step_order')
             ->get()
             ->map(function ($flow) {
                 return [

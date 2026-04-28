@@ -164,6 +164,7 @@ class QueueController extends Controller
             'patient.phone' => 'nullable|string|max:20',
             'patient.age' => 'nullable|string|max:3',
             'patient.is_priority' => 'boolean',
+            'patient.will_pay' => 'boolean',
             'patient.priority_reason_id' => 'nullable|required_if:patient.is_priority,true|exists:priority_reasons,id',
             'patient.suffix' => 'nullable|in:Jr.,Sr.,II,III,IV,V',
             'patient.gender' => 'nullable|in:male,female',
