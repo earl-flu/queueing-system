@@ -19,10 +19,8 @@ class WindowSeeder extends Seeder
         $window2 = Window::create(['name' => 'Screen 2', 'slug' => 'window-2']);
 
         $window1Displays = [
-            ['dept_code' => 'VIT', 'position' => 0],
-            ['dept_code' => 'REG', 'position' => 1],
-            ['dept_code' => 'MSS', 'position' => 2],
-            ['dept_code' => 'PHIC', 'position' => 3],
+            ['dept_code' => 'MSS', 'position' => 0],
+            ['dept_code' => 'BIL', 'position' => 1],
         ];
 
         $syncDataWindow1 = [];  //result will be  // [ 1 => [ position: 0 ], 2 => [ position: 1 ]]

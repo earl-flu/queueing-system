@@ -1,5 +1,5 @@
 <template>
-  <Head title="Queue Management" />
+  <Head title="Queue History" />
 
   <AuthenticatedLayout>
     <!--breadcrumb-->
@@ -11,9 +11,7 @@
             <li class="breadcrumb-item">
               <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">
-              Management
-            </li>
+            <li class="breadcrumb-item active" aria-current="page">History</li>
           </ol>
         </nav>
       </div>
@@ -21,7 +19,7 @@
     <!--end breadcrumb-->
 
     <div class="d-flex gap-2 align-items-center mb-4">
-      <h4 class="mb-0">Queue Management</h4>
+      <h4 class="mb-0">Queue History</h4>
       <p class="flex-1"></p>
       <template v-if="userDepartment">
         <Link
@@ -62,10 +60,27 @@
                   class="form-control"
                 />
               </div>
-              <div class="col-md-3">
-                <label class="form-label">Department</label>
+              <!-- <div class="col-md-3">
+                <label class="form-label">Service</label>
                 <select
-                  v-model="filterForm.department"
+                  v-model="filterForm.targetDepartmentId"
+                  @change="applyFilters"
+                  class="form-select"
+                >
+                  <option value="">All Departments</option>
+                  <option
+                    v-for="dept in departments"
+                    :key="dept.id"
+                    :value="dept.id"
+                  >
+                    {{ dept.name }}
+                  </option>
+                </select>
+              </div> -->
+              <div class="col-md-3">
+                <label class="form-label">Curr. Department</label>
+                <select
+                  v-model="filterForm.currentDepartmentId"
                   @change="applyFilters"
                   class="form-select"
                 >
@@ -113,7 +128,8 @@
                   <tr>
                     <th>Queue Number</th>
                     <th>Patient</th>
-                    <th>Department</th>
+                    <th>Service</th>
+                    <th>Curr. Department</th>
                     <th>Status</th>
                     <th>Time</th>
                     <th>Served By</th>
@@ -180,7 +196,9 @@ const props = defineProps({
 });
 
 const filterForm = ref({
-  department: props.filters.department || "",
+  currentDepartmentId:
+    props.filters.currentDepartmentId || userDepartment.value?.id || "",
+  targetDepartmentId: props.filters.targetDepartmentId || "",
   status: props.filters.status || "all",
   patientFullName: props.filters.patientFullName || "",
   queueNumber: props.filters.queueNumber || "",
@@ -196,7 +214,8 @@ const applyFilters = () => {
 
 const clearFilters = () => {
   filterForm.value = {
-    department: "",
+    currentDepartmentId: "",
+    targetDepartmentId: "",
     status: "all",
     patientFullName: "",
     queueNumber: "",

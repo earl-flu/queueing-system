@@ -33,6 +33,7 @@ class DepartmentSeeder extends Seeder
             ['name' => 'General Consultation', 'slug' => 'general', 'code' => 'G', 'room' => 'Room 2'],
             ['name' => 'Surgery', 'slug' => 'surgery', 'code' => 'S', 'room' => 'Room 2'],
             ['name' => 'ENT', 'slug' => 'ent', 'code' => 'H', 'room' => 'Room 2'],
+            ['name' => 'Medical Records', 'slug' => 'records', 'code' => 'R', 'room' => ''],
         ];
 
         foreach ($departments as $dept) {

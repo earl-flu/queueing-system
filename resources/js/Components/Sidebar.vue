@@ -57,7 +57,7 @@ onBeforeUnmount(() => {
   >
     <div class="sidebar-header">
       <div class="logo-icon">
-        <img src="assets/images/logo-icon.png" class="logo-img" alt="" />
+        <img src="/images/EBMC-logo.png" class="logo-img" alt="" />
       </div>
       <div class="logo-name flex-grow-1">
         <h5 class="mb-0">OPDQ</h5>

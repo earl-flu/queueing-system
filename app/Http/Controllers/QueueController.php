@@ -30,7 +30,9 @@ class QueueController extends Controller
             abort(403, 'This user does not have a department assigned');
         }
 
-        $departmentId = $request->get('department', $user->isAdmin() ? '' : $user->departments->first()->id);
+        $currentDepartmentId = $request->get('currentDepartmentId', $user->isAdmin() ? '' : $user->departments->first()->id);
+        $targetDepartmentId = $request->get('targetDepartmentId', $user->isAdmin() ? '' : $user->departments->first()->id);
+
         $status = $request->get('status', 'all');
         $queueNumber = $request->get('queueNumber');
         $patientFullName = $request->get('patientFullname');
@@ -39,8 +41,8 @@ class QueueController extends Controller
             ->today()
             ->orderBy('created_at', 'desc');
 
-        if ($departmentId) {
-            $query->where('current_department_id', $departmentId);
+        if ($currentDepartmentId) {
+            $query->where('current_department_id', $currentDepartmentId);
         }
 
         if ($status !== 'all') {
@@ -66,7 +68,7 @@ class QueueController extends Controller
             'queueItems' => $queueItems,
             'departments' => $departments,
             'filters' => [
-                'department' => $departmentId,
+                'department' => $currentDepartmentId,
                 'status' => $status,
                 'patientFullname' => $patientFullName,
                 'queueNumber' => $queueNumber

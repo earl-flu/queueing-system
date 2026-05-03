@@ -70,33 +70,34 @@ export function usePrintQueue() {
         iframe.contentDocument.write(`
         <html>
           <head><title>Queue Number</title></head>
-          <body style="margin:0;">
+          <body style="margin:0 auto;">
             <div style="
                 margin:0 auto;
-                width:220px;
-                height:340px; 
-                border:1px solid black;
+                width:200px;
+                height:320px;
                 font-family: montserrat;
                 text-align: center;
+                border:1px solid black;
                 box-sizing: border-box;">
               <div style="padding:15px; 
                   display:flex;
                   flex-direction:column; 
                   box-sizing:border-box;
                   height:100%;
-                  justify-content: space-between;">
-                  <h3 style="margin:0;">Your OPD Number:</h3>
+                  ">
+                  <h4 style="margin:0;">Your OPD Number:</h4>
                   <h2 style="font-size:55px; margin:0; font-family: sans-serif; line-height:100%;">${spanQueueNumber}</h2>
-                  <p style="margin:0; margin-top:-23px; font-size:12; text-transform:uppercase;">${formattedName}</p>
-                  <div style="font-size:13px;">
+                  <p style="margin:0; font-size:12; text-transform:uppercase;">${formattedName}</p>
+                  <div style="font-size:13px; margin-top:15px;">
                       <p style="margin:0;">Steps:</p>
-                      <ol style="text-align: left; margin:0;">
+                      <ol style="text-align: left; margin:0; margin-left:-5px;">
                          ${stepsHtml}
                       </ol>
                   </div>
-                    <div>
+                    <div style="margin-top:15px;">
                         <p style="margin: 0; font-size:12px;">Please be seated. <br>You will be served shortly.</p>
-                        <p style="color:#6e877b; font-size:10px; margin:0;">Generated: ${formattedDate}</p>
+                        <p style="color:#6e877b; font-size:11px; margin:0;">Issue Date: ${formattedDate}</p>
+                        <p style="color:#6e877b; font-size:11px; margin:0;">Valid only on issue date.</p>
                     </div>
                 </div>
             </div>

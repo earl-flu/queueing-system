@@ -84,21 +84,24 @@ const handlePrint = (q) => {
       </div>
     </td>
     <td>
-      <div class="fw-medium">
-        {{ item.current_department.name }}
-      </div>
-      <div v-if="item.current_department.room" class="text-muted small">
-        {{ item.current_department.room }}
-      </div>
       <div
         v-if="
           item.queue_number.substring(0, 3) !== item.current_department.code
         "
         class="text-info small"
       >
-        Originally: {{ item.original_department.name }}
+        {{ item.original_department.name }}
       </div>
     </td>
+    <td>
+      <div class="fw-medium">
+        {{ item.current_department.name }}
+      </div>
+      <div v-if="item.current_department.room" class="text-muted small">
+        {{ item.current_department.room }}
+      </div>
+    </td>
+
     <td>
       <span :class="getStatusBadgeClass(item.status)" class="badge">
         {{ getStatusLabel(item.status) }}
