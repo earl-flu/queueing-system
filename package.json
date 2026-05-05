@@ -22,6 +22,7 @@
     "dependencies": {
         "apexcharts": "^3.50.0",
         "bootstrap": "^5.3.3",
+        "datatables.net-bs5": "^2.3.8",
         "jquery": "^3.7.1",
         "lodash": "^4.17.21",
         "metismenu": "^3.0.7",

@@ -111,6 +111,12 @@ onBeforeUnmount(() => {
                 ><i class="material-icons-outlined">arrow_right</i>Create</Link
               >
             </li>
+            <li :class="isActive(route().current('dashboard.destination'))">
+              <Link :href="route('dashboard.destination')"
+                ><i class="material-icons-outlined">arrow_right</i>Dashboard
+                Destination</Link
+              >
+            </li>
           </ul>
         </li>
 

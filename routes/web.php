@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardApiController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DashboardDestinationDeptController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DepartmentFlowController;
 use App\Http\Controllers\OfficeController;
@@ -38,11 +39,9 @@ Route::get('/test', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    // Route::get('/dashboard/admin', [DashboardController::class, 'adminDashboard'])->name('dashboard.admin')->middleware('admin');
-    // Route::get('/dashboard/staff', [DashboardController::class, 'staffDashboard'])->name('dashboard.staff');
     Route::get('/dashboard/admin/{date?}', [DashboardController::class, 'adminDashboard'])->name('dashboard.admin.date')->middleware('admin');
     Route::get('/dashboard/staff/{date?}', [DashboardController::class, 'staffDashboard'])->name('dashboard.staff.date');
-
+    Route::get('/dashboard/destination/service', [DashboardDestinationDeptController::class, 'index'])->name('dashboard.destination');
     // Dashboard API routes
     Route::prefix('api/dashboard')->name('dashboard.api.')->group(function () {
         Route::get('/today-stats', [DashboardApiController::class, 'getTodayStats'])->name('today-stats');
