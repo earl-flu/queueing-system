@@ -103,7 +103,7 @@ class QueueController extends Controller
     public function create()
     {
         $user = auth()->user();
-        if (!$user->isAdmin() && !$user->isReception()) {
+        if (!$user->isAdmin() && !$user->isReceptionist()) {
             abort(403);
         }
 
@@ -137,7 +137,7 @@ class QueueController extends Controller
         $user = auth()->user();
 
         // Check if user has access to reception or is admin
-        if (!$user->isAdmin() && !$user->isReception()) {
+        if (!$user->isAdmin() && !$user->isReceptionist()) {
             abort(403);
         }
 
@@ -197,7 +197,7 @@ class QueueController extends Controller
         $user = auth()->user();
 
         // Check if user has access to this department
-        if ($user->isReception() && !$user->isAdmin() && !$user->departments->contains($queueItem->current_department_id)) {
+        if ($user->isReceptionist() && !$user->isAdmin() && !$user->departments->contains($queueItem->current_department_id)) {
             abort(403);
         }
 
@@ -218,7 +218,7 @@ class QueueController extends Controller
         $user = auth()->user();
 
         // Check if user has access to this department
-        if ($user->isReception() && !$user->isAdmin() && !$user->departments->contains($queueItem->current_department_id)) {
+        if ($user->isReceptionist() && !$user->isAdmin() && !$user->departments->contains($queueItem->current_department_id)) {
             abort(403);
         }
 
@@ -237,7 +237,7 @@ class QueueController extends Controller
         $user = auth()->user();
 
         // Check if user has access to this department
-        if ($user->isReception() && !$user->isAdmin() && !$user->departments->contains($queueItem->current_department_id)) {
+        if ($user->isReceptionist() && !$user->isAdmin() && !$user->departments->contains($queueItem->current_department_id)) {
             abort(403);
         }
 
@@ -252,7 +252,7 @@ class QueueController extends Controller
     {
         $user = auth()->user();
 
-        if ($user->isReception() && !$user->isAdmin() && !$user->departments->contains($queueItem->current_department_id)) {
+        if ($user->isReceptionist() && !$user->isAdmin() && !$user->departments->contains($queueItem->current_department_id)) {
             abort(403);
         }
 
@@ -266,7 +266,7 @@ class QueueController extends Controller
     {
 
         $user = auth()->user();
-        if ($user->isReception() && !$user->isAdmin() && !$user->departments->contains($queueItem->current_department_id)) {
+        if ($user->isReceptionist() && !$user->isAdmin() && !$user->departments->contains($queueItem->current_department_id)) {
             abort(403);
         }
 
@@ -296,7 +296,7 @@ class QueueController extends Controller
     {
         $user = auth()->user();
 
-        if ($user->isReception() && !$user->isAdmin() && !$user->departments->contains($queueItem->current_department_id)) {
+        if ($user->isReceptionist() && !$user->isAdmin() && !$user->departments->contains($queueItem->current_department_id)) {
             abort(403);
         }
 
@@ -314,7 +314,7 @@ class QueueController extends Controller
 
         $user = auth()->user();
 
-        if ($user->isReception() && !$user->isAdmin() && !$user->departments->contains($queueItem->current_department_id)) {
+        if ($user->isReceptionist() && !$user->isAdmin() && !$user->departments->contains($queueItem->current_department_id)) {
             abort(403);
         }
 

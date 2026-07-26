@@ -8,13 +8,13 @@ const { printQueueTicket } = usePrintQueue();
 const props = defineProps({
   item: Object,
   user: Object,
-  isReception: Boolean,
+  isReceptionist: Boolean,
 });
 
 const isAdmin = computed(() => props.user?.role === "admin");
 
 const hasAccessToDepartment = (department) => {
-  if (props.isReception) return false;
+  if (props.isReceptionist) return true;
   if (isAdmin.value) return true;
   return (
     department.users && department.users.some((u) => u.id === props.user.id)

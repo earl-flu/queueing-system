@@ -32,7 +32,7 @@
         </p>
       </div>
       <div class="d-flex gap-2">
-        <template v-if="isReception">
+        <template v-if="isReceptionist">
           <Link
             :href="route('queue.create')"
             class="btn btn-grd btn-grd-primary"
@@ -455,7 +455,7 @@ const props = defineProps({
   todaySkippedCount: Number,
 });
 
-const isReception = computed(() => props.user?.role === "reception");
+const isReceptionist = computed(() => props.user?.role === "reception");
 const showTransferModal = ref(false);
 const showResetModal = ref(false);
 const selectedItem = ref(null);

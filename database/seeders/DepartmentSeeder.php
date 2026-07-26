@@ -17,6 +17,7 @@ class DepartmentSeeder extends Seeder
         $departments = [
             ['name' => 'Vitals', 'slug' => 'vitals', 'code' => 'VIT', 'room' => ''],
             ['name' => 'Registration', 'slug' => 'registration', 'code' => 'REG', 'room' => ''],
+            ['name' => 'Reception', 'slug' => 'reception', 'code' => 'RCPTN', 'room' => ''],
             ['name' => 'MSS', 'slug' => 'mss', 'code' => 'MSS', 'room' => ''],
             ['name' => 'Philhealth', 'slug' => 'philhealth', 'code' => 'PHIC', 'room' => ''],
             ['name' => 'Billing', 'slug' => 'billing', 'code' => 'BIL', 'room' => ''],

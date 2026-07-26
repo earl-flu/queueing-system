@@ -68,7 +68,7 @@ class User extends Authenticatable
         return $this->role === 'staff';
     }
 
-    public function isReception(): bool
+    public function isReceptionist(): bool
     {
         return $this->role === 'reception';
     }

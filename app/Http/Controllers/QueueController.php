@@ -88,7 +88,7 @@ class QueueController extends Controller
     public function create()
     {
         $user = auth()->user();
-        if (!$user->isAdmin() && !$user->isReception()) {
+        if (!$user->isAdmin() && !$user->isReceptionist()) {
             abort(403);
         }
 
@@ -146,7 +146,7 @@ class QueueController extends Controller
     {
         $user = auth()->user();
 
-        if (!$user->isAdmin() && !$user->isReception()) {
+        if (!$user->isAdmin() && !$user->isReceptionist()) {
             abort(403, 'Unauthorized: Only administrators and reception staff can create queue items.');
         }
     }
@@ -234,7 +234,7 @@ class QueueController extends Controller
     {
         $user = auth()->user();
 
-        if ($user->isReception() && !$user->isAdmin() && !$user->departments->contains($queueItem->current_department_id)) {
+        if ($user->isReceptionist() && !$user->isAdmin() && !$user->departments->contains($queueItem->current_department_id)) {
             abort(403, 'Unauthorized: You do not have access to this department.');
         }
     }

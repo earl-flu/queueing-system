@@ -29,7 +29,7 @@
           {{ userDepartment.name }} Department Queue
         </Link>
       </template>
-      <template v-if="isReception">
+      <template v-if="isReceptionist">
         <Link :href="route('queue.create')" class="btn btn-grd btn-grd-primary">
           Add New Patient
         </Link>
@@ -142,7 +142,7 @@
                     :item="item"
                     :user="props.user"
                     :key="item.id"
-                    :isReception="isReception"
+                    :isReceptionist="isReceptionist"
                   />
                 </tbody>
               </table>
@@ -186,7 +186,7 @@ import { Head, Link, router } from "@inertiajs/vue3";
 import { ref, watch, computed } from "vue";
 
 const userDepartment = computed(() => props.user?.departments[0]);
-const isReception = computed(() => props.user?.role === "reception");
+const isReceptionist = computed(() => props.user?.role === "reception");
 
 const props = defineProps({
   queueItems: Object,

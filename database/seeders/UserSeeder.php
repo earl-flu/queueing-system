@@ -32,7 +32,8 @@ class UserSeeder extends Seeder
         $staffUsers = [
             // Administrative Staff
             ['name' => 'Vitals Staff', 'email' => 'vitals@opd.com', 'role' => 'staff', 'dept_code' => 'VIT'],
-            ['name' => 'Reception Staff', 'email' => 'reception@opd.com', 'role' => 'reception', 'dept_code' => 'REG'],
+            ['name' => 'Registration Staff', 'email' => 'registration@opd.com', 'role' => 'staff', 'dept_code' => 'REG'],
+            ['name' => 'Reception Staff', 'email' => 'reception@opd.com', 'role' => 'reception', 'dept_code'  => 'RCPTN'],
             ['name' => 'MSS Staff', 'email' => 'mss@opd.com', 'role' => 'staff', 'dept_code' => 'MSS'],
             ['name' => 'Philhealth Staff', 'email' => 'phic@opd.com', 'role' => 'staff', 'dept_code' => 'PHIC'],
             ['name' => 'Billing Staff', 'email' => 'billing@opd.com', 'role' => 'staff', 'dept_code' => 'BIL'],

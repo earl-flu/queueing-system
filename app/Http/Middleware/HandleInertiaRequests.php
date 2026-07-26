@@ -39,7 +39,7 @@ class HandleInertiaRequests extends Middleware
                     'role' => $request->user()->role,
                     'is_admin' => $request->user()->isAdmin(),
                     'is_staff' => $request->user()->isStaff(),
-                    'is_reception' => $request->user()->isReception(),
+                    'is_reception' => $request->user()->isReceptionist(),
                     'departments' => $request->user()->departments(),
                 ] : null,
             ],
