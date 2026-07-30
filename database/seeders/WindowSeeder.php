@@ -15,12 +15,12 @@ class WindowSeeder extends Seeder
     public function run(): void
     {
         // Seed Windows
-        $window1 = Window::create(['name' => 'Screen 1', 'slug' => 'window-1']);
-        $window2 = Window::create(['name' => 'Screen 2', 'slug' => 'window-2']);
+        $window1 = Window::create(['name' => 'Screen 1', 'slug' => 'screen-1']);
+        $window2 = Window::create(['name' => 'Screen 2', 'slug' => 'screen-2']);
 
         $window1Displays = [
-            ['dept_code' => 'MSS', 'position' => 0],
-            ['dept_code' => 'BIL', 'position' => 1],
+            ['dept_code' => 'VIT', 'position' => 0],
+            ['dept_code' => 'REG', 'position' => 1],
         ];
 
         $syncDataWindow1 = [];  //result will be  // [ 1 => [ position: 0 ], 2 => [ position: 1 ]]
