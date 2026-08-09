@@ -102,12 +102,12 @@
                         <h3 class="card-title text-primary mb-0 font-bold">
                           {{ item.queue_number }}
                         </h3>
-                        <span
+                        <!-- <span
                           :class="getStatusBadgeClass(item.status)"
                           class="badge"
                         >
                           {{ getStatusLabel(item.status) }}
-                        </span>
+                        </span> -->
                       </div>
 
                       <div class="mb-3">
@@ -182,12 +182,12 @@
                         <h3 class="card-title text-primary mb-0 font-bold">
                           {{ item.queue_number }}
                         </h3>
-                        <span
+                        <!-- <span
                           :class="getStatusBadgeClass(item.status)"
                           class="badge"
                         >
                           {{ getStatusLabel(item.status) }}
-                        </span>
+                        </span> -->
                       </div>
 
                       <div class="mb-3">
@@ -255,12 +255,12 @@
                         <h3 class="card-title text-primary mb-0 font-bold">
                           {{ item.queue_number }}
                         </h3>
-                        <span
+                        <!-- <span
                           :class="getStatusBadgeClass(item.status)"
                           class="badge"
                         >
                           {{ getStatusLabel(item.status) }}
-                        </span>
+                        </span> -->
                       </div>
 
                       <div class="mb-3">

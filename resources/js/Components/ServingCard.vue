@@ -32,12 +32,15 @@ const elapsed = useElapsedTime(props.item.called_at);
   <div class="card shadow border">
     <div class="card-body">
       <div class="d-flex justify-content-between align-items-start mb-3">
-        <h3 class="card-title text-primary mb-0 font-bold">
+        <h3
+          class="card-title mb-0 font-bold"
+          :class="item.patient.is_priority ? 'text-danger' : 'text-primary'"
+        >
           {{ item.queue_number }}
         </h3>
-        <span :class="getStatusBadgeClass(item.status)" class="badge">
+        <!-- <span :class="getStatusBadgeClass(item.status)" class="badge">
           {{ getStatusLabel(item.status) }}
-        </span>
+        </span> -->
       </div>
 
       <div class="mb-3">

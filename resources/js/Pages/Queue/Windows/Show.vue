@@ -211,7 +211,7 @@ const getNowServing = (departmentId) => {
   const list = (dataByDepartment.value[departmentId] || []).filter(
     (i) => i.status === "serving"
   );
-  return list.length ? list.slice(0, 2) : null;
+  return list.length ? list.slice(0, 5) : null;
   // console.log(test);
   // return list.length ? list[0].queue_number : null;
 };
