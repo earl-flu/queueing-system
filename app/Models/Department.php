@@ -69,8 +69,8 @@ class Department extends Model
         $counter->increment('counter');
 
         // Format queue number
-        $nextNumber = str_pad($counter->counter, 3, '0', STR_PAD_LEFT);
-
+        // $nextNumber = str_pad($counter->counter, 3, '0', STR_PAD_LEFT);
+        $nextNumber = $counter->counter;
         return $this->code . $nextNumber;
     }
 

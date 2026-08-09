@@ -20,6 +20,12 @@ class WindowSeeder extends Seeder
         $window3 = Window::create(['name' => 'Screen 3', 'slug' => 'screen-3']);
         $window4 = Window::create(['name' => 'Screen 4', 'slug' => 'screen-4']);
         $window5 = Window::create(['name' => 'Screen 5', 'slug' => 'screen-5']);
+        $window6 = Window::create(['name' => 'Screen 6', 'slug' => 'screen-6']);
+        $window7 = Window::create(['name' => 'Screen 7', 'slug' => 'screen-7']);
+        $window8 = Window::create(['name' => 'Screen 8', 'slug' => 'screen-8']);
+        $window9 = Window::create(['name' => 'Screen 9', 'slug' => 'screen-9']);
+        $window10 = Window::create(['name' => 'Screen 10', 'slug' => 'screen-10']);
+        $window11 = Window::create(['name' => 'Screen 11', 'slug' => 'screen-11']);
 
         $window1Displays = [
             ['dept_code' => 'VIT', 'position' => 0],

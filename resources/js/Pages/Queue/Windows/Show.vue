@@ -86,19 +86,66 @@
                   <i class="fas fa-clock me-2 text-info"></i>
                   Up Next
                 </h6>
-                <div class="d-flex flex-wrap gap-3 justify-content-center">
-                  <span
-                    v-for="q in getUpNext(dept.id)"
-                    :key="q.id"
-                    class="badge fs-5 px-4 py-3 fw-bold"
-                    :style="{
-                      background: q.patient.is_priority ? '#DFA620' : '#0d1077',
-                      color: 'white',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
-                    }"
-                  >
-                    {{ q.queue_number }}
-                  </span>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                  <div class="bg-blue-100 p-4 rounded">
+                    <div class="font-bold text-blue-900 mb-2 text-center">
+                      Priority
+                    </div>
+                    <div class="flex flex-wrap gap-2 justify-center">
+                      <template
+                        v-if="
+                          getUpNext(dept.id).filter(
+                            (q) => q.patient.is_priority
+                          ).length > 0
+                        "
+                      >
+                        <span
+                          v-for="q in getUpNext(dept.id).filter(
+                            (q) => q.patient.is_priority
+                          )"
+                          :key="q.id"
+                          class="badge fs-5 px-2 py-2 fw-bold bg-red-500"
+                          style="
+                            color: white;
+                            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                          "
+                        >
+                          {{ q.queue_number }}
+                        </span>
+                      </template>
+                      <span v-else class="text-gray-400">-</span>
+                    </div>
+                  </div>
+                  <div class="bg-green-100 p-4 rounded">
+                    <div class="font-bold text-green-900 mb-2 text-center">
+                      Regular
+                    </div>
+                    <div class="flex flex-wrap gap-2 justify-center">
+                      <template
+                        v-if="
+                          getUpNext(dept.id).filter(
+                            (q) => !q.patient.is_priority
+                          ).length > 0
+                        "
+                      >
+                        <span
+                          v-for="q in getUpNext(dept.id).filter(
+                            (q) => !q.patient.is_priority
+                          )"
+                          :key="q.id"
+                          class="badge fs-5 px-2 py-2 fw-bold"
+                          style="
+                            background: #0d1077;
+                            color: white;
+                            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                          "
+                        >
+                          {{ q.queue_number }}
+                        </span>
+                      </template>
+                      <span v-else class="text-gray-400">-</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
