@@ -69,6 +69,13 @@ export function usePrintQueue() {
         iframe.contentDocument.open();
         iframe.contentDocument.write(`
         <html>
+            <style>
+                @page {
+                    size: 48mm 72mm;
+                    margin: 0;
+                }
+           
+            </style>
           <head><title>Queue Number</title></head>
           <body style="margin:0 auto;">
             <div style="

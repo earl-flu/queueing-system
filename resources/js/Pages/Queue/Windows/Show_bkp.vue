@@ -1,118 +1,7 @@
 <template>
   <Head :title="`${window.name} Display`" />
-
-  <div class="container-fluid min-vh-100 border border-black">
-    <div class="flex justify-content-between p-3 border-b-2">
-      <div>
-        <div class="flex gap-3">
-          <div style="width: 65px">
-            <img src="/images/EBMC-logo.png" class="logo-img" alt="" />
-          </div>
-          <div>
-            <h3 class="uppercase m-0 font-bold text-blue-950">
-              Outpatient Department
-            </h3>
-            <p class="m-0">We care for you. Your health is our priority.</p>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div class="flex gap-2">
-          <div>
-            <i class="bi bi-clock" style="font-size: 32px"></i>
-          </div>
-
-          <div>
-            <p>10:24 AM</p>
-            <p>May 20, 2026 | Tuesday</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Display this if only one department is on the window -->
-    <div class="p-3">
-      <h1 class="uppercase text-blue-950 font-bold">Billing</h1>
-    </div>
-    <div class="row uppercase">
-      <div class="col-md-6 border p-4">
-        <div class="border rounded-2xl overflow-hidden">
-          <div class="flex p-3 px-4 gap-3 bg-green-700 text-white">
-            <i
-              class="bi bi-people-fill"
-              style="font-size: 20px; margin-top: -2px"
-            ></i>
-            <h5 class="m-0 font-bold">Now Serving</h5>
-          </div>
-          <div class="grid grid-cols-2 gap-4 p-4 bg-green-50 text-green-700">
-            <div
-              class="text-center px-2 py-3 text-7xl bg-gray-100 border rounded-lg font-bold"
-            >
-              D 555
-            </div>
-            <!--  <div
-              class="text-center px-2 py-3 text-7xl bg-gray-100 border rounded-lg font-bold"
-            >
-              AO 12
-            </div>
-            <div
-              class="text-center px-2 py-3 text-7xl bg-gray-100 border rounded-lg font-bold"
-            >
-              D 2
-            </div>
-            <div
-              class="text-center px-2 py-3 text-7xl bg-gray-100 border rounded-lg font-bold"
-            >
-              G 10
-            </div> -->
-          </div>
-        </div>
-        <div
-          class="border rounded-2xl overflow-hidden p-4 py-3 mt-3 text-orange-600 font-bold bg-orange-50"
-        >
-          <div class="flex gap-2">
-            <div><i class="bi bi-arrow-clockwise"></i></div>
-            <p>SKIPPED</p>
-          </div>
-          <div class="grid grid-cols-6 gap-4 p-2">
-            <div class="bg-gray-50 text-center py-1 bg-orange-100">D1</div>
-            <div class="bg-gray-50 text-center py-1 bg-orange-100">D2</div>
-            <div class="bg-gray-50 text-center py-1 bg-orange-100">D3</div>
-            <div class="bg-gray-50 text-center py-1 bg-orange-100">D4</div>
-            <div class="bg-gray-50 text-center py-1 bg-orange-100">D1</div>
-            <div class="bg-gray-50 text-center py-1 bg-orange-100">D2</div>
-            <div class="bg-gray-50 text-center py-1 bg-orange-100">D3</div>
-            <div class="bg-gray-50 text-center py-1 bg-orange-100">D4</div>
-          </div>
-        </div>
-        <div
-          class="border rounded-2xl overflow-hidden p-4 py-3 mt-3 font-medium text-blue-900 bg-blue-50"
-        >
-          <div class="flex gap-2 text-xs items-center">
-            <div class="rounded-full p-2.5 bg-blue-900 text-white text-center">
-              <i class="bi bi-person-workspace" style="font-size: 15px"></i>
-            </div>
-            <div>
-              <p class="m-0">PLEASE ASK HELPDESK FOR ASSISTANCE</p>
-              <p class="m-0 normal-case font-normal">
-                Thank you for your patience.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 border p-4">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus
-        mollitia alias explicabo animi totam? Dolorem eaque ut quae doloribus
-        exercitationem corrupti aperiam similique quod, rerum accusamus. Natus
-        molestias similique voluptatibus temporibus unde, veniam consequatur ea?
-        Dignissimos natus dolor cumque nihil at aperiam perspiciatis nostrum
-        animi delectus! Recusandae, repellat. Quod, nobis!
-      </div>
-    </div>
-    <!-- //Display this if only one department is on the window -->
-  </div>
   <div class="w-100 h-100" style="background: black; color: #333">
-    <div class="container-fluid py-4 border border-red">
+    <div class="container-fluid py-4">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <div
           class="text-white-50 bg-white bg-opacity-10 px-3 py-2 rounded-pill"
@@ -375,12 +264,6 @@
 </template>
 
 <style scoped>
-* {
-  font-family: Roboto !important;
-}
-p {
-  margin: 0;
-}
 .blink-bg-animation {
   animation: blink 0.9s 8;
 }
