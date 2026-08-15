@@ -28,126 +28,254 @@
         </div>
       </div>
     </div>
-    <!-- Display this if only one department is on the window -->
-    <div class="p-3">
-      <h1 class="uppercase text-blue-950 font-bold">Billing</h1>
-    </div>
-    <div class="row uppercase">
-      <div class="col-md-6 border p-4">
-        <div class="border rounded-2xl overflow-hidden">
-          <div class="flex p-3 px-4 gap-3 bg-green-700 text-white items-center">
-            <i
-              class="bi bi-people-fill bg-white py-1 px-2 rounded-full text-green-700"
-              style="font-size: 12px; margin-top: -2px"
-            ></i>
-            <h5 class="m-0 font-bold">Now Serving</h5>
-          </div>
-          <div class="grid grid-cols-2 gap-4 p-4 bg-green-50 text-green-700">
-            <div
-              class="text-center px-2 py-3 text-7xl bg-gray-100 border rounded-lg font-bold"
-            >
-              D 555
-            </div>
-            <div
-              class="text-center px-2 py-3 text-7xl bg-gray-100 border rounded-lg font-bold"
-            >
-              AO 12
-            </div>
-            <div
-              class="text-center px-2 py-3 text-7xl bg-gray-100 border rounded-lg font-bold"
-            >
-              D 2
-            </div>
-            <div
-              class="text-center px-2 py-3 text-7xl bg-gray-100 border rounded-lg font-bold"
-            >
-              G 10
-            </div>
-          </div>
-        </div>
-        <div
-          class="border rounded-2xl overflow-hidden p-4 py-3 mt-3 text-orange-600 font-bold bg-orange-50"
-        >
-          <div class="flex gap-2">
-            <div><i class="bi bi-arrow-clockwise"></i></div>
-            <p>SKIPPED</p>
-          </div>
-          <div class="grid grid-cols-6 gap-4 p-2">
-            <div class="text-center py-1 bg-orange-100">D1</div>
-            <div class="text-center py-1 bg-orange-100">D2</div>
-            <div class="text-center py-1 bg-orange-100">D3</div>
-            <div class="text-center py-1 bg-orange-100">D4</div>
-            <div class="text-center py-1 bg-orange-100">D1</div>
-            <div class="text-center py-1 bg-orange-100">D2</div>
-          </div>
-        </div>
-        <div
-          class="border rounded-2xl overflow-hidden p-4 py-3 mt-3 font-medium text-blue-900 bg-blue-50"
-        >
-          <div class="flex gap-2 text-xs items-center">
-            <div class="rounded-full p-2.5 bg-blue-900 text-white text-center">
-              <i class="bi bi-person-workspace" style="font-size: 15px"></i>
-            </div>
-            <div>
-              <p class="m-0">PLEASE ASK HELPDESK FOR ASSISTANCE</p>
-              <p class="m-0 normal-case font-normal">
-                Thank you for your patience.
-              </p>
-            </div>
-          </div>
-        </div>
+    <!-- Display this if only ONE department is on the window -->
+    <!-- <div>
+      <div class="p-3">
+        <h1 class="uppercase text-blue-950 font-bold flex gap-3">
+          Billing <span class="text-lg capitalize">(Room 11)</span>
+        </h1>
       </div>
-      <div class="col-md-6 border p-4">
-        <div class="border rounded-2xl overflow-hidden">
-          <div class="flex p-3 px-4 gap-3 bg-blue-900 text-white items-center">
-            <i
-              class="bi bi-people-fill bg-white py-1 px-2 rounded-full text-blue-900"
-              style="font-size: 12px; margin-top: -2px"
-            ></i>
-            <h5 class="m-0 font-bold">Waiting</h5>
-          </div>
-          <div class="grid grid-cols-2 p-4 bg-blue-50 text-blue-900 font-bold">
-            <div class="relative">
-              <p class="mb-3 text-xl text-center">Priority</p>
-              <div class="flex gap-3 flex-col px-4">
-                <div class="bg-blue-100 text-xl text-center p-2">O 1</div>
-                <div class="bg-blue-100 text-xl text-center p-2">O 2</div>
-                <div class="bg-blue-100 text-xl text-center p-2">O 3</div>
-                <div class="bg-blue-100 text-xl text-center p-2">O 4</div>
-              </div>
-              <span
-                class="after-border"
-                style="
-                  content: '';
-                  position: absolute;
-                  top: 0;
-                  right: 0;
-                  width: 2px;
-                  height: 100%;
-                  background-color: #e0e7ef;
-                  display: block;
-                  z-index: 10;
-                "
-              ></span>
+      <div class="row uppercase">
+        <div class="col-md-6 border p-4">
+          <div class="border rounded-2xl overflow-hidden">
+            <div
+              class="flex p-3 px-4 gap-3 bg-green-700 text-white items-center"
+            >
+              <i
+                class="bi bi-people-fill bg-white py-1 px-2 rounded-full text-green-700"
+                style="font-size: 12px; margin-top: -2px"
+              ></i>
+              <h5 class="m-0 font-bold">Now Serving</h5>
             </div>
-            <div>
-              <p class="mb-3 text-xl text-center">Regular</p>
-              <div class="flex gap-3 flex-col px-4">
-                <div class="bg-blue-100 text-xl text-center p-2">D 1</div>
-                <div class="bg-blue-100 text-xl text-center p-2">D 2</div>
-                <div class="bg-blue-100 text-xl text-center p-2">D 3</div>
-                <div class="bg-blue-100 text-xl text-center p-2">D 4</div>
-                <div class="bg-blue-100 text-xl text-center p-2">D 5</div>
-                <div class="bg-blue-100 text-xl text-center p-2">D 10</div>
-                <div class="bg-blue-100 text-xl text-center p-2">D 15</div>
-                <div class="bg-blue-100 text-xl text-center p-2">G 3</div>
+            <div class="grid grid-cols-2 gap-4 p-4 bg-green-50 text-green-700">
+              <div
+                class="text-center px-2 py-3 text-7xl bg-gray-100 border rounded-lg font-bold"
+              >
+                D 555
+              </div>
+              <div
+                class="text-center px-2 py-3 text-7xl bg-gray-100 border rounded-lg font-bold"
+              >
+                AO 12
+              </div>
+              <div
+                class="text-center px-2 py-3 text-7xl bg-gray-100 border rounded-lg font-bold"
+              >
+                D 2
+              </div>
+              <div
+                class="text-center px-2 py-3 text-7xl bg-gray-100 border rounded-lg font-bold"
+              >
+                G 10
+              </div>
+            </div>
+          </div>
+          <div
+            class="border rounded-2xl overflow-hidden p-4 py-3 mt-3 text-orange-600 font-bold bg-orange-50"
+          >
+            <div class="flex gap-2">
+              <div><i class="bi bi-arrow-clockwise"></i></div>
+              <p>SKIPPED</p>
+            </div>
+            <div class="skipped-ticker" ref="skippedTickerRef">
+              <div
+                ref="skippedTickerTrackRef"
+                class="skipped-ticker__track"
+                :class="{
+                  'skipped-ticker__track--animate': skippedTickerOverflow,
+                }"
+              >
+                <span
+                  v-for="(number, index) in skippedTickerItems"
+                  :key="`${number}-${index}`"
+                  class="skipped-ticker__item"
+                >
+                  {{ number }}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="border rounded-2xl overflow-hidden p-4 py-3 mt-3 font-medium text-blue-900 bg-blue-50"
+          >
+            <div class="flex gap-2 text-xs items-center">
+              <div
+                class="rounded-full p-2.5 bg-blue-900 text-white text-center"
+              >
+                <i class="bi bi-person-workspace" style="font-size: 15px"></i>
+              </div>
+              <div>
+                <p class="m-0">PLEASE ASK HELPDESK FOR ASSISTANCE</p>
+                <p class="m-0 normal-case font-normal">
+                  Thank you for your patience.
+                </p>
               </div>
             </div>
           </div>
         </div>
+        <div class="col-md-6 border p-4">
+          <div class="border rounded-2xl overflow-hidden">
+            <div
+              class="flex p-3 px-4 gap-3 bg-blue-900 text-white items-center"
+            >
+              <i
+                class="bi bi-people-fill bg-white py-1 px-2 rounded-full text-blue-900"
+                style="font-size: 12px; margin-top: -2px"
+              ></i>
+              <h5 class="m-0 font-bold">Waiting</h5>
+            </div>
+            <div
+              class="grid grid-cols-2 p-4 bg-blue-50 text-blue-900 font-bold"
+            >
+              <div class="relative">
+                <p class="mb-3 text-xl text-center">Priority</p>
+                <div class="flex gap-3 flex-col px-4">
+                  <div class="bg-blue-100 text-xl text-center p-2">O 1</div>
+                  <div class="bg-blue-100 text-xl text-center p-2">O 2</div>
+                  <div class="bg-blue-100 text-xl text-center p-2">O 3</div>
+                  <div class="bg-blue-100 text-xl text-center p-2">O 4</div>
+                </div>
+                <span
+                  class="after-border"
+                  style="
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    width: 2px;
+                    height: 100%;
+                    background-color: #e0e7ef;
+                    display: block;
+                    z-index: 10;
+                  "
+                ></span>
+              </div>
+              <div>
+                <p class="mb-3 text-xl text-center">Regular</p>
+                <div class="flex gap-3 flex-col px-4">
+                  <div class="bg-blue-100 text-xl text-center p-2">D 1</div>
+                  <div class="bg-blue-100 text-xl text-center p-2">D 2</div>
+                  <div class="bg-blue-100 text-xl text-center p-2">D 3</div>
+                  <div class="bg-blue-100 text-xl text-center p-2">D 4</div>
+                  <div class="bg-blue-100 text-xl text-center p-2">D 5</div>
+                  <div class="bg-blue-100 text-xl text-center p-2">D 10</div>
+                  <div class="bg-blue-100 text-xl text-center p-2">D 15</div>
+                  <div class="bg-blue-100 text-xl text-center p-2">G 3</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </div> -->
     <!-- //Display this if only one department is on the window -->
+    <!-- Display this if 2 or more department is on the window -->
+    <div>
+      <div class="row font-bold uppercase">
+        <div class="col-sm">
+          <div class="p-4">
+            <div class="border rounded-lg overflow-hidden">
+              <div class="text-2xl p-4 bg-green-900 text-white">
+                Vital Signs
+              </div>
+              <div class="p-4">
+                <div class="flex gap-2">
+                  <div class="flex-1 relative pr-5 border-r border-green-600">
+                    <p class="text-center text-green-900 text-xl mb-3">
+                      Now Serving
+                    </p>
+                    <div class="grid grid-cols-2 gap-2">
+                      <div
+                        class="text-8xl text-center bg-green-100 text-green-900"
+                      >
+                        B 10
+                      </div>
+                      <div
+                        class="text-8xl text-center bg-green-100 text-green-900"
+                      >
+                        B 11
+                      </div>
+                      <div
+                        class="text-8xl text-center bg-green-100 text-green-900"
+                      >
+                        B 10
+                      </div>
+                      <div
+                        class="text-8xl text-center bg-green-100 text-green-900"
+                      >
+                        B 10
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="p-2 text-green-900">
+                    <p class="mb-3">Skipped</p>
+                    <div class="flex flex-column gap-2" style="font-size: 18px">
+                      <div class="text-center p-2 bg-green-100 rounded-md">
+                        B 8
+                      </div>
+                      <div class="text-center p-2 bg-green-100 rounded-md">
+                        B 9
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="text-green-900 uppercase mt-5 my-4 flex items-center text-xl"
+                >
+                  Waiting
+                  <div class="flex-1">
+                    <div
+                      style="height: 1.8px; width: 95%"
+                      class="bg-green-500 m-auto"
+                    ></div>
+                  </div>
+                </div>
+                <div class="flex gap-4">
+                  <div
+                    class="flex-1 text-orange-500 border-r-2 border-gray-300 pr-5"
+                  >
+                    <p class="mb-2">
+                      <i class="bi bi-people-fill"></i> Priority
+                    </p>
+                    <div class="grid grid-cols-2 gap-2">
+                      <div class="bg-orange-100 rounded-md text-center p-2">
+                        A 1
+                      </div>
+                      <div class="bg-orange-100 rounded-md text-center p-2">
+                        A 3
+                      </div>
+                      <div class="bg-orange-100 rounded-md text-center p-2">
+                        A 5
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex-1 text-blue-900">
+                    <p class="mb-2">
+                      <i class="bi bi-people-fill"></i> Regular
+                    </p>
+                    <div class="grid grid-cols-2 gap-2">
+                      <div class="bg-blue-100 rounded-md text-center p-2">
+                        A 1
+                      </div>
+                      <div class="bg-blue-100 rounded-md text-center p-2">
+                        A 3
+                      </div>
+                      <div class="bg-blue-100 rounded-md text-center p-2">
+                        A 5
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm">B</div>
+        <!-- <div class="col-sm">B</div> -->
+      </div>
+    </div>
+    <!-- //Display this if 2 or more department is on the window -->
   </div>
   <div class="w-100 h-100" style="background: black; color: #333">
     <div class="container-fluid py-4 border border-red">
@@ -422,11 +550,47 @@ p {
 .blink-bg-animation {
   animation: blink 0.9s 8;
 }
+
+.skipped-ticker {
+  overflow: hidden;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.skipped-ticker__track {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 1rem;
+  width: max-content;
+}
+
+.skipped-ticker__track--animate {
+  animation: skipped-ticker-scroll 24s linear infinite;
+}
+
+.skipped-ticker__item {
+  flex-shrink: 0;
+  text-align: center;
+  padding: 0.25rem 0.75rem;
+  background-color: #ffedd5;
+  border-radius: 0.25rem;
+  white-space: nowrap;
+}
+
+@keyframes skipped-ticker-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
 </style>
 
 <script setup>
 import { Head } from "@inertiajs/vue3";
-import { ref, computed, onMounted, onBeforeUnmount } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount, nextTick } from "vue";
 
 const speechEnabled = ref(false);
 
@@ -443,6 +607,57 @@ const lastUpdatedDisplay = computed(() =>
 );
 
 let intervalId = null;
+let skippedTickerResizeObserver = null;
+
+const skippedQueueNumbers = ref([
+  "D1",
+  "D2",
+  "D3",
+  "D4",
+  "D5",
+  "D6",
+  "D4",
+  "D5",
+  "D6",
+  "D4",
+  "D5",
+]);
+const skippedTickerRef = ref(null);
+const skippedTickerTrackRef = ref(null);
+const skippedTickerOverflow = ref(false);
+
+const skippedTickerItems = computed(() =>
+  skippedTickerOverflow.value
+    ? [...skippedQueueNumbers.value, ...skippedQueueNumbers.value]
+    : skippedQueueNumbers.value
+);
+
+const updateSkippedTickerOverflow = async () => {
+  await nextTick();
+  const container = skippedTickerRef.value;
+  const track = skippedTickerTrackRef.value;
+  if (!container || !track) return;
+
+  const itemCount = skippedQueueNumbers.value.length;
+  const itemElements = track.querySelectorAll(".skipped-ticker__item");
+  const singleSetItems = Array.from(itemElements).slice(0, itemCount);
+
+  let contentWidth = 0;
+  singleSetItems.forEach((item, index) => {
+    contentWidth += item.getBoundingClientRect().width;
+    if (index < singleSetItems.length - 1) {
+      contentWidth += 16;
+    }
+  });
+
+  const hasOverflow = contentWidth > container.clientWidth;
+  if (hasOverflow !== skippedTickerOverflow.value) {
+    skippedTickerOverflow.value = hasOverflow;
+    if (hasOverflow) {
+      await nextTick();
+    }
+  }
+};
 
 const fetchData = async () => {
   try {
@@ -556,10 +771,22 @@ onMounted(() => {
   // Run the function immediately, then repeat every 1000ms (1 second)
   updateClock();
   setInterval(updateClock, 1000);
+
+  updateSkippedTickerOverflow();
+  window.addEventListener("resize", updateSkippedTickerOverflow);
+
+  if (typeof ResizeObserver !== "undefined" && skippedTickerRef.value) {
+    skippedTickerResizeObserver = new ResizeObserver(
+      updateSkippedTickerOverflow
+    );
+    skippedTickerResizeObserver.observe(skippedTickerRef.value);
+  }
 });
 
 onBeforeUnmount(() => {
   if (intervalId) clearInterval(intervalId);
+  window.removeEventListener("resize", updateSkippedTickerOverflow);
+  skippedTickerResizeObserver?.disconnect();
 });
 
 function animateBlink(queue_number) {
