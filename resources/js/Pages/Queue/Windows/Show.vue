@@ -1,7 +1,7 @@
 <template>
   <Head :title="`${window.name} Display`" />
 
-  <div class="container-fluid min-vh-100 border border-black">
+  <div class="container-fluid min-vh-100">
     <div class="flex justify-content-between p-3 border-b-2">
       <div>
         <div class="flex gap-3">
@@ -17,14 +17,13 @@
         </div>
       </div>
       <div>
-        <div class="flex gap-2">
+        <div class="flex gap-3">
           <div>
             <i class="bi bi-clock" style="font-size: 32px"></i>
           </div>
 
           <div>
-            <p>10:24 AM</p>
-            <p>May 20, 2026 | Tuesday</p>
+            <div id="clock">Loading time...</div>
           </div>
         </div>
       </div>
@@ -36,10 +35,10 @@
     <div class="row uppercase">
       <div class="col-md-6 border p-4">
         <div class="border rounded-2xl overflow-hidden">
-          <div class="flex p-3 px-4 gap-3 bg-green-700 text-white">
+          <div class="flex p-3 px-4 gap-3 bg-green-700 text-white items-center">
             <i
-              class="bi bi-people-fill"
-              style="font-size: 20px; margin-top: -2px"
+              class="bi bi-people-fill bg-white py-1 px-2 rounded-full text-green-700"
+              style="font-size: 12px; margin-top: -2px"
             ></i>
             <h5 class="m-0 font-bold">Now Serving</h5>
           </div>
@@ -49,7 +48,7 @@
             >
               D 555
             </div>
-            <!--  <div
+            <div
               class="text-center px-2 py-3 text-7xl bg-gray-100 border rounded-lg font-bold"
             >
               AO 12
@@ -63,7 +62,7 @@
               class="text-center px-2 py-3 text-7xl bg-gray-100 border rounded-lg font-bold"
             >
               G 10
-            </div> -->
+            </div>
           </div>
         </div>
         <div
@@ -74,14 +73,12 @@
             <p>SKIPPED</p>
           </div>
           <div class="grid grid-cols-6 gap-4 p-2">
-            <div class="bg-gray-50 text-center py-1 bg-orange-100">D1</div>
-            <div class="bg-gray-50 text-center py-1 bg-orange-100">D2</div>
-            <div class="bg-gray-50 text-center py-1 bg-orange-100">D3</div>
-            <div class="bg-gray-50 text-center py-1 bg-orange-100">D4</div>
-            <div class="bg-gray-50 text-center py-1 bg-orange-100">D1</div>
-            <div class="bg-gray-50 text-center py-1 bg-orange-100">D2</div>
-            <div class="bg-gray-50 text-center py-1 bg-orange-100">D3</div>
-            <div class="bg-gray-50 text-center py-1 bg-orange-100">D4</div>
+            <div class="text-center py-1 bg-orange-100">D1</div>
+            <div class="text-center py-1 bg-orange-100">D2</div>
+            <div class="text-center py-1 bg-orange-100">D3</div>
+            <div class="text-center py-1 bg-orange-100">D4</div>
+            <div class="text-center py-1 bg-orange-100">D1</div>
+            <div class="text-center py-1 bg-orange-100">D2</div>
           </div>
         </div>
         <div
@@ -101,12 +98,53 @@
         </div>
       </div>
       <div class="col-md-6 border p-4">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus
-        mollitia alias explicabo animi totam? Dolorem eaque ut quae doloribus
-        exercitationem corrupti aperiam similique quod, rerum accusamus. Natus
-        molestias similique voluptatibus temporibus unde, veniam consequatur ea?
-        Dignissimos natus dolor cumque nihil at aperiam perspiciatis nostrum
-        animi delectus! Recusandae, repellat. Quod, nobis!
+        <div class="border rounded-2xl overflow-hidden">
+          <div class="flex p-3 px-4 gap-3 bg-blue-900 text-white items-center">
+            <i
+              class="bi bi-people-fill bg-white py-1 px-2 rounded-full text-blue-900"
+              style="font-size: 12px; margin-top: -2px"
+            ></i>
+            <h5 class="m-0 font-bold">Waiting</h5>
+          </div>
+          <div class="grid grid-cols-2 p-4 bg-blue-50 text-blue-900 font-bold">
+            <div class="relative">
+              <p class="mb-3 text-xl text-center">Priority</p>
+              <div class="flex gap-3 flex-col px-4">
+                <div class="bg-blue-100 text-xl text-center p-2">O 1</div>
+                <div class="bg-blue-100 text-xl text-center p-2">O 2</div>
+                <div class="bg-blue-100 text-xl text-center p-2">O 3</div>
+                <div class="bg-blue-100 text-xl text-center p-2">O 4</div>
+              </div>
+              <span
+                class="after-border"
+                style="
+                  content: '';
+                  position: absolute;
+                  top: 0;
+                  right: 0;
+                  width: 2px;
+                  height: 100%;
+                  background-color: #e0e7ef;
+                  display: block;
+                  z-index: 10;
+                "
+              ></span>
+            </div>
+            <div>
+              <p class="mb-3 text-xl text-center">Regular</p>
+              <div class="flex gap-3 flex-col px-4">
+                <div class="bg-blue-100 text-xl text-center p-2">D 1</div>
+                <div class="bg-blue-100 text-xl text-center p-2">D 2</div>
+                <div class="bg-blue-100 text-xl text-center p-2">D 3</div>
+                <div class="bg-blue-100 text-xl text-center p-2">D 4</div>
+                <div class="bg-blue-100 text-xl text-center p-2">D 5</div>
+                <div class="bg-blue-100 text-xl text-center p-2">D 10</div>
+                <div class="bg-blue-100 text-xl text-center p-2">D 15</div>
+                <div class="bg-blue-100 text-xl text-center p-2">G 3</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <!-- //Display this if only one department is on the window -->
@@ -471,6 +509,53 @@ onMounted(() => {
   if (document.documentElement.requestFullscreen) {
     document.documentElement.requestFullscreen().catch(() => {});
   }
+
+  function updateClock() {
+    const now = new Date();
+    // Update the HTML element with the current time string
+    // Format: Aug. 15, 2026 | Saturday <br> 2:11:30 PM
+    const monthNames = [
+      "Jan.",
+      "Feb.",
+      "Mar.",
+      "Apr.",
+      "May",
+      "Jun.",
+      "Jul.",
+      "Aug.",
+      "Sep.",
+      "Oct.",
+      "Nov.",
+      "Dec.",
+    ];
+    const dayNames = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    const month = monthNames[now.getMonth()];
+    const day = now.getDate();
+    const year = now.getFullYear();
+    const dayOfWeek = dayNames[now.getDay()];
+
+    let hour = now.getHours();
+    const minute = now.getMinutes().toString().padStart(2, "0");
+    const second = now.getSeconds().toString().padStart(2, "0");
+    const ampm = hour >= 12 ? "PM" : "AM";
+    hour = hour % 12;
+    hour = hour ? hour : 12; // the hour '0' should be '12'
+    const timeStr = `${hour}:${minute}:${second} ${ampm}`;
+    const dateStr = `<span class="font-bold">${month} ${day}, ${year} | ${dayOfWeek}</span> <br> ${timeStr}`;
+    document.getElementById("clock").innerHTML = dateStr;
+  }
+
+  // Run the function immediately, then repeat every 1000ms (1 second)
+  updateClock();
+  setInterval(updateClock, 1000);
 });
 
 onBeforeUnmount(() => {
