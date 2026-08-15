@@ -28,7 +28,7 @@ class WindowController extends Controller
             $items = QueueItem::with(['patient'])
                 ->today()
                 ->where('current_department_id', $department->id)
-                ->whereIn('status', ['waiting', 'serving'])
+                ->whereIn('status', ['waiting', 'serving', 'skipped'])
                 ->orderBy('status', 'desc')
                 ->orderBy('queue_position')
                 ->get();
@@ -54,7 +54,7 @@ class WindowController extends Controller
                 'items' => QueueItem::with(['patient'])
                     ->today()
                     ->where('current_department_id', $department->id)
-                    ->whereIn('status', ['waiting', 'serving'])
+                    ->whereIn('status', ['waiting', 'serving', 'skipped'])
                     ->orderBy('status', 'desc')
                     ->orderBy('queue_position')
                     ->get(),

@@ -71,7 +71,7 @@ class Department extends Model
         // Format queue number
         // $nextNumber = str_pad($counter->counter, 3, '0', STR_PAD_LEFT);
         $nextNumber = $counter->counter;
-        return $this->code . $nextNumber;
+        return $this->code . ' ' . $nextNumber;
     }
 
     public function resetDailyCounter(?\Carbon\Carbon $date = null): void
