@@ -101,7 +101,7 @@ class QueueController extends Controller
                         ->whereDate('created_at', today());
                 }
             ])
-            ->whereNotIn('code', ['REG', 'MSS', 'PHIC', 'BIL'])
+            ->whereNotIn('code', ['REG', 'MSS', 'PHIC'])
             ->orderBy('name')
             ->get();
 
