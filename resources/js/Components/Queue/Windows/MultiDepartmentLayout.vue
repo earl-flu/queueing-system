@@ -21,8 +21,10 @@
             <i class="bi bi-person-rolodex" style="font-size: 40px"></i>
           </div>
           <div>
-            <p>Please ask helpdesk for assistance</p>
-            <p class="normal-case font-normal">Thank you for your patience</p>
+            <p class="m-0">Please ask helpdesk for assistance</p>
+            <p class="normal-case font-normal m-0">
+              Thank you for your patience
+            </p>
           </div>
         </div>
       </div>
