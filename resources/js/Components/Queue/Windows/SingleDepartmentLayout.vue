@@ -3,15 +3,13 @@
     <div class="p-3">
       <h1 class="uppercase text-blue-950 font-bold flex gap-3">
         {{ department.name }}
-        <span class="text-lg capitalize">({{ department.room || "N/A" }})</span>
+        <span class="text-lg capitalize">({{ department.room || "" }})</span>
       </h1>
     </div>
     <div class="row uppercase">
       <div class="col-md-6 border p-4">
         <div class="border rounded-2xl overflow-hidden">
-          <div
-            class="flex p-3 px-4 gap-3 bg-green-700 text-white items-center"
-          >
+          <div class="flex p-3 px-4 gap-3 bg-green-700 text-white items-center">
             <i
               class="bi bi-people-fill bg-white py-1 px-2 rounded-full text-green-700"
               style="font-size: 12px; margin-top: -2px"
@@ -50,10 +48,7 @@
             <div><i class="bi bi-arrow-clockwise"></i></div>
             <p>SKIPPED</p>
           </div>
-          <SkippedTicker
-            v-if="skippedNumbers.length"
-            :items="skippedNumbers"
-          />
+          <SkippedTicker v-if="skippedNumbers.length" :items="skippedNumbers" />
           <p v-else class="mt-2 text-gray-400 font-normal normal-case">-</p>
         </div>
 
@@ -61,9 +56,7 @@
           class="border rounded-2xl overflow-hidden p-4 py-3 mt-3 font-medium text-blue-900 bg-blue-50"
         >
           <div class="flex gap-2 text-xs items-center">
-            <div
-              class="rounded-full p-2.5 bg-blue-900 text-white text-center"
-            >
+            <div class="rounded-full p-2.5 bg-blue-900 text-white text-center">
               <i class="bi bi-person-workspace" style="font-size: 15px"></i>
             </div>
             <div>
@@ -78,9 +71,7 @@
 
       <div class="col-md-6 border p-4">
         <div class="border rounded-2xl overflow-hidden">
-          <div
-            class="flex p-3 px-4 gap-3 bg-blue-900 text-white items-center"
-          >
+          <div class="flex p-3 px-4 gap-3 bg-blue-900 text-white items-center">
             <i
               class="bi bi-people-fill bg-white py-1 px-2 rounded-full text-blue-900"
               style="font-size: 12px; margin-top: -2px"
