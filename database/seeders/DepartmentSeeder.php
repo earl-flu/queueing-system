@@ -20,7 +20,7 @@ class DepartmentSeeder extends Seeder
             ['name' => 'Reception', 'slug' => 'reception', 'code' => 'RCPTN', 'room' => ''],
             ['name' => 'MSS', 'slug' => 'mss', 'code' => 'MSS', 'room' => ''],
             ['name' => 'Philhealth', 'slug' => 'philhealth', 'code' => 'PHIC', 'room' => ''],
-            ['name' => 'Billing', 'slug' => 'billing', 'code' => 'BIL', 'room' => ''],
+            ['name' => 'Billing', 'slug' => 'billing', 'code' => 'B', 'room' => ''],
             ['name' => 'Animal Bite - 1', 'slug' => 'animalbite1', 'code' => 'A', 'room' => 'Room 8', 'description' => '(First Injection)'],
             ['name' => 'Animal Bite - 2', 'slug' => 'animalbite2', 'code' => 'F', 'room' => 'Room 8', 'description' => '(Follow-up Injection - 2nd or Later)'],
             ['name' => 'TB DOTS', 'slug' => 'tbdots', 'code' => 'Q', 'room' => 'Room 1'],

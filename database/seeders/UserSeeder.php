@@ -36,7 +36,7 @@ class UserSeeder extends Seeder
             ['name' => 'Reception Staff', 'email' => 'reception@opd.com', 'role' => 'reception', 'dept_code'  => 'RCPTN'],
             ['name' => 'MSS Staff', 'email' => 'mss@opd.com', 'role' => 'staff', 'dept_code' => 'MSS'],
             ['name' => 'Philhealth Staff', 'email' => 'phic@opd.com', 'role' => 'staff', 'dept_code' => 'PHIC'],
-            ['name' => 'Billing Staff', 'email' => 'billing@opd.com', 'role' => 'staff', 'dept_code' => 'BIL'],
+            ['name' => 'Billing Staff', 'email' => 'billing@opd.com', 'role' => 'staff', 'dept_code' => 'B'],
 
             // Medical Staff
             ['name' => 'Animal Bite1 Staff', 'email' => 'abtc1@opd.com', 'role' => 'staff', 'dept_code' => 'A'],

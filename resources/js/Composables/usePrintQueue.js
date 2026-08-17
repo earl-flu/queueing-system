@@ -71,7 +71,7 @@ export function usePrintQueue() {
         <html>
             <style>
                 @page {
-                    size: 48mm 72mm;
+                    size: 58mm 90mm;
                     margin: 0;
                 }
            
@@ -80,7 +80,7 @@ export function usePrintQueue() {
           <body style="margin:0 auto;">
             <div style="
                 margin:0 auto;
-                width:200px;
+                width:230px;
                 height:320px;
                 font-family: montserrat;
                 text-align: center;
@@ -95,6 +95,8 @@ export function usePrintQueue() {
                   <h4 style="margin:0;">Your OPD Number:</h4>
                   <h2 style="font-size:55px; margin:0; font-family: sans-serif; line-height:100%;">${spanQueueNumber}</h2>
                   <p style="margin:0; font-size:12; text-transform:uppercase;">${formattedName}</p>
+                  ${isPriority ? `<p style="margin:0; font-size:10px; text-transform:uppercase; color:red;">PRIORITY</p>` : ""}
+             
                   <div style="font-size:13px; margin-top:15px;">
                       <p style="margin:0;">Steps:</p>
                       <ol style="text-align: left; margin:0; margin-left:-5px;">

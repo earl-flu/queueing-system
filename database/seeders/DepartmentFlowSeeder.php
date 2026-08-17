@@ -35,7 +35,7 @@ class DepartmentFlowSeeder extends Seeder
         $steps = [
             ['code' => 'VIT', 'step_order' => 1],
             ['code' => 'REG', 'step_order' => 2],
-            ['code' => 'BIL', 'step_order' => 4],
+            ['code' => 'B', 'step_order' => 4],
         ];
 
         // Fetch all departments once and map by code
@@ -58,6 +58,17 @@ class DepartmentFlowSeeder extends Seeder
                 'final_department_id' => $departmentId,
                 'step_department_id' => $departmentId,
                 'step_order' => 3,
+                'is_required' => true
+            ]);
+        }
+
+        // Add billing-only flow (directly to billing)
+        $billingDeptId = $departmentsMap['B'] ?? null;
+        if ($billingDeptId) {
+            DepartmentFlow::create([
+                'final_department_id' => $billingDeptId,
+                'step_department_id' => $billingDeptId,
+                'step_order' => 1,
                 'is_required' => true
             ]);
         }

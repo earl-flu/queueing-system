@@ -235,7 +235,8 @@ const roles = [
                   {{ form.errors["patient.age"] }}
                 </div>
               </div> -->
-              <div class="col-md-12">
+              <!-- TO DO: Will pay backend -->
+              <!-- <div class="col-md-12">
                 <div class="form-check">
                   <input
                     class="form-check-input"
@@ -248,7 +249,7 @@ const roles = [
                 <div class="invalid-feedback d-block">
                   {{ form.errors["patient.will_pay"] }}
                 </div>
-              </div>
+              </div> -->
               <div class="col-md-12">
                 <div class="form-check">
                   <input
