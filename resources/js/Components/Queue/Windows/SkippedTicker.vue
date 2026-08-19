@@ -8,7 +8,7 @@
       <span
         v-for="(number, index) in displayItems"
         :key="`${number}-${index}`"
-        class="skipped-ticker__item"
+        class="skipped-ticker__item text-xl"
       >
         {{ number }}
       </span>
@@ -17,7 +17,14 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick } from "vue";
+import {
+  ref,
+  computed,
+  watch,
+  onMounted,
+  onBeforeUnmount,
+  nextTick,
+} from "vue";
 
 const props = defineProps({
   items: {

@@ -63,7 +63,39 @@ const handlePrint = (q) => {
 </script>
 
 <template>
-  <tr>
+  <!-- Modal Backdrop and Dialog -->
+  <div
+    v-if="isOpen"
+    class="modal fade show d-block"
+    tabindex="-1"
+    style="background-color: rgba(0, 0, 0, 0.5)"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Modal Title</h5>
+          <button
+            type="button"
+            class="btn-close"
+            @click="isOpen = false"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <p>This is the modal content!</p>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            @click="isOpen = false"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <tr class="hover:bg-gray-100">
     <td class="fw-bold">
       {{ item.queue_number }}
     </td>
@@ -74,9 +106,7 @@ const handlePrint = (q) => {
         {{ item.patient.first_name }}
         {{ item.patient.middle_name }} {{ item.patient.suffix }}
         <p v-if="item.patient.is_priority">
-          <span class="text-xs bg-danger text-white px-2 rounded-md"
-            >priority</span
-          >
+          <span class="text-xs text-orange-300 rounded-md">priority</span>
         </p>
       </div>
       <div v-if="item.patient.phone" class="text-muted small">

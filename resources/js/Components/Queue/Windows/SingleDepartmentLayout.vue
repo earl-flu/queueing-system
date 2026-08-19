@@ -3,7 +3,9 @@
     <div class="p-3">
       <h1 class="uppercase text-blue-950 font-bold flex gap-3">
         {{ department.name }}
-        <span class="text-lg capitalize">({{ department.room || "" }})</span>
+        <span v-if="department.room" class="text-lg capitalize">
+          ({{ department.room }})
+        </span>
       </h1>
     </div>
     <div class="row uppercase">
@@ -26,7 +28,6 @@
                 <span
                   :id="serving.queue_number"
                   class="blink-bg-animation inline-block"
-                  :class="{ 'text-red-500': serving.patient.is_priority }"
                 >
                   {{ serving.queue_number }}
                 </span>
@@ -86,7 +87,7 @@
                   <div
                     v-for="q in priorityWaiting"
                     :key="q.id"
-                    class="bg-blue-100 text-xl text-center p-2 text-red-500"
+                    class="bg-blue-100 text-center p-2 text-2xl"
                   >
                     {{ q.queue_number }}
                   </div>
@@ -115,7 +116,7 @@
                   <div
                     v-for="q in regularWaiting"
                     :key="q.id"
-                    class="bg-blue-100 text-xl text-center p-2"
+                    class="bg-blue-100 text-2xl text-center p-2"
                   >
                     {{ q.queue_number }}
                   </div>

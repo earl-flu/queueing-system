@@ -40,7 +40,7 @@ export function usePrintQueue() {
         const formattedName = formatName(firstName, lastName);
 
         const spanQueueNumber = isPriority
-            ? `<span style="color:red;">${queueNumber}</span>`
+            ? `<span style="color:#f97316;">${queueNumber}</span>`
             : `<span>${queueNumber}</span>`;
 
         const dateObject = new Date(queueDate);
@@ -95,7 +95,7 @@ export function usePrintQueue() {
                   <h4 style="margin:0;">Your OPD Number:</h4>
                   <h2 style="font-size:55px; margin:0; font-family: sans-serif; line-height:100%;">${spanQueueNumber}</h2>
                   <p style="margin:0; font-size:12; text-transform:uppercase;">${formattedName}</p>
-                  ${isPriority ? `<p style="margin:0; font-size:10px; text-transform:uppercase; color:red;">PRIORITY</p>` : ""}
+                  ${isPriority ? `<p style="margin:0; font-size:10px; text-transform:uppercase; color:#f97316;">PRIORITY</p>` : ""}
              
                   <div style="font-size:13px; margin-top:15px;">
                       <p style="margin:0;">Steps:</p>
