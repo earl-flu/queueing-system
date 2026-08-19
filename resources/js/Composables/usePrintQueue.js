@@ -31,10 +31,10 @@ export function usePrintQueue() {
                 })
                 .join(" ");
 
-            const formattedLastName =
-                lastName.trim().charAt(0).toUpperCase() + ".";
+            // const formattedLastName =
+            //     lastName.trim().charAt(0).toUpperCase() + ".";
 
-            return `${formattedFirstName} ${formattedLastName}`;
+            return `${lastName.toUpperCase()} ${formattedFirstName}`;
         };
 
         const formattedName = formatName(firstName, lastName);
