@@ -65,7 +65,7 @@
 
 <style scoped>
 * {
-  font-family: Roboto !important;
+  font-family: Roboto, sans-serif !important;
 }
 p {
   margin: 0;
