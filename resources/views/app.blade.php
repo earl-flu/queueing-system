@@ -18,6 +18,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/metismenu/mm-vertical.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/simplebar/css/simplebar.css') }}">
     <!-- <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet"> -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Material+Icons+Outlined" rel="stylesheet">
     <link href="{{ asset('/assets/font-awesome/css/fontawesome.min.css') }}" rel="stylesheet">
