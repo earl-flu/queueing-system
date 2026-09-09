@@ -117,7 +117,7 @@ onMounted(() => {
 
     if ("speechSynthesis" in window) {
       const msg = new SpeechSynthesisUtterance(
-        `${event.queueItem.current_department.name}, ${event.queueItem.queue_number}`
+        `${event.queueItem.current_department.name}, ${event.queueItem.queue_number}, ${event.queueItem.patient.last_name}  ${event.queueItem.patient.first_name}`
       );
       const voices = window.speechSynthesis.getVoices();
       const filipinoVoice = voices.find(
