@@ -69,7 +69,7 @@
                   v-for="item in queueItems
                     .filter((i) => i.status === 'serving')
                     .sort(
-                      (a, b) => new Date(b.called_at) - new Date(a.called_at)
+                      (a, b) => new Date(a.called_at) - new Date(b.called_at)
                     )"
                   :key="item.id"
                   class="mb-3"
@@ -137,9 +137,7 @@
                         </p>
                       </div>
                       <div class="gap-2 flex">
-                        <!-- v-if="item.status === 'waiting' && index === 0" -->
                         <button
-                          v-if="item.status === 'waiting'"
                           @click="callPatient(item.id)"
                           class="btn btn-success btn-sm flex-1"
                         >
@@ -217,9 +215,8 @@
                         >
                       </div>
                       <div class="gap-2 flex">
-                        <!-- v-if="item.status === 'waiting' && index === 0" -->
                         <button
-                          v-if="item.status === 'waiting'"
+                          v-if="canCallPatient(item)"
                           @click="callPatient(item.id)"
                           class="btn btn-success btn-sm flex-1"
                         >
@@ -463,6 +460,27 @@ const isReceptionist = computed(() => props.user?.role === "reception");
 const showTransferModal = ref(false);
 const showResetModal = ref(false);
 const selectedItem = ref(null);
+
+const firstWaitingIdsByOriginalDepartment = computed(() => {
+  const firstByDepartment = new Map();
+
+  for (const item of props.queueItems || []) {
+    if (item.status !== "waiting") continue;
+
+    const departmentId = item.original_department_id;
+    const currentFirst = firstByDepartment.get(departmentId);
+
+    if (!currentFirst || item.queue_position < currentFirst.queue_position) {
+      firstByDepartment.set(departmentId, item);
+    }
+  }
+
+  return new Set([...firstByDepartment.values()].map((item) => item.id));
+});
+
+const canCallPatient = (item) =>
+  item.status === "waiting" &&
+  firstWaitingIdsByOriginalDepartment.value.has(item.id);
 
 let intervalId = null;
 

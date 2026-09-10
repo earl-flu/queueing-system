@@ -70,6 +70,17 @@
               />
               <InputError class="mt-1" :message="form.errors.description" />
             </div>
+            <div class="col-md-6">
+              <InputLabel for="slug" value="Slug" />
+              <TextInput
+                id="slug"
+                v-model="form.slug"
+                type="text"
+                class="mt-1 block w-full"
+                autocomplete="off"
+              />
+              <InputError class="mt-1" :message="form.errors.slug" />
+            </div>
 
             <div class="col-md-6">
               <InputLabel for="users" value="Assigned Staff (optional)" />
@@ -127,6 +138,7 @@ const form = useForm({
   name: "",
   code: "",
   room: "",
+  slug: "",
   description: "",
   users: [],
   is_active: true,

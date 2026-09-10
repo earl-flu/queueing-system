@@ -70,6 +70,17 @@
               />
               <InputError class="mt-1" :message="form.errors.description" />
             </div>
+            <div class="col-md-6">
+              <InputLabel for="slug" value="slug" />
+              <TextInput
+                id="slug"
+                v-model="form.slug"
+                type="text"
+                class="mt-1 block w-full"
+                autocomplete="off"
+              />
+              <InputError class="mt-1" :message="form.errors.slug" />
+            </div>
 
             <div class="col-md-6">
               <InputLabel for="users" value="Assigned Staff (optional)" />
@@ -129,6 +140,7 @@ const form = useForm({
   code: props.department?.code || "",
   room: props.department?.room || "",
   description: props.department?.description || "",
+  slug: props.department?.slug || "",
   users: (props.department?.users || []).map((u) => u.id),
   is_active: props.department?.is_active ?? true,
 });
