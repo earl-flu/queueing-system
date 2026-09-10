@@ -12,7 +12,7 @@
             <h3 class="uppercase m-0 font-bold text-blue-950">
               Outpatient Department
             </h3>
-            <p class="m-0">We care for you. Your health is our priority.</p>
+            <p class="m-0">Eastern Bicol Medical Center (EBMC)</p>
           </div>
         </div>
       </div>
