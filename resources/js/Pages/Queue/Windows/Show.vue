@@ -43,8 +43,17 @@
       </div>
     </div>
 
+    <RegistrationDepartmentLayout
+      v-if="isSingleDepartment && departments[0].slug === 'registration'"
+      :department="departments[0]"
+      :get-now-serving="getNowServing"
+      :get-priority-up-next="getPriorityUpNext"
+      :get-regular-up-next="getRegularUpNext"
+      :get-skipped="getSkipped"
+    />
+
     <SingleDepartmentLayout
-      v-if="isSingleDepartment"
+      v-else-if="isSingleDepartment"
       :department="departments[0]"
       :get-now-serving="getNowServing"
       :get-priority-up-next="getPriorityUpNext"
@@ -77,6 +86,7 @@ import { Head } from "@inertiajs/vue3";
 import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import { useWindowQueue } from "@/Composables/useWindowQueue";
 import SingleDepartmentLayout from "@/Components/Queue/Windows/SingleDepartmentLayout.vue";
+import RegistrationDepartmentLayout from "@/Components/Queue/Windows/RegistrationDepartmentLayout.vue";
 import MultiDepartmentLayout from "@/Components/Queue/Windows/MultiDepartmentLayout.vue";
 
 const speechEnabled = ref(false);

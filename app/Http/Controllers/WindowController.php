@@ -25,7 +25,7 @@ class WindowController extends Controller
 
         $queuesByDepartment = [];
         foreach ($departments as $department) {
-            $items = QueueItem::with(['patient'])
+            $items = QueueItem::with(['patient', 'originalDepartment'])
                 ->today()
                 ->where('current_department_id', $department->id)
                 ->whereIn('status', ['waiting', 'serving', 'skipped'])
@@ -51,7 +51,7 @@ class WindowController extends Controller
         foreach ($departments as $department) {
             $payload[] = [
                 'department' => $department,
-                'items' => QueueItem::with(['patient'])
+                'items' => QueueItem::with(['patient', 'originalDepartment'])
                     ->today()
                     ->where('current_department_id', $department->id)
                     ->whereIn('status', ['waiting', 'serving', 'skipped'])

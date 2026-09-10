@@ -21,9 +21,9 @@
             <i class="bi bi-person-rolodex" style="font-size: 40px"></i>
           </div>
           <div>
-            <p class="m-0">Please ask helpdesk for assistance</p>
+            <p class="m-0">MANGYARING HUMINGI NG TULONG SA HELPDESK</p>
             <p class="normal-case font-normal m-0">
-              Thank you for your patience
+              Maraming salamat sa iyong pagpapasensya
             </p>
           </div>
         </div>

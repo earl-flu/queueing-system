@@ -47,7 +47,7 @@
         >
           <div class="flex gap-2">
             <div><i class="bi bi-arrow-clockwise"></i></div>
-            <p>SKIPPED</p>
+            <p>SKIPPED / NILAKTAWAN</p>
           </div>
           <SkippedTicker v-if="skippedNumbers.length" :items="skippedNumbers" />
           <p v-else class="mt-2 text-gray-400 font-normal normal-case">-</p>
@@ -61,9 +61,9 @@
               <i class="bi bi-person-workspace" style="font-size: 15px"></i>
             </div>
             <div>
-              <p class="m-0">PLEASE ASK HELPDESK FOR ASSISTANCE</p>
+              <p class="m-0">MANGYARING HUMINGI NG TULONG SA HELPDESK</p>
               <p class="m-0 normal-case font-normal">
-                Thank you for your patience.
+                Maraming salamat sa iyong pagpapasensya
               </p>
             </div>
           </div>

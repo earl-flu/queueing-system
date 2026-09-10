@@ -2,22 +2,16 @@
   <div class="col-sm border-end">
     <div class="p-3">
       <div class="border rounded-lg overflow-hidden">
-        <div
-          class="text-2xl p-4 text-white"
-          :class="headerClass"
-        >
+        <div class="text-2xl p-4 text-white" :class="headerClass">
           {{ department.name }}
+          <span v-if="department.room" class="text-lg capitalize font-normal">
+            ({{ department.room }})
+          </span>
         </div>
         <div class="p-4">
           <div class="flex gap-2">
-            <div
-              class="flex-1 relative pr-5"
-              :class="accentBorderClass"
-            >
-              <p
-                class="text-center text-xl mb-3"
-                :class="accentTextClass"
-              >
+            <div class="flex-1 relative pr-5" :class="accentBorderClass">
+              <p class="text-center text-xl mb-3" :class="accentTextClass">
                 Now Serving
               </p>
               <div class="grid grid-cols-2 gap-2">
@@ -47,7 +41,7 @@
             </div>
 
             <div class="p-2" :class="accentTextClass">
-              <p class="mb-3">Skipped</p>
+              <p class="mb-3">Skipped / <br />Nilaktawan</p>
               <SkippedVerticalRotator
                 :items="skipped"
                 :item-class="servingBgClass"
@@ -70,12 +64,8 @@
           </div>
 
           <div class="flex gap-4">
-            <div
-              class="flex-1 text-orange-500 border-r-2 border-gray-300 pr-5"
-            >
-              <p class="mb-2">
-                <i class="bi bi-people-fill"></i> Priority
-              </p>
+            <div class="flex-1 text-orange-500 border-r-2 border-gray-300 pr-5">
+              <p class="mb-2"><i class="bi bi-people-fill"></i> Priority</p>
               <div class="grid grid-cols-2 gap-2">
                 <template v-if="priorityWaiting.length">
                   <div
@@ -90,9 +80,7 @@
               </div>
             </div>
             <div class="flex-1 text-blue-900">
-              <p class="mb-2">
-                <i class="bi bi-people-fill"></i> Regular
-              </p>
+              <p class="mb-2"><i class="bi bi-people-fill"></i> Regular</p>
               <div class="grid grid-cols-2 gap-2">
                 <template v-if="regularWaiting.length">
                   <div
