@@ -74,6 +74,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/{queueItem}/no-show', [QueueController::class, 'noShow'])->name('no-show');
         Route::post('/{queueItem}/transfer', [QueueController::class, 'transfer'])->name('transfer');
         Route::post('/{queueItem}/transfer', [QueueController::class, 'skip'])->name('skip');
+        Route::patch('/{queueItem}/patient', [QueueController::class, 'updatePatient'])->name('update-patient');
         Route::get('/department/{departmentId}', [QueueController::class, 'departmentQueue'])->name('department');
         // Route::post('/department/{departmentId}/reset-counter', [QueueController::class, 'resetCounter'])
         //     ->name('reset-counter')

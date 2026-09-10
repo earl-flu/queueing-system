@@ -36,8 +36,9 @@ class QueueController extends Controller
         $status = $request->get('status', 'all');
         $queueNumber = $request->get('queueNumber');
         $patientFullName = $request->get('patientFullname');
+        $hideTransferred = filter_var($request->get('hideTransferred', false), FILTER_VALIDATE_BOOLEAN);
 
-        $query = QueueItem::with(['patient', 'originalDepartment', 'currentDepartment.users', 'servedByUser'])
+        $query = QueueItem::with(['patient.priorityReason', 'originalDepartment', 'currentDepartment.users', 'servedByUser'])
             ->today()
             ->orderBy('created_at', 'desc');
 
@@ -47,6 +48,10 @@ class QueueController extends Controller
 
         if ($status !== 'all') {
             $query->where('status', $status);
+        }
+
+        if ($hideTransferred) {
+            $query->where('status', '!=', 'transferred');
         }
 
         if ($queueNumber) {
@@ -63,15 +68,21 @@ class QueueController extends Controller
 
         $queueItems = $query->paginate(20);
         $departments = Department::where('is_active', true)->with('users')->get();
+        $priority_reasons = PriorityReason::where('is_active', true)
+            ->orderBy('description')
+            ->get();
 
         return Inertia::render('Queue/Index', [
             'queueItems' => $queueItems,
             'departments' => $departments,
+            'priority_reasons' => $priority_reasons,
             'filters' => [
-                'department' => $currentDepartmentId,
+                'currentDepartmentId' => $currentDepartmentId,
+                'targetDepartmentId' => $targetDepartmentId,
                 'status' => $status,
                 'patientFullname' => $patientFullName,
-                'queueNumber' => $queueNumber
+                'queueNumber' => $queueNumber,
+                'hideTransferred' => $hideTransferred,
             ],
             'user' => auth()->user()->load('departments')
         ]);
@@ -237,6 +248,66 @@ class QueueController extends Controller
         if ($user->isReceptionist() && !$user->isAdmin() && !$user->departments->contains($queueItem->current_department_id)) {
             abort(403, 'Unauthorized: You do not have access to this department.');
         }
+    }
+
+    /**
+     * Update patient details on a queue item.
+     *
+     * @param Request $request
+     * @param QueueItem $queueItem
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updatePatient(Request $request, QueueItem $queueItem)
+    {
+        $this->authorizePatientUpdate($queueItem);
+
+        $request->merge([
+            'is_priority' => $request->boolean('is_priority'),
+            'priority_reason_id' => $request->filled('priority_reason_id')
+                ? $request->input('priority_reason_id')
+                : null,
+            'suffix' => $request->filled('suffix') ? $request->input('suffix') : null,
+            'middle_name' => $request->filled('middle_name') ? $request->input('middle_name') : null,
+        ]);
+
+        $validated = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'middle_name' => 'nullable|string|max:255',
+            'suffix' => 'nullable|in:Jr.,Sr.,II,III,IV,V',
+            'is_priority' => 'boolean',
+            'priority_reason_id' => 'nullable|required_if:is_priority,true|exists:priority_reasons,id',
+        ]);
+
+        if (empty($validated['is_priority'])) {
+            $validated['is_priority'] = false;
+            $validated['priority_reason_id'] = null;
+        }
+
+        $queueItem->patient->update($validated);
+
+        return redirect()->back()->with('success', 'Patient details updated.');
+    }
+
+    /**
+     * Authorize patient updates on a queue item.
+     *
+     * @param QueueItem $queueItem
+     * @return void
+     */
+    private function authorizePatientUpdate(QueueItem $queueItem): void
+    {
+        $user = auth()->user();
+
+        if ($user->isAdmin() || $user->isReceptionist()) {
+            return;
+        }
+
+        if ($user->departments->contains($queueItem->current_department_id)) {
+            return;
+        }
+
+        abort(403, 'Unauthorized: You cannot update this patient.');
     }
 
     /**

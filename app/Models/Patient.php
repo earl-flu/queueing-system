@@ -20,11 +20,14 @@ class Patient extends Model
         'gender',
         'is_priority',
         'will_pay',
-        'priority_reason_id'
+        'priority_reason_id',
+        'suffix',
     ];
 
     protected $casts = [
-        'birth_date' => 'date'
+        'birth_date' => 'date',
+        'is_priority' => 'boolean',
+        'will_pay' => 'boolean',
     ];
 
     public function queueItems(): HasMany

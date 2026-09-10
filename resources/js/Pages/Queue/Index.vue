@@ -110,7 +110,21 @@
                   <option value="waiting">Waiting</option>
                 </select>
               </div>
-              <div class="col-md-4 d-flex align-items-end mt-2">
+              <div class="col-md-3 d-flex align-items-end mt-2">
+                <div class="form-check">
+                  <input
+                    id="hideTransferred"
+                    type="checkbox"
+                    class="form-check-input"
+                    v-model="filterForm.hideTransferred"
+                    @change="applyFilters"
+                  />
+                  <label class="form-check-label" for="hideTransferred">
+                    Remove transferred
+                  </label>
+                </div>
+              </div>
+              <div class="col-md-3 d-flex align-items-end mt-2">
                 <button @click="clearFilters" class="btn btn-secondary">
                   Clear Filters
                 </button>
@@ -143,6 +157,7 @@
                     :user="props.user"
                     :key="item.id"
                     :isReceptionist="isReceptionist"
+                    :priority-reasons="priority_reasons"
                   />
                 </tbody>
               </table>
@@ -191,6 +206,10 @@ const isReceptionist = computed(() => props.user?.role === "reception");
 const props = defineProps({
   queueItems: Object,
   departments: Array,
+  priority_reasons: {
+    type: Array,
+    default: () => [],
+  },
   filters: Object,
   user: Object,
 });
@@ -200,16 +219,23 @@ const filterForm = ref({
     props.filters.currentDepartmentId || userDepartment.value?.id || "",
   targetDepartmentId: props.filters.targetDepartmentId || "",
   status: props.filters.status || "all",
-  patientFullName: props.filters.patientFullName || "",
+  patientFullname: props.filters.patientFullname || "",
   queueNumber: props.filters.queueNumber || "",
+  hideTransferred: Boolean(props.filters.hideTransferred),
 });
 
 const applyFilters = () => {
-  console.log("triggered");
-  router.get(route("queue.index"), filterForm.value, {
-    preserveState: true,
-    replace: true,
-  });
+  router.get(
+    route("queue.index"),
+    {
+      ...filterForm.value,
+      hideTransferred: filterForm.value.hideTransferred ? 1 : 0,
+    },
+    {
+      preserveState: true,
+      replace: true,
+    }
+  );
 };
 
 const clearFilters = () => {
@@ -217,8 +243,9 @@ const clearFilters = () => {
     currentDepartmentId: "",
     targetDepartmentId: "",
     status: "all",
-    patientFullName: "",
+    patientFullname: "",
     queueNumber: "",
+    hideTransferred: false,
   };
   applyFilters();
 };
