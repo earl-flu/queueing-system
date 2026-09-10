@@ -84,8 +84,9 @@
                   <br />
                   PRIORITY
                 </h6>
+                <!-- v-for="(item, index) in queueItems.filter( -->
                 <div
-                  v-for="(item, index) in queueItems.filter(
+                  v-for="item in queueItems.filter(
                     (i) =>
                       i.patient.is_priority &&
                       i.status !== 'serving' &&
@@ -136,8 +137,9 @@
                         </p>
                       </div>
                       <div class="gap-2 flex">
+                        <!-- v-if="item.status === 'waiting' && index === 0" -->
                         <button
-                          v-if="item.status === 'waiting' && index === 0"
+                          v-if="item.status === 'waiting'"
                           @click="callPatient(item.id)"
                           class="btn btn-success btn-sm flex-1"
                         >
@@ -164,8 +166,9 @@
                   <br />
                   REGULAR
                 </h6>
+                <!--    v-for="(item, index) in queueItems.filter( -->
                 <div
-                  v-for="(item, index) in queueItems.filter(
+                  v-for="item in queueItems.filter(
                     (i) =>
                       !i.patient.is_priority &&
                       i.status !== 'serving' &&
@@ -214,8 +217,9 @@
                         >
                       </div>
                       <div class="gap-2 flex">
+                        <!-- v-if="item.status === 'waiting' && index === 0" -->
                         <button
-                          v-if="item.status === 'waiting' && index === 0"
+                          v-if="item.status === 'waiting'"
                           @click="callPatient(item.id)"
                           class="btn btn-success btn-sm flex-1"
                         >
