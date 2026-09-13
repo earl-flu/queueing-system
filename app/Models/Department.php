@@ -23,6 +23,8 @@ class Department extends Model
         'is_active' => 'boolean'
     ];
 
+    public const BILLING_DEPARTMENT_ID = 6;
+
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'department_users');

@@ -216,7 +216,7 @@
                       </div>
                       <div class="gap-2 flex">
                         <button
-                          v-if="canCallPatient(item)"
+                          v-if="hasBillingAccess || canCallPatient(item)"
                           @click="callPatient(item.id)"
                           class="btn btn-success btn-sm flex-1"
                         >
@@ -454,6 +454,7 @@ const props = defineProps({
   todayWaitingCount: Number,
   todayServingCount: Number,
   todaySkippedCount: Number,
+  hasBillingAccess: Boolean,
 });
 
 const isReceptionist = computed(() => props.user?.role === "reception");

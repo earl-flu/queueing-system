@@ -506,6 +506,7 @@ class QueueController extends Controller
     {
         $department = Department::findOrFail($departmentId);
         $user = auth()->user();
+        $hasBillingAccess = $user->departments->contains(Department::BILLING_DEPARTMENT_ID);
 
         if (!$user->isAdmin() && !$user->departments->contains($department->id)) {
             abort(403, 'Unauthorized: You do not have access to this department.');
@@ -525,7 +526,8 @@ class QueueController extends Controller
             'todayComingCount' => $department->getTodayComingQueueCount(),
             'todayWaitingCount' => $department->getTodayWaitingQueueCount(),
             'todayServingCount' => $department->getTodayServingQueueCount(),
-            'todaySkippedCount' => $department->getTodaySkippedQueueCount()
+            'todaySkippedCount' => $department->getTodaySkippedQueueCount(),
+            'hasBillingAccess' => $hasBillingAccess,
         ]);
     }
 
