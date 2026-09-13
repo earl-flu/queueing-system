@@ -26,7 +26,7 @@
         <p class="mb-0">
           Room: {{ department.room || "N/A" }} | Served:
           {{ todayServedCount }} | Serving: {{ todayServingCount }} | Skipped:
-          {{ todaySkippedCount }} | Waiting: {{ todayWaitingCount }} | Coming:
+          {{ todaySkippedCount }} | Waiting: {{ todayWaitingCount }} | Incoming:
           {{ todayComingCount }}
           <!-- | Coming: {{ todayComingCount }} -->
         </p>
