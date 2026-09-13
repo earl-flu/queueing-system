@@ -13,7 +13,7 @@ export function useCompleteService() {
                 onSuccess: () => {
                     router.reload({ only: ["queueItems"] });
                 },
-            }
+            },
         );
     };
     return { completeService };

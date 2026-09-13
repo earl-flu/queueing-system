@@ -164,7 +164,6 @@
                   <br />
                   REGULAR
                 </h6>
-                <!--    v-for="(item, index) in queueItems.filter( -->
                 <div
                   v-for="item in queueItems.filter(
                     (i) =>
@@ -175,66 +174,12 @@
                   :key="item.id"
                   class="mb-3"
                 >
-                  <div class="card shadow border">
-                    <div class="card-body">
-                      <div
-                        class="d-flex justify-content-between align-items-start mb-3"
-                      >
-                        <h3 class="card-title text-primary mb-0 font-bold">
-                          {{ item.queue_number }}
-                        </h3>
-                        <!-- <span
-                          :class="getStatusBadgeClass(item.status)"
-                          class="badge"
-                        >
-                          {{ getStatusLabel(item.status) }}
-                        </span> -->
-                      </div>
-
-                      <div class="mb-3">
-                        <h6 class="card-subtitle mb-1 uppercase">
-                          {{ item.patient.last_name }}
-                          {{ item.patient.first_name }}
-                          {{ item.patient.middle_name }}
-                          {{ item.patient.suffix }}
-                        </h6>
-                        <p
-                          v-if="item.status === 'skipped'"
-                          class="card-text small mb-1"
-                        >
-                          {{ getTimeAgo(item.skipped_at) }}
-                        </p>
-                        <p
-                          v-if="item.patient.phone"
-                          class="card-text small mb-1"
-                        >
-                          {{ item.patient.phone }}
-                        </p>
-                        <small class=""
-                          >Position: {{ item.queue_position }}</small
-                        >
-                      </div>
-                      <div class="gap-2 flex">
-                        <button
-                          v-if="hasBillingAccess || canCallPatient(item)"
-                          @click="callPatient(item.id)"
-                          class="btn btn-success btn-sm flex-1"
-                        >
-                          Call
-                        </button>
-                        <!-- <button
-                          v-if="
-                            item.status === 'waiting' ||
-                            item.status === 'serving'
-                          "
-                          @click="openTransferModal(item)"
-                          class="btn btn-warning btn-sm flex-1"
-                        >
-                          Transfer
-                        </button> -->
-                      </div>
-                    </div>
-                  </div>
+                  <!-- COMPONENT HERE FOR WAITING -->
+                  <WaitingCard
+                    :item="item"
+                    :hasBillingAccess="hasBillingAccess"
+                    :queueItems="queueItems"
+                  />
                 </div>
               </div>
               <div class="col-md-3">
@@ -440,9 +385,9 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import Modal from "@/Components/Modal.vue";
 import ServingCard from "@/Components/ServingCard.vue";
+import WaitingCard from "@/Components/WaitingCard.vue";
 import { Head, Link, router, useForm } from "@inertiajs/vue3";
 import { ref, computed, onMounted, onBeforeUnmount } from "vue";
-import { useElapsedTime } from "@/Composables/useElapsedTime";
 
 const props = defineProps({
   department: Object,
@@ -461,33 +406,6 @@ const isReceptionist = computed(() => props.user?.role === "reception");
 const showTransferModal = ref(false);
 const showResetModal = ref(false);
 const selectedItem = ref(null);
-
-const firstWaitingIdsByOriginalDepartment = computed(() => {
-  const firstByDepartment = new Map();
-
-  for (const item of props.queueItems || []) {
-    if (item.status !== "waiting") continue;
-
-    const departmentId = item.original_department_id;
-    const currentFirst = firstByDepartment.get(departmentId);
-
-    if (!currentFirst || item.queue_position < currentFirst.queue_position) {
-      firstByDepartment.set(departmentId, item);
-    }
-  }
-
-  return new Set([...firstByDepartment.values()].map((item) => item.id));
-});
-
-const canCallPatient = (item) =>
-  item.status === "waiting" &&
-  firstWaitingIdsByOriginalDepartment.value.has(item.id);
-
-let intervalId = null;
-
-const reloadQueueItems = () => {
-  router.reload({ only: ["queueItems", "todayWaitingCount"] });
-};
 
 onMounted(() => {
   intervalId = setInterval(() => {

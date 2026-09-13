@@ -14,13 +14,19 @@ export function useElapsedTime(startTime) {
 
         if (diff < 0) diff = 0; // avoid negative if UTC > local time
 
-        const minutes = Math.floor(diff / 60);
+        const hours = Math.floor(diff / 3600);
+        const minutes = Math.floor((diff % 3600) / 60);
         const seconds = diff % 60;
 
-        elapsed.value =
-            minutes > 0
-                ? `${minutes}min:${seconds.toString().padStart(2, "0")}s`
-                : `${seconds}s`;
+        if (hours > 0) {
+            elapsed.value = `${hours.toString().padStart(2, "0")}:${minutes
+                .toString()
+                .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+        } else if (minutes > 0) {
+            elapsed.value = `${minutes}min:${seconds.toString().padStart(2, "0")}s`;
+        } else {
+            elapsed.value = `${seconds}s`;
+        }
     };
 
     onMounted(() => {
