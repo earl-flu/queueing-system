@@ -84,7 +84,6 @@
                   <br />
                   PRIORITY
                 </h6>
-                <!-- v-for="(item, index) in queueItems.filter( -->
                 <div
                   v-for="item in queueItems.filter(
                     (i) =>
@@ -95,67 +94,8 @@
                   :key="item.id"
                   class="mb-3"
                 >
-                  <div class="card shadow border">
-                    <div class="card-body">
-                      <div
-                        class="d-flex justify-content-between align-items-start mb-3"
-                      >
-                        <h3 class="card-title text-primary mb-0 font-bold">
-                          {{ item.queue_number }}
-                        </h3>
-                        <!-- <span
-                          :class="getStatusBadgeClass(item.status)"
-                          class="badge"
-                        >
-                          {{ getStatusLabel(item.status) }}
-                        </span> -->
-                      </div>
-
-                      <div class="mb-3">
-                        <h6 class="card-subtitle mb-1 uppercase">
-                          {{ item.patient.last_name }}
-                          {{ item.patient.first_name }}
-                          {{ item.patient.middle_name }}
-                          {{ item.patient.suffix }}
-                        </h6>
-                        <p
-                          v-if="item.patient.phone"
-                          class="card-text small mb-1"
-                        >
-                          {{ item.patient.phone }}
-                        </p>
-                        <small class="card-subtitle card-text"
-                          >Position: {{ item.queue_position }}</small
-                        >
-                        <p
-                          v-if="item.patient.priority_reason"
-                          class="card-text small mb-1 mt-3 text-white"
-                        >
-                          <span class="px-2 py-1 rounded-md bg-red-500">
-                            {{ item.patient.priority_reason.description }}
-                          </span>
-                        </p>
-                      </div>
-                      <div class="gap-2 flex">
-                        <button
-                          @click="callPatient(item.id)"
-                          class="btn btn-success btn-sm flex-1"
-                        >
-                          Call
-                        </button>
-                        <!-- <button
-                          v-if="
-                            item.status === 'waiting' ||
-                            item.status === 'serving'
-                          "
-                          @click="openTransferModal(item)"
-                          class="btn btn-warning btn-sm flex-1"
-                        >
-                          Transfer
-                        </button> -->
-                      </div>
-                    </div>
-                  </div>
+                  <!-- PRIORITY CARD HERE -->
+                  <WaitingPriorityCard :item="item" />
                 </div>
               </div>
               <div class="col-md-3 border-r-4">
@@ -386,6 +326,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import Modal from "@/Components/Modal.vue";
 import ServingCard from "@/Components/ServingCard.vue";
 import WaitingCard from "@/Components/WaitingCard.vue";
+import WaitingPriorityCard from "@/Components/WaitingPriorityCard.vue";
 import { Head, Link, router, useForm } from "@inertiajs/vue3";
 import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 
