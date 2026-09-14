@@ -77,6 +77,7 @@ const timePerDepartmentArr = useTimePerDepartment(props.item.queue_number);
       </div>
       <table
         v-if="timePerDepartmentArr.length"
+        title="Time Spent per Department"
         class="text-xs border w-full opacity-50 mb-3"
       >
         <tr>
