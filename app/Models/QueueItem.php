@@ -4,8 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 class QueueItem extends Model
 {
@@ -87,6 +90,63 @@ class QueueItem extends Model
 
         // Return the updated call count from the model instance.
         return $this->call_count;
+    }
+
+    /**
+     * Scope to fetch the entire journey of a queue number for a given day in chronological order.
+     */
+    public function scopeDailyJourney(Builder $query, string $queueNumber, $date = null): Builder
+    {
+        $targetDate = $date ? Carbon::parse($date)->toDateString() : Carbon::today()->toDateString();
+
+        return $query->where('queue_number', $queueNumber)
+            ->whereDate('created_at', $targetDate)
+            ->orderBy('created_at', 'asc');
+    }
+
+    /**
+     * Get department name and total time spent for all transferred steps of a queue item.
+     */
+    public static function getTimeSpentPerDepartment(string $queueNumber, $date = null): Collection
+    {
+        $journey = static::with('currentDepartment')
+            ->dailyJourney($queueNumber, $date)
+            ->get();
+
+        $departmentLogs = collect();
+
+        foreach ($journey as $index => $item) {
+            // Only measure duration for transferred status steps
+            if ($item->status !== 'transferred') {
+                continue;
+            }
+
+            // Time entering the department
+            $startTime = $item->created_at;
+
+            // Time leaving this department is when the NEXT record was created
+            $nextItem = $journey->get($index + 1);
+            $endTime = $nextItem ? $nextItem->created_at : now();
+
+            // Calculate duration
+            $secondsSpent = $startTime->diffInSeconds($endTime);
+            $formattedTime = $startTime->diffForHumans($endTime, [
+                'syntax' => Carbon::DIFF_ABSOLUTE,
+                'parts' => 2,
+            ]);
+
+            $departmentLogs->push([
+                'queue_number'    => $item->queue_number,
+                'department_id'   => $item->current_department_id,
+                'department_name' => $item->currentDepartment->name ?? 'Unknown',
+                'entered_at'      => $startTime->toDateTimeString(),
+                'transferred_at'  => $endTime->toDateTimeString(),
+                'seconds_spent'   => $secondsSpent,
+                'time_spent'      => $formattedTime,
+            ]);
+        }
+
+        return $departmentLogs;
     }
 
     public function scopeWaiting($query)

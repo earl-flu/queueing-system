@@ -348,6 +348,11 @@ const showTransferModal = ref(false);
 const showResetModal = ref(false);
 const selectedItem = ref(null);
 
+const reloadQueueItems = () => {
+  router.reload({ only: ["queueItems"] });
+};
+
+let intervalId = null;
 onMounted(() => {
   intervalId = setInterval(() => {
     reloadQueueItems();

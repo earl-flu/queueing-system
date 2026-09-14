@@ -1,8 +1,10 @@
 <script setup>
 import { useElapsedTime } from "@/Composables/useElapsedTime";
+import { useTimePerDepartment } from "@/Composables/useTimePerDepartment";
 import { useCallPatient } from "@/Composables/useCallPatient";
 import { router } from "@inertiajs/vue3";
-import { computed } from "vue";
+import { computed, onMounted, ref } from "vue";
+import axios from "axios";
 
 const props = defineProps({
   item: {
@@ -42,13 +44,8 @@ const canCallPatient = (item) =>
   item.status === "waiting" &&
   firstWaitingIdsByOriginalDepartment.value.has(item.id);
 
-let intervalId = null;
-
-const reloadQueueItems = () => {
-  router.reload({ only: ["queueItems"] });
-};
-
 const elapsed = useElapsedTime(props.item.waiting_started_at);
+const timePerDepartmentArr = useTimePerDepartment(props.item.queue_number);
 </script>
 
 <template>
@@ -78,18 +75,19 @@ const elapsed = useElapsedTime(props.item.waiting_started_at);
         </p>
         <small class="">Position: {{ item.queue_position }}</small>
       </div>
-      <!-- <table class="text-xs border w-full">
+      <table
+        v-if="timePerDepartmentArr.length"
+        class="text-xs border w-full opacity-50 mb-3"
+      >
         <tr>
-          <th class="border">Step</th>
           <th class="border">Dept.</th>
-          <th class="border">Total Time</th>
+          <th class="border">Time Spent</th>
         </tr>
-        <tr>
-          <td class="border">1</td>
-          <td class="border">Registration</td>
-          <td class="border">1hr 30min</td>
+        <tr v-for="(dept, idx) in timePerDepartmentArr" :key="idx">
+          <td class="border">{{ dept.department_name }}</td>
+          <td class="border">{{ dept.time_spent }}</td>
         </tr>
-      </table> -->
+      </table>
       <div class="gap-2 flex">
         <button
           v-if="hasBillingAccess || canCallPatient(item)"

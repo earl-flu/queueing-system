@@ -1,6 +1,7 @@
 <script setup>
 import { useElapsedTime } from "@/Composables/useElapsedTime";
 import { useCallPatient } from "@/Composables/useCallPatient";
+import { useTimePerDepartment } from "@/Composables/useTimePerDepartment";
 import { router } from "@inertiajs/vue3";
 import { computed } from "vue";
 
@@ -13,6 +14,7 @@ const props = defineProps({
 
 const { callPatient } = useCallPatient();
 const elapsed = useElapsedTime(props.item.waiting_started_at);
+const timePerDepartmentArr = useTimePerDepartment(props.item.queue_number);
 </script>
 
  <template>
@@ -43,12 +45,25 @@ const elapsed = useElapsedTime(props.item.waiting_started_at);
         >
         <p
           v-if="item.patient.priority_reason"
-          class="card-text small mb-1 mt-3 text-white"
+          class="card-text small mb-1 mt-3 text-white mb-3"
         >
           <span class="px-2 py-1 rounded-md bg-red-500">
             {{ item.patient.priority_reason.description }}
           </span>
         </p>
+        <table
+          v-if="timePerDepartmentArr.length"
+          class="text-xs border w-full opacity-50 mb-3"
+        >
+          <tr>
+            <th class="border">Dept.</th>
+            <th class="border">Time Spent</th>
+          </tr>
+          <tr v-for="(dept, idx) in timePerDepartmentArr" :key="idx">
+            <td class="border">{{ dept.department_name }}</td>
+            <td class="border">{{ dept.time_spent }}</td>
+          </tr>
+        </table>
       </div>
       <div class="gap-2 flex">
         <button

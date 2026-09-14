@@ -559,6 +559,15 @@ class QueueController extends Controller
         return response()->json($queueItems);
     }
 
+    public function getTimeSpentPerDepartment(Request $request)
+    {
+        // Retrieve 'queueNumber' sent via params
+        $queueNumber = $request->input('queueNumber');
+
+        // Return the response directly (Laravel automatically converts collections to JSON)
+        return response()->json(QueueItem::getTimeSpentPerDepartment($queueNumber));
+    }
+
     /**
      * Reset daily counter for a department.
      *
