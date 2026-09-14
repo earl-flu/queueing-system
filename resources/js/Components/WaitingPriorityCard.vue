@@ -45,7 +45,7 @@ const timePerDepartmentArr = useTimePerDepartment(props.item.queue_number);
         >
         <p
           v-if="item.patient.priority_reason"
-          class="card-text small mb-1 mt-3 text-white mb-3"
+          class="card-text small mt-3 text-white mb-3"
         >
           <span class="px-2 py-1 rounded-md bg-red-500">
             {{ item.patient.priority_reason.description }}
