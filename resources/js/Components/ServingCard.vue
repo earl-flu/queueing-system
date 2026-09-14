@@ -8,6 +8,7 @@ import { useMarkNoShow } from "@/Composables/useMarkNoShow";
 import { useSkip } from "@/Composables/useSkip";
 import { useCompleteAndTransfer } from "@/Composables/useCompleteAndTransfer";
 import { useCompleteService } from "@/Composables/useCompleteService";
+import { computed } from "vue";
 
 const props = defineProps({
   item: {
@@ -25,6 +26,27 @@ const { markNoShow } = useMarkNoShow();
 const { skip } = useSkip();
 const { completeAndTransfer } = useCompleteAndTransfer();
 const elapsed = useElapsedTime(props.item.called_at);
+
+const totalWaitingTime = computed(() => {
+  if (!props.item.waiting_started_at || !props.item.called_at) {
+    return "";
+  }
+  const start = new Date(props.item.waiting_started_at);
+  const end = new Date(props.item.called_at);
+  let diff = Math.max(0, Math.floor((end - start) / 1000)); // in seconds
+
+  const hours = Math.floor(diff / 3600);
+  const minutes = Math.floor((diff % 3600) / 60);
+  const seconds = diff % 60;
+
+  if (hours > 0) {
+    const minLabel = minutes === 1 ? "min" : "mins";
+    return `${hours}hr ${minutes}${minLabel}`;
+  } else {
+    const minLabel = minutes === 1 ? "min" : "mins";
+    return `${minutes}${minLabel}`;
+  }
+});
 </script>
 
 
@@ -53,7 +75,16 @@ const elapsed = useElapsedTime(props.item.called_at);
         <p v-if="item.patient.phone" class="card-text small mb-1">
           {{ item.patient.phone }}
         </p>
-        <p class="text-right" style="margin-bottom: 0">{{ elapsed }}</p>
+        <p title="Serving Time" class="text-right" style="margin-bottom: 0">
+          {{ elapsed }}
+        </p>
+        <p
+          title="Total time spent waiting in this department"
+          class="text-right"
+          style="margin-bottom: 0"
+        >
+          {{ totalWaitingTime }}
+        </p>
         <small class="text-gray-400">Position: {{ item.queue_position }}</small>
         <br />
         <small class="text-gray-400">Call Count: {{ item.call_count }}</small>

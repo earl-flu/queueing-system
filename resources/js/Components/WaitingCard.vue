@@ -73,9 +73,23 @@ const elapsed = useElapsedTime(props.item.waiting_started_at);
         <p v-if="item.patient.phone" class="card-text small mb-1">
           {{ item.patient.phone }}
         </p>
-        <p class="text-right" style="margin-bottom: 0">{{ elapsed }}</p>
+        <p title="Waiting Time" class="text-right" style="margin-bottom: 0">
+          {{ elapsed }}
+        </p>
         <small class="">Position: {{ item.queue_position }}</small>
       </div>
+      <!-- <table class="text-xs border w-full">
+        <tr>
+          <th class="border">Step</th>
+          <th class="border">Dept.</th>
+          <th class="border">Total Time</th>
+        </tr>
+        <tr>
+          <td class="border">1</td>
+          <td class="border">Registration</td>
+          <td class="border">1hr 30min</td>
+        </tr>
+      </table> -->
       <div class="gap-2 flex">
         <button
           v-if="hasBillingAccess || canCallPatient(item)"

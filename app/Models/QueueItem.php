@@ -50,6 +50,7 @@ class QueueItem extends Model
         return $this->belongsTo(Department::class, 'original_department_id');
     }
 
+
     public function currentDepartment(): BelongsTo
     {
         return $this->belongsTo(Department::class, 'current_department_id');
@@ -59,6 +60,13 @@ class QueueItem extends Model
     public function department(): BelongsTo
     {
         return $this->currentDepartment();
+    }
+
+    public function transferHistory()
+    {
+        //queue_number
+        //patient_id 
+        //created_at - date
     }
 
     public function servedByUser(): BelongsTo

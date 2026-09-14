@@ -34,7 +34,10 @@ const elapsed = useElapsedTime(props.item.waiting_started_at);
         <p v-if="item.patient.phone" class="card-text small mb-1">
           {{ item.patient.phone }}
         </p>
-        <p class="text-right" style="margin-bottom: 0">{{ elapsed }}</p>
+        <p title="Waiting Time" class="text-right" style="margin-bottom: 0">
+          {{ elapsed }}
+        </p>
+
         <small class="card-subtitle card-text"
           >Position: {{ item.queue_position }}</small
         >
