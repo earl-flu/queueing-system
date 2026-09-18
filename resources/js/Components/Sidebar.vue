@@ -120,6 +120,24 @@ onBeforeUnmount(() => {
           </ul>
         </li>
 
+        <li>
+          <a href="javascript:;" class="has-arrow">
+            <div class="parent-icon">
+              <i class="material-icons-outlined">analytics</i>
+            </div>
+            <div class="menu-title">Reports</div>
+          </a>
+
+          <ul>
+            <li :class="isActive(route().current('reports.department.index'))">
+              <Link :href="route('reports.department.index')"
+                ><i class="material-icons-outlined">arrow_right</i>Department
+                Report</Link
+              >
+            </li>
+          </ul>
+        </li>
+
         <li class="menu-label">Settings</li>
 
         <li>

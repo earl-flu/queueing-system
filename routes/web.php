@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardDestinationDeptController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DepartmentFlowController;
+use App\Http\Controllers\DepartmentReportController;
 use App\Http\Controllers\OfficeController;
 use App\Http\Controllers\PaperController;
 use App\Http\Controllers\PaperDashboardController;
@@ -56,8 +57,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin-data', [DashboardApiController::class, 'getAdminDashboardData'])->name('admin-data')->middleware('admin');
         Route::get('/staff-data', [DashboardApiController::class, 'getStaffDashboardData'])->name('staff-data');
     });
-
     Route::get('api/patient/time-per-department', [QueueController::class, 'getTimeSpentPerDepartment'])->name('time-per-department');
+
+    Route::prefix('reports')->name('reports.')->group(function () {
+        Route::get('/department', [DepartmentReportController::class, 'index'])->name('department.index');
+    });
+
 
     // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

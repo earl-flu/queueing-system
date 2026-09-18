@@ -13,23 +13,8 @@ use Illuminate\Support\Collection;
 class QueueItem extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'queue_number',
-        'patient_id',
-        'original_department_id',
-        'current_department_id',
-        'served_by',
-        'status',
-        'queue_position',
-        'called_at',
-        'served_at',
-        'completed_at',
-        'call_count',
-        'notes',
-        'waiting_started_at',
-        'serving_started_at',
-        'waiting_duration_seconds',
-        'serving_duration_seconds'
+    protected $guarded = [
+        'id'
     ];
 
     protected $casts = [
@@ -102,6 +87,25 @@ class QueueItem extends Model
         return $query->where('queue_number', $queueNumber)
             ->whereDate('created_at', $targetDate)
             ->orderBy('created_at', 'asc');
+    }
+    /**
+     * Scope a query to only include queue items for a specific department by current_department_id
+     * and optionally filter by a specific date.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param mixed $departmentId
+     * @param string|null $date
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeDepartmentQueue(Builder $query, $departmentId, $date = null)
+    {
+        $query = $query->where('current_department_id', $departmentId);
+
+        if ($date) {
+            $query = $query->whereDate('created_at', $date);
+        }
+
+        return $query;
     }
 
     /**
@@ -237,7 +241,7 @@ class QueueItem extends Model
      */
     public function getDepartmentFlowNamesAttribute()
     {
-        return DepartmentFlow::getDepartmentFlowNames($this->original_department_id, $this->patient->will_pay);
+        return DepartmentFlow::getDepartmentFlowNames($this->original_department_id, $this->patient->will_pay ?? 0);
     }
 
 

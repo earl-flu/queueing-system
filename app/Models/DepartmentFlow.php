@@ -34,7 +34,7 @@ class DepartmentFlow extends Model
     /**
      * Get the department flow for given department
      */
-    public static function getDepartmentFlowNames($finalDepartmentId, $will_pay)
+    public static function getDepartmentFlowNames($finalDepartmentId, $will_pay = 0)
     {
         $query = self::with(['stepDepartment:id,name,room,slug'])
             ->where('final_department_id', $finalDepartmentId);

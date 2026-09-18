@@ -2,14 +2,24 @@ export function useFormatting() {
     const formatTime = (seconds) => {
         if (seconds === null || seconds === undefined || Number.isNaN(seconds))
             return "—";
-        const s = Number(seconds);
-        if (s < 0) return "—";
-        const h = Math.floor(s / 3600);
-        const m = Math.floor((s % 3600) / 60);
-        const sec = Math.round(s % 60);
-        if (h > 0)
-            return `${h}:${String(m).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
-        return `${m}:${String(sec).padStart(2, "0")}`;
+        const total = Math.round(Number(seconds));
+        if (total < 0) return "—";
+        const h = Math.floor(total / 3600);
+        const m = Math.floor((total % 3600) / 60);
+        const sec = total % 60;
+
+        if (h > 0) {
+            let result = `${h} hr${h > 1 ? "s" : ""}`;
+            if (m > 0) result += ` ${m} mins`;
+            return result;
+        } else if (m > 0) {
+            let result = `${m} min`;
+            if (m > 1) result += "s";
+            // if (sec > 0) result += ` ${sec} sec${sec > 1 ? "s" : ""}`;
+            return result;
+        } else {
+            return `${sec} sec${sec !== 1 ? "s" : ""}`;
+        }
     };
 
     const getStatusColor = (status) => {
