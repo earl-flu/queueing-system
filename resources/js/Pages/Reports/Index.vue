@@ -250,12 +250,16 @@ const options = {
               Performace
             </div>
             <table>
-              <tr>
+              <tr
+                title="Average waiting time per patient, excluding patients with skipped records."
+              >
                 <td>Avg Wait</td>
                 <td class="px-2">:</td>
                 <td>{{ formatTime(avgData.avg_wait) }}</td>
               </tr>
-              <tr>
+              <tr
+                title="Average serving time per patient, excluding patients with skipped records."
+              >
                 <td>Avg Serve</td>
                 <td class="px-2">:</td>
                 <td>{{ formatTime(avgData.avg_serve) }}</td>
