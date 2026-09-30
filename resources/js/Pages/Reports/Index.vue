@@ -209,6 +209,11 @@ const options = {
                 <td class="px-2">:</td>
                 <td>{{ totalData.skipped }}</td>
               </tr>
+              <tr>
+                <td>With Skip Record</td>
+                <td class="px-2">:</td>
+                <td>{{ totalData.with_skip_history }}</td>
+              </tr>
             </table>
           </div>
           <div class="bg-white shadow rounded p-4">
