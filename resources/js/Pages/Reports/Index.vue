@@ -204,12 +204,12 @@ const options = {
                 <td class="px-2">:</td>
                 <td>{{ totalData.waiting }}</td>
               </tr>
-              <tr>
+              <tr title="Skipped patients">
                 <td>Skipped</td>
                 <td class="px-2">:</td>
                 <td>{{ totalData.skipped }}</td>
               </tr>
-              <tr>
+              <tr title="Patients with skip record">
                 <td>With Skip Record</td>
                 <td class="px-2">:</td>
                 <td>{{ totalData.with_skip_history }}</td>
