@@ -125,8 +125,8 @@ const columns = [
     data: "skipped_at",
     title: "Skip Record",
     render: (data) => {
-      if (!data || data.skipped_at) return "No";
-      return data.skipped_at ? "Yes" : "No";
+      if (!data) return "No";
+      return data ? "Yes" : "No";
     },
   },
   {
