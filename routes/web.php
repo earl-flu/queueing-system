@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardDestinationDeptController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DepartmentFlowController;
 use App\Http\Controllers\DepartmentReportController;
+use App\Http\Controllers\LogBookController;
 use App\Http\Controllers\OfficeController;
 use App\Http\Controllers\PaperController;
 use App\Http\Controllers\PaperDashboardController;
@@ -43,6 +44,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/admin/{date?}', [DashboardController::class, 'adminDashboard'])->name('dashboard.admin.date')->middleware('admin');
     Route::get('/dashboard/staff/{date?}', [DashboardController::class, 'staffDashboard'])->name('dashboard.staff.date');
     Route::get('/dashboard/destination/service', [DashboardDestinationDeptController::class, 'index'])->name('dashboard.destination');
+    Route::get('/log-book', [LogBookController::class, 'index'])->name('log-book.index');
+    Route::get('/log-book/department/{id}/{date}', [LogBookController::class, 'show'])->name('log-book.show');
     // Dashboard API routes
     Route::prefix('api/dashboard')->name('dashboard.api.')->group(function () {
         Route::get('/today-stats', [DashboardApiController::class, 'getTodayStats'])->name('today-stats');
@@ -101,12 +104,14 @@ Route::middleware('auth')->group(function () {
     // Screens
     Route::prefix('screens')->name('windows.')->group(function () {
         Route::get('/', [WindowController::class, 'index'])->name('index');
-        #Route::get('/{window}', [WindowController::class, 'show'])->name('show');
-        Route::get('/{window}/data', [WindowController::class, 'data'])->name('data');
+        // Route::get('/{window}', [WindowController::class, 'show'])->name('show');
+        // Route::get('/{window}/data', [WindowController::class, 'data'])->name('data');
         Route::get('/{window}/edit', [WindowController::class, 'edit'])->name('edit')->middleware('admin');
         Route::put('/{window}', [WindowController::class, 'update'])->name('update')->middleware('admin');
     });
 });
+
+Route::get('screens/{window}/data', [WindowController::class, 'data'])->name('windows.data');
 
 Route::prefix('screens')->name('windows.')->group(function () {
     Route::get('/{window}', [WindowController::class, 'show'])->name('show');

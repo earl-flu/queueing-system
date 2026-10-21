@@ -60,7 +60,7 @@ onBeforeUnmount(() => {
         <img src="/images/EBMC-logo.png" class="logo-img" alt="" />
       </div>
       <div class="logo-name flex-grow-1">
-        <h5 class="mb-0">OPDQ</h5>
+        <h5 class="mb-0 uppercase">QUEUEING</h5>
       </div>
       <div @click="$emit('close-sidebar')" class="sidebar-close">
         <span class="material-icons-outlined">close</span>
@@ -111,12 +111,6 @@ onBeforeUnmount(() => {
                 ><i class="material-icons-outlined">arrow_right</i>Create</Link
               >
             </li>
-            <li :class="isActive(route().current('dashboard.destination'))">
-              <Link :href="route('dashboard.destination')"
-                ><i class="material-icons-outlined">arrow_right</i>Dashboard
-                Destination</Link
-              >
-            </li>
           </ul>
         </li>
 
@@ -131,8 +125,28 @@ onBeforeUnmount(() => {
           <ul>
             <li :class="isActive(route().current('reports.department.index'))">
               <Link :href="route('reports.department.index')"
-                ><i class="material-icons-outlined">arrow_right</i>Department
-                Report</Link
+                ><i class="material-icons-outlined">arrow_right</i>Daily
+                Queue</Link
+              >
+            </li>
+
+            <!-- <li :class="isActive(route().current('dashboard.destination'))">
+              <Link :href="route('dashboard.destination')"
+                ><i class="material-icons-outlined">arrow_right</i>Log
+                Book</Link
+              >
+            </li> -->
+            <li
+              :class="
+                isActive(
+                  route().current('log-book.index') ||
+                    route().current('log-book.show')
+                )
+              "
+            >
+              <Link :href="route('log-book.index')"
+                ><i class="material-icons-outlined">arrow_right</i>Log
+                Book</Link
               >
             </li>
           </ul>

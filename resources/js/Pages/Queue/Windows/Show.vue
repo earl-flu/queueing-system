@@ -129,19 +129,19 @@ onMounted(() => {
       const msg = new SpeechSynthesisUtterance(
         `${event.queueItem.current_department.name}, ${event.queueItem.queue_number}, ${event.queueItem.patient.last_name}  ${event.queueItem.patient.first_name}`
       );
-      const voices = window.speechSynthesis.getVoices();
-      const filipinoVoice = voices.find(
-        (v) =>
-          (v.lang &&
-            (v.lang.toLowerCase() === "fil-ph" ||
-              v.lang.toLowerCase() === "tl-ph")) ||
-          (v.name && v.name.toLowerCase().includes("filipino"))
-      );
-      if (filipinoVoice) {
-        msg.voice = filipinoVoice;
-      } else {
-        msg.lang = "tl-PH";
-      }
+      // const voices = window.speechSynthesis.getVoices();
+      // const filipinoVoice = voices.find(
+      //   (v) =>
+      //     (v.lang &&
+      //       (v.lang.toLowerCase() === "fil-ph" ||
+      //         v.lang.toLowerCase() === "tl-ph")) ||
+      //     (v.name && v.name.toLowerCase().includes("filipino"))
+      // );
+      // if (filipinoVoice) {
+      //   msg.voice = filipinoVoice;
+      // } else {
+      //   msg.lang = "tl-PH";
+      // }
       window.speechSynthesis.speak(msg);
     }
 

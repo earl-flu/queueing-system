@@ -120,15 +120,53 @@ function printModalBody() {
         </div>
 
         <div ref="modalBodyRef" class="modal-body">
-          <p class="text-muted small">
-            One row per patient. Status and current department reflect where
-            they are in the flow. Time to destination queue is from the first
-            ticket that day until the patient enters this department's queue;
-            waiting and serving use the visit row at the destination. "Served
-            here" is yes if any step that day shows this department as both
-            journey destination and current location with status transferred or
-            done.
-          </p>
+          <table class="table-bordered opacity-80" style="margin-bottom: 20px">
+            <tr>
+              <th class="px-2">Title</th>
+              <th class="px-2">Description</th>
+            </tr>
+            <tr>
+              <td class="px-2">Current Department</td>
+              <td class="px-2">Current department where the patient is</td>
+            </tr>
+            <tr>
+              <td class="px-2">Status</td>
+              <td class="px-2">Status in the current department</td>
+            </tr>
+            <tr>
+              <td class="px-2">Time to Destination Queue</td>
+              <td class="px-2">
+                Time from the first ticket that day until the patient enters
+                this department's queue
+              </td>
+            </tr>
+            <tr>
+              <td class="px-2">Waiting at Destination</td>
+              <td class="px-2">Waiting time at the destination</td>
+            </tr>
+            <tr>
+              <td class="px-2">Serving at Destination</td>
+              <td class="px-2">Serving time at the destination</td>
+            </tr>
+            <tr>
+              <td class="px-2">Time Start</td>
+              <td class="px-2">Time the patient registered in the queue</td>
+            </tr>
+            <tr>
+              <td class="px-2">Time Finished</td>
+              <td class="px-2">
+                Time the patient finished in the final department
+              </td>
+            </tr>
+            <tr>
+              <td class="px-2">Total Time to Finish</td>
+              <td class="px-2">
+                Total time from registered in the queue until finished in the
+                final department.
+              </td>
+            </tr>
+            <tr></tr>
+          </table>
 
           <div
             class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3"
