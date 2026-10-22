@@ -5,7 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardDestinationDeptController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DepartmentFlowController;
-use App\Http\Controllers\DepartmentReportController;
+use App\Http\Controllers\DailyQueueReportController;
 use App\Http\Controllers\LogBookController;
 use App\Http\Controllers\OfficeController;
 use App\Http\Controllers\PaperController;
@@ -63,7 +63,8 @@ Route::middleware('auth')->group(function () {
     Route::get('api/patient/time-per-department', [QueueController::class, 'getTimeSpentPerDepartment'])->name('time-per-department');
 
     Route::prefix('reports')->name('reports.')->group(function () {
-        Route::get('/department', [DepartmentReportController::class, 'index'])->name('department.index');
+        Route::get('/department', [DailyQueueReportController::class, 'index'])->name('department.index');
+        Route::get('/department/print', [DailyQueueReportController::class, 'print'])->name('department.print');
     });
 
 

@@ -7,12 +7,28 @@ use App\Models\QueueItem;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class DepartmentReportController extends Controller
+class DailyQueueReportController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
+    {
+        return Inertia::render('Reports/DailyQueue', $this->reportData($request));
+    }
+
+    /**
+     * Printable daily queue report (same data as index).
+     */
+    public function print(Request $request)
+    {
+        return Inertia::render('Reports/PrintDailyQueue', $this->reportData($request));
+    }
+
+    /**
+     * Shared payload for the daily queue report and its print view.
+     */
+    private function reportData(Request $request): array
     {
         $department_id = $request->input('department_id', 6);
         $selectedDate = $request->input('date', now()->toDateString());
@@ -40,8 +56,6 @@ class DepartmentReportController extends Controller
             )
             ->first();
 
-
-
         $departments = Department::where('is_active', true)->orderBy('name')->get();
         $patients = QueueItem::leftJoin('patients as pat', 'queue_items.patient_id', '=', 'pat.id')
             ->where('queue_items.current_department_id', $department_id)
@@ -53,6 +67,7 @@ class DepartmentReportController extends Controller
                 'pat.is_priority',
                 'queue_items.waiting_duration_seconds',
                 'queue_items.serving_duration_seconds',
+                'queue_items.completed_at', # trasferred/completed
                 'queue_items.skipped_at',
                 'queue_items.status',
                 'queue_items.original_department_id',
@@ -60,16 +75,16 @@ class DepartmentReportController extends Controller
             )
             ->get();
 
-        return Inertia::render('Reports/Index', [
+        return [
             'departments' => $departments,
             'patients' => $patients,
             'totalData' => $totalData,
             'avgData' => $avgData,
             'filters' => [
                 'department_id' => $department_id,
-                'date' => $selectedDate
+                'date' => $selectedDate,
             ],
-        ]);
+        ];
     }
 
     /**

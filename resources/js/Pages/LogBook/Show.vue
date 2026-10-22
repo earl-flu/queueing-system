@@ -25,6 +25,8 @@ const formattedSelectedDate = computed(() => {
   });
 });
 
+const printedAt = new Date().toLocaleString();
+
 // ---------- Shared formatting helpers ----------
 const formatTime = (data) => {
   if (!data) return "-";
@@ -128,7 +130,7 @@ const escapeHtml = (value) =>
 
 const printLog = () => {
   // Same default order as the table: queue number descending
-  const rows = [...props.patients].sort((a, b) =>
+  const rows = [...props.patients].sort((b, a) =>
     String(b.queue_number).localeCompare(String(a.queue_number), undefined, {
       numeric: true,
     })
@@ -180,8 +182,12 @@ const printLog = () => {
       </div>
       
         <h1>${escapeHtml(props.department.name)} Log Book</h1>
-        <p>${escapeHtml(formattedSelectedDate.value)}</p>
-
+        <p style="margin:0;">LOG BOOK DATE: ${escapeHtml(
+          formattedSelectedDate.value
+        )}</p>
+        <p style="color:#cdcdcd; font-weight:regular; font-size:10px;">Printed: ${escapeHtml(
+          printedAt
+        )}</p>
         <table style="width:auto; margin-bottom:15px;">
             <tr>
               <td>TOTAL</td>

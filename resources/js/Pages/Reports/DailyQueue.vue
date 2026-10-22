@@ -80,7 +80,7 @@ const columns = [
   },
   {
     data: "created_at",
-    title: "Queue Time",
+    title: "Start Time",
     render: function (data, type, row) {
       // If DataTables is sorting, filtering, or doing type detection, return the raw number
       if (type === "sort" || type === "type") {
@@ -91,11 +91,29 @@ const columns = [
     },
   },
   {
+    data: "completed_at",
+    title: "End Time",
+    render: function (data, type, row) {
+      // If DataTables is sorting, filtering, or doing type detection, return the raw number
+      if (type === "sort" || type === "type") {
+        return data;
+      }
+      // Otherwise, return your formatted string for display
+      return formatDisplayTime(data);
+    },
+  },
+  {
+    data: "status",
+    title: "Status",
+    render: (data) => {
+      if (!data) return "";
+      return data.charAt(0).toUpperCase() + data.slice(1).toLowerCase();
+    },
+  },
+  {
     data: "is_priority",
     title: "Is Priority",
-    render: (data) => {
-      return data.is_priority ? "Yes" : "No";
-    },
+    render: (data) => (data ? "Yes" : "No"),
   },
   {
     data: "waiting_duration_seconds",
@@ -124,17 +142,13 @@ const columns = [
   {
     data: "skipped_at",
     title: "Skip Record",
-    render: (data) => {
-      if (!data) return "No";
-      return data ? "Yes" : "No";
-    },
+    render: (data) => (data ? "Yes" : "No"),
   },
   {
     data: null,
-    title: "Service",
+    title: "Target Service",
     render: (data) => getDepartmentName(data.original_department_id),
   },
-  { data: "status", title: "Status" },
 ];
 
 // Configuration options for DataTables
@@ -151,12 +165,13 @@ const options = {
   <AuthenticatedLayout>
     <div class="card">
       <div class="card-body">
+        <!-- Screen-only title -->
         <h5 class="card-title mb-4 text-3xl">
           Department Report ({{ selectedDepartmentName }})
         </h5>
 
         <!-- FILTER CONTROLS -->
-        <div class="flex gap-4 mb-10">
+        <div class="flex flex-wrap gap-4 mb-10 items-end">
           <!-- Department Dropdown -->
           <div>
             <label class="block text-sm font-medium">Department</label>
@@ -185,11 +200,24 @@ const options = {
               class="border p-2 rounded"
             />
           </div>
+
+          <Link
+            :href="
+              route('reports.department.print', {
+                department_id: form.department_id,
+                date: form.date,
+              })
+            "
+            class="btn btn-sm btn-primary d-flex align-items-center gap-1"
+          >
+            <i class="material-icons-outlined">print</i>
+            Print
+          </Link>
         </div>
         <div
           class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-6"
         >
-          <div class="bg-white shadow rounded p-4">
+          <div class="bg-white shadow rounded p-4 break-inside-avoid">
             <div class="text-gray-900 text-sm mb-2 uppercase font-bold">
               Volume Overview
             </div>
@@ -281,19 +309,6 @@ const options = {
             :options="options"
             class="display width-full border border-gray-200 class-table-styles"
           >
-            <thead>
-              <tr>
-                <th class="border px-1">Queue Number</th>
-                <th class="border px-1">Name</th>
-                <th class="border px-1">Queue Time</th>
-                <th class="border px-1">Is Priority</th>
-                <th class="border px-1">Waiting Time</th>
-                <th class="border px-1">Serving Time</th>
-                <th class="border px-1">Skip Record</th>
-                <th class="border px-1">Service</th>
-                <th class="border px-1">Status</th>
-              </tr>
-            </thead>
           </DataTable>
         </div>
       </div>
